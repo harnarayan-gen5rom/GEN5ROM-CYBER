@@ -2,620 +2,734 @@
 <html lang="en">
 <head>
  <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title>Harnarayan — Motion, Video &amp; 3D / Cyber Edition</title>
- <meta name="description" content="Cyber Emerald edition of Harnarayan's creative portfolio: high-retention video editing, motion design, and interactive 3D." />
- <meta property="og:title" content="Harnarayan — Motion, Video &amp; 3D / Cyber Edition" />
- <meta property="og:description" content="Cyber Emerald edition of Harnarayan's creative portfolio: high-retention video editing, motion design, and interactive 3D." />
- <meta name="theme-color" content="#030705" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Harnarayan — Motion Playground / GEN5ROM 2.0</title>
+ <meta name="description" content="Cinematic portfolio of Harnarayan: Video Editor, Motion Graphics Designer, and Visual Storyteller based in New Delhi." />
+ <meta property="og:title" content="Harnarayan — Motion Playground / GEN5ROM 2.0" />
+ <meta property="og:description" content="Cinematic portfolio of Harnarayan: Video Editor, Motion Graphics Designer, and Visual Storyteller based in New Delhi." />
+ <meta name="theme-color" content="#0B0B0B" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
  <link rel="icon" type="image/webp" href="assets/harnarayan-profile.webp" />
  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<a class="skip-link" href="#work">Skip to projects</a>
 
-<header class="navbar">
- <div class="container nav-container">
-  <a class="brand" href="#home">
-   <img class="brand-avatar" src="assets/harnarayan-profile.webp" alt="Harnarayan" width="44" height="44" />
-   <div class="brand-text">
-    <strong>Harnarayan</strong>
-    <small>Motion · Video · 3D</small>
+<div class="film-grain" aria-hidden="true"></div>
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-follower" id="cursorFollower" aria-hidden="true"></div>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader" aria-hidden="true">
+ <div class="preloader-header">
+  <span>GEN5ROM 2.0</span>
+  <span>STUDIO REEL / 2026</span>
+ </div>
+ <div class="preloader-center">
+  <h1 class="preloader-title">MAKING<br />IDEAS <span>MOVE.</span></h1>
+  <p class="preloader-tagline">RESEARCH · EDITING · MOTION · 3D</p>
+ </div>
+ <div class="preloader-footer">
+  <div class="preloader-progress">
+   <span class="progress-number" id="preloaderCount">00</span>
+   <span>/ 100%</span>
+  </div>
+  <span>NEW DELHI, INDIA</span>
+ </div>
+</div>
+
+<!-- FLOATING CAPSULE NAVIGATION -->
+<header class="site-header">
+ <div class="nav-capsule">
+  <a class="brand-badge" href="#home" aria-label="Harnarayan Homepage">
+   <div class="brand-mark">G5</div>
+   <div class="brand-title">
+    Harnarayan
+    <small>Motion Studio</small>
    </div>
   </a>
 
-  <nav class="desktop-nav" aria-label="Main navigation">
-   <a href="#work">Work</a>
-   <a href="#comparison">Color Grade</a>
-   <a href="#interactive">3D Space</a>
-   <a href="#experience">Timeline</a>
-   <a href="#skills">Skills</a>
-   <a href="#services">Services</a>
+  <nav class="nav-links" aria-label="Main Navigation">
+   <a href="#work">Selected Work</a>
+   <a href="#space3d">3D Exhibition</a>
+   <a href="#art">Art Direction</a>
+   <a href="#pipeline">Process</a>
    <a href="#about">About</a>
+   <a href="#services">Services</a>
   </nav>
 
   <div class="nav-actions">
-   
+   <div class="status-pill">
+    <span class="status-beacon"></span>
+    <span>NEW DELHI · ACTIVE</span>
+   </div>
    <a class="btn btn-outline" href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
-   <a class="btn btn-primary" href="#contact">Let's Talk ↗</a>
+   <a class="btn btn-primary" href="#contact">Collaborate ↗</a>
+   <button class="mobile-menu-toggle" id="mobileToggle" type="button" aria-label="Toggle navigation menu">☰</button>
   </div>
-
-  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileMenu">
-   <span></span><span></span><span></span>
-  </button>
  </div>
-
- <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
-  <a href="#work">Work</a>
-  <a href="#comparison">Color Grade</a>
-  <a href="#interactive">3D Space</a>
-  <a href="#experience">Timeline</a>
-  <a href="#skills">Skills</a>
-  <a href="#services">Services</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
-  <a href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
-  
- </nav>
 </header>
 
 <main id="home">
+ <!-- HERO SECTION -->
  <section class="hero container">
-  <div class="hero-left">
-   <div class="radar-pill">
-    <span class="radar-dot"></span>
-    <span>AVAILABLE FOR NEW PROJECTS · NEW DELHI</span>
-   </div>
-   <h1>Cuts that <span>hit.</span><br />Motion that <em>sticks.</em></h1>
-   <p class="hero-description">
-    I transform raw vision into high-impact visual stories. 
-    Specializing in <strong>cinematic YouTube pacing</strong>, commercial motion design, 
-    and immersive <strong>interactive 3D</strong> experiences.
-   </p>
-   <div class="hero-actions">
-    <a class="btn btn-primary" href="#work">Explore Selected Work ↘</a>
-    <a class="btn btn-outline" href="#comparison">Inspect Color Grade ↗</a>
-   </div>
-   <div class="hero-meta-strip">
-    <span>New Delhi, India</span>
-    <span>1+ Year High-Impact Craft</span>
-    <span>4K Multi-Format Delivery</span>
-   </div>
+  <div class="hero-meta-kicker">
+   <span class="eyebrow">THE MOTION PLAYGROUND</span>
+   <span class="hero-coords font-mono">28.6139° N, 77.2090° E · IST</span>
   </div>
 
-  <div class="hero-right">
-   <article class="showreel-cyber project-trigger" data-video="7-2duY6fdzo" data-title="Chainsaw Man — Motion Graphics Edit" tabindex="0" role="button" aria-label="Play Chainsaw Man motion graphics edit">
-    <div class="showreel-header">
-     <span>01 / FEATURED SHOWREEL</span>
-     <span>AFTER EFFECTS · 4K</span>
+  <div class="hero-headline-wrap">
+   <span class="hero-name">HARNARAYAN</span>
+   <span class="hero-subhead">MAKING IDEAS <span class="highlight-vermilion">MOVE.</span></span>
+  </div>
+
+  <div class="hero-body-cluster">
+   <div>
+    <p class="hero-bio">
+     <strong>Video Editor &amp; Motion Graphics Designer.</strong> 
+     I construct high-retention video narratives, kinetic brand sequences, 
+     and interactive spatial 3D experiences. From raw concept to the final frame.
+    </p>
+    <div class="hero-cta-group">
+     <a class="btn btn-primary" href="#work">Explore My Work ↘</a>
+     <a class="btn btn-secondary" href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume ↗</a>
+     <a class="btn btn-outline" href="#contact">Let's Collaborate ↗</a>
     </div>
-    <div class="showreel-media">
+   </div>
+
+   <article class="hero-preview-portal project-trigger" data-video="7-2duY6fdzo" data-title="Chainsaw Man — Motion Graphics Edit" tabindex="0" role="button" aria-label="Watch featured motion teaser">
+    <div class="portal-media">
      <img src="https://img.youtube.com/vi/7-2duY6fdzo/maxresdefault.jpg" alt="Chainsaw Man motion edit" fetchpriority="high" />
-     <div class="play-trigger">
-      <div class="play-button-glow">▶</div>
+     <div class="portal-overlay">
+      <span class="portal-badge">FEATURED TEASER / 4K</span>
+      <div class="portal-title-bar">
+       <strong>Chainsaw Man / Motion Reel</strong>
+       <span class="portal-play-icon">▶</span>
+      </div>
      </div>
-    </div>
-    <div class="showreel-footer">
-     <strong>Chainsaw Man</strong>
-     <span>Cinematic Edit &amp; Motion Graphics ↗</span>
     </div>
    </article>
   </div>
  </section>
 
- <div class="tool-banner">
-  <div class="container tool-list">
-   <strong>CREATIVE TOOLKIT</strong>
-   <span class="tool-item">After Effects</span>
-   <span class="tool-item">Premiere Pro</span>
-   <span class="tool-item">DaVinci Resolve</span>
-   <span class="tool-item">Spline 3D</span>
-   <span class="tool-item">Photoshop</span>
-   <span class="tool-item">Illustrator</span>
-   <span class="tool-item">Adobe Dimension</span>
+ <!-- MARQUEE FILMSTRIP -->
+ <div class="marquee-ribbon" aria-hidden="true">
+  <div class="marquee-track">
+   <span>FRAME BY FRAME</span>
+   <span>CINEMATIC PACING</span>
+   <span>SAAS PRODUCT STORIES</span>
+   <span>REAL ESTATE 360°</span>
+   <span>KINETIC MOTION GRAPHICS</span>
+   <span>SPLINE 3D ENVIRONMENTS</span>
+   <span>AI VIDEO WORKFLOWS</span>
+   <span>FRAME BY FRAME</span>
+   <span>CINEMATIC PACING</span>
+   <span>SAAS PRODUCT STORIES</span>
+   <span>REAL ESTATE 360°</span>
+   <span>KINETIC MOTION GRAPHICS</span>
+   <span>SPLINE 3D ENVIRONMENTS</span>
+   <span>AI VIDEO WORKFLOWS</span>
   </div>
  </div>
 
  <!-- SELECTED WORK -->
- <section class="work container section" id="work">
-  <header class="section-heading">
+ <section class="section container" id="work">
+  <div class="section-header-editorial">
    <div>
-    <p class="eyebrow">PORTFOLIO INDEX</p>
-    <h2>Selected <span>Work.</span></h2>
+    <span class="eyebrow">CURATED PORTFOLIO</span>
+    <h2 class="section-title">Selected <span>Work.</span></h2>
    </div>
-   <p>Commercial SaaS, real estate virtual walkthroughs, high-octane 3D VFX, and visual direction.</p>
-  </header>
-
-  <div class="featured-row">
-   <button type="button" class="featured-box project-trigger" data-video="yDnmJa0fTsw" data-title="What is Zigency? — SaaS Overview" aria-label="Watch Zigency SaaS overview">
-    <div class="featured-thumb">
-     <img loading="lazy" src="https://img.youtube.com/vi/yDnmJa0fTsw/maxresdefault.jpg" alt="Zigency SaaS overview video" />
-     <span class="featured-tag">BRAND &amp; PRODUCT</span>
-     <span class="featured-play-badge">↗</span>
-    </div>
-    <div class="featured-info">
-     <h3>Complex product. Clear story.</h3>
-     <p>Zigency / SaaS overview</p>
-     <span>Editing + motion graphics</span>
-    </div>
-   </button>
-
-   <button type="button" class="featured-box project-trigger" data-video="I5RlqsDqhug" data-title="Zigency 360° Virtual Walkthrough" aria-label="Watch Zigency property walkthrough">
-    <div class="featured-thumb">
-     <img loading="lazy" src="https://img.youtube.com/vi/I5RlqsDqhug/maxresdefault.jpg" alt="Zigency virtual property walkthrough" />
-     <span class="featured-tag">REAL ESTATE</span>
-     <span class="featured-play-badge">↗</span>
-    </div>
-    <div class="featured-info">
-     <h3>A space you can already imagine.</h3>
-     <p>Zigency / Virtual walkthrough</p>
-     <span>Property marketing + motion</span>
-    </div>
-   </button>
-
-   <button type="button" class="featured-box project-trigger" data-video="v827BybYYxI" data-title="Monster Energy — 3D VFX" aria-label="Watch Monster Energy 3D VFX project">
-    <div class="featured-thumb">
-     <img loading="lazy" src="https://img.youtube.com/vi/v827BybYYxI/hqdefault.jpg" alt="Monster Energy 3D VFX project" />
-     <span class="featured-tag">3D VFX &amp; EDIT</span>
-     <span class="featured-play-badge">↗</span>
-    </div>
-    <div class="featured-info">
-     <h3>A little energy. A lot of impact.</h3>
-     <p>Monster Energy / 3D VFX</p>
-     <span>Creative edit + visual effects</span>
-    </div>
-   </button>
+   <p class="section-desc">
+    Asymmetric exhibition of commercial edits, 360° property walkthroughs, 
+    and motion graphic experiments.
+   </p>
   </div>
 
-  <div class="work-filter-bar">
-   <div class="filter-group" role="group" aria-label="Project categories">
-    <button type="button" class="filter-btn active" data-filter="all">All Projects</button>
-    <button type="button" class="filter-btn" data-filter="video">Video Editing</button>
-    <button type="button" class="filter-btn" data-filter="motion">Motion Graphics</button>
-    <button type="button" class="filter-btn" data-filter="design">Graphic Design</button>
+  <div class="work-filter-strip">
+   <div class="filter-pills" role="group" aria-label="Filter projects">
+    <button type="button" class="filter-pill active" data-filter="all">All Disciplines</button>
+    <button type="button" class="filter-pill" data-filter="video">Video Editing</button>
+    <button type="button" class="filter-pill" data-filter="motion">Motion Graphics</button>
+    <button type="button" class="filter-pill" data-filter="3d">3D &amp; VFX</button>
    </div>
-   <input type="search" class="search-box" id="projectSearch" placeholder="Filter projects…" aria-label="Search projects" />
+   <span class="font-mono" style="font-size: 11px; color: var(--paper-muted);">CLICK TO EXPAND PROJECT THEATER</span>
   </div>
 
-  <div class="work-grid" id="workGrid">
-   <button type="button" class="work-card video" data-category="video" data-video="1AOYe9wDsU4" data-title="Meet Zigency One Team: AI Video">
-    <div class="card-media">
-     <img loading="lazy" src="https://img.youtube.com/vi/1AOYe9wDsU4/hqdefault.jpg" alt="Meet Zigency One Team" />
-     <span class="card-action-icon">▶</span>
+  <div class="project-exhibition">
+   <!-- PROJECT 01: GRAND HERO CASE STUDY -->
+   <article class="project-hero-card project-trigger" data-category="video" data-video="yDnmJa0fTsw" data-title="What is Zigency? — SaaS Overview" data-role="Video Editor &amp; Motion Designer" data-tools="Premiere Pro, After Effects, Photoshop" data-desc="Created a dynamic product overview video for Zigency SaaS. Managed complete post-production: storyboard pacing, kinetic typography, screen animation, sound mixing, and final delivery.">
+    <div class="media-box">
+     <img loading="lazy" src="https://img.youtube.com/vi/yDnmJa0fTsw/maxresdefault.jpg" alt="What is Zigency SaaS overview" />
     </div>
-    <div class="card-content">
-     <span class="card-category">Video editing</span>
-     <h3>Meet Zigency One Team: The AI That Creates &amp; Publishes!</h3>
-    </div>
-   </button>
-
-   <button type="button" class="work-card video" data-category="video" data-video="7uWk-hbkJkY" data-title="Noida New Mall Complete Review">
-    <div class="card-media">
-     <img loading="lazy" src="https://img.youtube.com/vi/7uWk-hbkJkY/hqdefault.jpg" alt="Noida Mall Review" />
-     <span class="card-action-icon">▶</span>
-    </div>
-    <div class="card-content">
-     <span class="card-category">Video editing</span>
-     <h3>Noida Mall Review &amp; Architectural Video</h3>
-    </div>
-   </button>
-
-   <button type="button" class="work-card motion" data-category="motion" data-video="I5RlqsDqhug" data-title="Tour Your Property BEFORE It's Built">
-    <div class="card-media">
-     <img loading="lazy" src="https://img.youtube.com/vi/I5RlqsDqhug/hqdefault.jpg" alt="Tour Your Property" />
-     <span class="card-action-icon">▶</span>
-    </div>
-    <div class="card-content">
-     <span class="card-category">Motion graphics</span>
-     <h3>Tour Your Property BEFORE It's Even Built! 360° Walkthrough</h3>
-    </div>
-   </button>
-
-   <button type="button" class="work-card design" data-category="design" data-video="" data-title="Spider-Man Poster Art">
-    <div class="card-media">
-     <img loading="lazy" src="assets/Spiderman-poster.webp" alt="Spider-Man Poster Art" />
-     <span class="card-action-icon">↗</span>
-    </div>
-    <div class="card-content">
-     <span class="card-category">Graphic design</span>
-     <h3>Spider-Man Key Art &amp; Character Poster</h3>
-    </div>
-   </button>
-
-   <button type="button" class="work-card design" data-category="design" data-video="" data-title="Batman Visual Poster">
-    <div class="card-media">
-     <img loading="lazy" src="assets/batman-poster.webp" alt="Batman Visual Poster" />
-     <span class="card-action-icon">↗</span>
-    </div>
-    <div class="card-content">
-     <span class="card-category">Graphic design</span>
-     <h3>The Batman Cinematic Poster Concept</h3>
-    </div>
-   </button>
-
-   <button type="button" class="work-card design" data-category="design" data-video="" data-title="High Performance Gaming Laptop Ad">
-    <div class="card-media">
-     <img loading="lazy" src="assets/gaming-laptop-ad.webp" alt="Gaming Laptop Ad" />
-     <span class="card-action-icon">↗</span>
-    </div>
-    <div class="card-content">
-     <span class="card-category">Commercial art</span>
-     <h3>Next-Gen Gaming Laptop Ad Banner</h3>
-    </div>
-   </button>
-  </div>
- </section>
-
- <!-- BEFORE / AFTER COMPARISON -->
- <section class="comparison container section" id="comparison">
-  <header class="section-heading">
-   <div>
-    <p class="eyebrow">COLOR SCIENCE &amp; VFX</p>
-    <h2>Color <span>Grading.</span></h2>
-   </div>
-   <p>Real post-production color science: drag the laser divider to compare raw flat S-Log profile vs final graded master.</p>
-  </header>
-
-  <div class="comparison-stage" id="comparisonStage">
-   <div class="comparison-container" id="comparisonContainer">
-    <div class="comparison-layer comparison-after">
-     <img src="assets/Banner.webp" alt="Final Mastered Color Grade" loading="lazy" />
-     <span class="comparison-badge badge-after">Final Grade · 4K Master</span>
-    </div>
-    <div class="comparison-layer comparison-before" id="comparisonBefore">
-     <img src="assets/Banner.webp" alt="Raw S-Log Flat Profile" class="raw-grade" loading="lazy" />
-     <span class="comparison-badge badge-before">Raw S-Log · Flat Capture</span>
-    </div>
-    <div class="comparison-handle" id="comparisonHandle" role="slider" aria-label="Comparison slider" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" tabindex="0">
-     <div class="handle-line"></div>
-     <div class="handle-button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="m9 18-6-6 6-6"/><path d="m15 6 6 6-6 6"/></svg>
+    <div class="info-box">
+     <div>
+      <div class="project-kicker">
+       <span class="badge-category">SAAS &amp; PRODUCT</span>
+       <span>01 / 06</span>
+      </div>
+      <h3 class="project-title">Complex product.<br />Clear story.</h3>
+      <p class="project-summary">
+       Zigency product overview explainer video. Structured dense technical SaaS architecture into an intuitive narrative with fast-paced motion overlays and deliberate audio design.
+      </p>
+      <div class="project-meta-chips">
+       <span>Narrative Pacing</span>
+       <span>Screen UI Animation</span>
+       <span>Sound Design</span>
+       <span>After Effects</span>
+      </div>
      </div>
+     <span class="project-action-link">Open Project Theater ↗</span>
     </div>
+   </article>
+
+   <!-- PROJECT 02 & 03: ASYMMETRIC 60/40 SPLIT -->
+   <div class="project-split-row">
+    <article class="project-split-card project-trigger" data-category="motion" data-video="I5RlqsDqhug" data-title="Zigency 360° Virtual Walkthrough" data-role="Video Editor &amp; Motion Designer" data-tools="Premiere Pro, After Effects" data-desc="Real estate marketing video showcasing virtual property walkthrough technology before construction begins. Balanced cinematic drone-feel transitions and clear spatial typography.">
+     <div class="media-box">
+      <img loading="lazy" src="https://img.youtube.com/vi/I5RlqsDqhug/maxresdefault.jpg" alt="Zigency 360 property walkthrough" />
+     </div>
+     <div class="info-box">
+      <div class="project-kicker">
+       <span class="badge-category">REAL ESTATE</span>
+       <span>02 / 06</span>
+      </div>
+      <h3 class="project-title">A space you can already imagine.</h3>
+      <p class="project-summary">
+       Property marketing walkthrough for pre-construction properties. Motion graphics camera tracking and spatial callouts.
+      </p>
+      <div class="project-meta-chips">
+       <span>Property Marketing</span>
+       <span>Camera Tracking</span>
+       <span>Pacing</span>
+      </div>
+      <span class="project-action-link">Open Project Theater ↗</span>
+     </div>
+    </article>
+
+    <article class="project-split-card portrait project-trigger" data-category="3d" data-video="v827BybYYxI" data-title="Monster Energy — 3D VFX Simulation" data-role="Editor &amp; Visual Compositor" data-tools="After Effects, Dimension, Premiere Pro" data-desc="Experimental commercial edit for Monster Energy. Integrated 3D simulations, high-contrast velocity ramps, sound design, and impact cuts.">
+     <div class="media-box">
+      <img loading="lazy" src="https://img.youtube.com/vi/v827BybYYxI/hqdefault.jpg" alt="Monster Energy 3D VFX simulation" />
+     </div>
+     <div class="info-box">
+      <div class="project-kicker">
+       <span class="badge-category">3D VFX &amp; EDIT</span>
+       <span>03 / 06</span>
+      </div>
+      <h3 class="project-title">A little energy.<br />A lot of impact.</h3>
+      <p class="project-summary">
+       Commercial 3D VFX composite with kinetic audio-reactive editing and high-energy motion design.
+      </p>
+      <div class="project-meta-chips">
+       <span>3D Simulation</span>
+       <span>Impact Editing</span>
+       <span>VFX</span>
+      </div>
+      <span class="project-action-link">Open Project Theater ↗</span>
+     </div>
+    </article>
    </div>
-   <div class="comparison-toolbar">
-    <div class="comparison-caption">
-     <span class="radar-dot"></span>
-     <span>Drag handle or tap presets below to inspect LUT &amp; grade separation</span>
-    </div>
-    <div class="comparison-presets">
-     <button type="button" class="preset-btn" data-preset="10">Raw Only</button>
-     <button type="button" class="preset-btn active" data-preset="50">Split (50%)</button>
-     <button type="button" class="preset-btn" data-preset="90">Grade Only</button>
-    </div>
+
+   <!-- PROJECT 04 & 05: ASYMMETRIC SPLIT -->
+   <div class="project-split-row">
+    <article class="project-split-card portrait project-trigger" data-category="video" data-video="1AOYe9wDsU4" data-title="Meet Zigency One Team: AI Video" data-role="Video Editor" data-tools="Premiere Pro, After Effects" data-desc="Dynamic short-form showcase explaining Zigency's AI workflow automation in a concise, high-retention vertical format.">
+     <div class="media-box">
+      <img loading="lazy" src="https://img.youtube.com/vi/1AOYe9wDsU4/hqdefault.jpg" alt="Zigency AI One Team video" />
+     </div>
+     <div class="info-box">
+      <div class="project-kicker">
+       <span class="badge-category">AI DIGITAL CONTENT</span>
+       <span>04 / 06</span>
+      </div>
+      <h3 class="project-title">Meet Zigency One Team: AI Engine.</h3>
+      <p class="project-summary">
+       Short-form social storytelling demonstrating multi-agent AI publishing workflows with kinetic typography.
+      </p>
+      <div class="project-meta-chips">
+       <span>Short-Form Retention</span>
+       <span>AI Content</span>
+       <span>Typography</span>
+      </div>
+      <span class="project-action-link">Open Project Theater ↗</span>
+     </div>
+    </article>
+
+    <article class="project-split-card project-trigger" data-category="video" data-video="7uWk-hbkJkY" data-title="Noida Mall Complete Review" data-role="Video Editor" data-tools="Premiere Pro" data-desc="Architectural commercial video reviewing new commercial mall developments with smooth stabilized cuts and crisp color grading.">
+     <div class="media-box">
+      <img loading="lazy" src="https://img.youtube.com/vi/7uWk-hbkJkY/hqdefault.jpg" alt="Noida Mall architectural video" />
+     </div>
+     <div class="info-box">
+      <div class="project-kicker">
+       <span class="badge-category">COMMERCIAL EDIT</span>
+       <span>05 / 06</span>
+      </div>
+      <h3 class="project-title">Noida Mall Architectural Review.</h3>
+      <p class="project-summary">
+       Full-length commercial review of prime commercial real estate with rhythm-matched cuts and color correction.
+      </p>
+      <div class="project-meta-chips">
+       <span>Commercial Video</span>
+       <span>Color Correction</span>
+       <span>Audio Sync</span>
+      </div>
+      <span class="project-action-link">Open Project Theater ↗</span>
+     </div>
+    </article>
    </div>
   </div>
  </section>
 
- <!-- INTERACTIVE 3D -->
- <section class="interactive container section" id="interactive">
-  <header class="section-heading">
+ <!-- INTERACTIVE 3D SPLINE EXHIBITION -->
+ <section class="section container" id="space3d">
+  <div class="section-header-editorial">
    <div>
-    <p class="eyebrow">3D INTERACTION</p>
-    <h2>Interactive <span>Space.</span></h2>
+    <span class="eyebrow eyebrow-acid">A DIFFERENT DIMENSION</span>
+    <h2 class="section-title">Interactive <span>3D.</span></h2>
    </div>
-   <p>Step outside the 2D timeline into a fully interactive WebGL scene built with Spline.</p>
-  </header>
+   <p class="section-desc">
+    Beyond linear video timelines. A custom WebGL 3D scene built in Spline, loaded interactively.
+   </p>
+  </div>
 
-  <article class="spline-cyber">
-   <div class="spline-toolbar">
-    <strong>SPLINE / REAL-TIME 3D</strong>
-    <div class="quality-group">
-     <button type="button" data-quality="auto" aria-pressed="true">Auto</button>
-     <button type="button" data-quality="crisp" aria-pressed="false">Crisp</button>
-     <button type="button" data-quality="smooth" aria-pressed="false">Smooth</button>
+  <article class="spline-theater">
+   <div class="spline-header-bar">
+    <span>EXHIBITION / 01 · REAL-TIME WEBGL</span>
+    <div class="spline-controls">
+     <button type="button" class="active" data-quality="auto">Auto</button>
+     <button type="button" data-quality="crisp">Crisp</button>
+     <button type="button" data-quality="smooth">Smooth</button>
     </div>
    </div>
-   <div class="spline-stage" id="splineStage">
-    <spline-viewer id="splineViewer" url="https://prod.spline.design/bCzuLFEqzOSbl9ic/scene.splinecode" loading-anim-type="none" events-target="local" aria-label="Interactive 3D Spline scene"></spline-viewer>
+
+   <div class="spline-viewport" id="splineStage">
+    <spline-viewer id="splineViewer" url="https://prod.spline.design/bCzuLFEqzOSbl9ic/scene.splinecode" loading-anim-type="none" events-target="local" aria-label="Interactive 3D Spline scene by Harnarayan"></spline-viewer>
+    <div class="spline-interaction-hint font-mono">DRAG TO ORBIT · SCROLL TO ZOOM</div>
    </div>
-   <div class="spline-footer">
+
+   <div class="spline-details-bar">
     <div>
-     <h3>Real-Time Cyber Environment</h3>
-     <p>Orbit around geometry, test dynamic lights, and inspect interactive physics in real-time.</p>
-     <div class="tag-cloud">
-      <span>WebGL</span>
-      <span>Spline 3D</span>
-      <span>Real-Time Shader</span>
-      <span>Interaction Design</span>
-     </div>
+     <h3>Step Inside the Dimension.</h3>
+     <p>
+      Real-time WebGL canvas rendered on GPU. Explore physics and interactive light responses directly in your browser.
+     </p>
+     <small class="spline-honest-note">
+      * Note: Ambient geometry rotation is authored inside the original Spline scene file. Drag to freely rotate.
+     </small>
+    </div>
+    <div class="project-meta-chips">
+     <span>Spline 3D</span>
+     <span>WebGL</span>
+     <span>Real-Time Interaction</span>
     </div>
    </div>
   </article>
  </section>
 
- <!-- EXPERIENCE & TIMELINE -->
- <section class="experience container section" id="experience">
-  <header class="section-heading">
+ <!-- GRAPHIC DESIGN & ART GALLERY -->
+ <section class="section container" id="art">
+  <div class="section-header-editorial">
    <div>
-    <p class="eyebrow">PROFESSIONAL JOURNEY</p>
-    <h2>Timeline &amp; <span>Metrics.</span></h2>
+    <span class="eyebrow">VISUAL DIRECTION</span>
+    <h2 class="section-title">Artwork &amp; <span>Key Art.</span></h2>
    </div>
-   <p>Real production experience delivering for creators, agencies, and high-growth brands.</p>
-  </header>
+   <p class="section-desc">
+    High-contrast editorial posters, promotional artwork, and creative digital composites.
+   </p>
+  </div>
 
-  <div class="experience-layout">
-   <div class="experience-col">
-    <div class="col-header">
-     <span class="eyebrow">PRACTICAL ROLES</span>
-     <h3>Work History</h3>
+  <div class="art-masonry">
+   <article class="art-card image-trigger" data-src="assets/Spiderman-poster.webp" data-caption="Spider-Man Poster Art Work">
+    <div class="art-media">
+     <img loading="lazy" src="assets/Spiderman-poster.webp" alt="Spider-Man poster artwork" />
     </div>
-    <div class="timeline-items">
-     <article class="timeline-card">
-      <div class="timeline-meta">
-       <span class="timeline-period">2025 – Present</span>
-       <span class="timeline-location">New Delhi · Remote</span>
-      </div>
-      <h4>Lead Video Editor &amp; Motion Graphics Specialist</h4>
-      <p class="timeline-role">GEN5ROM · Commercial &amp; Creator Production</p>
-      <p class="timeline-text">
-       Crafting high-retention long and short-form video edits for real estate marketing, 
-       AI product demos, and YouTube creators. Directing pacing, sound design, color correction, 
-       and motion graphics.
-      </p>
-      <div class="timeline-tags">
-       <span>Storytelling</span>
-       <span>DaVinci Resolve</span>
-       <span>After Effects</span>
-       <span>Multi-Platform Delivery</span>
-      </div>
-     </article>
+    <div class="art-info">
+     <h4>Spider-Man Poster Key Art</h4>
+     <span>01 / POSTER</span>
+    </div>
+   </article>
 
-     <article class="timeline-card">
-      <div class="timeline-meta">
-       <span class="timeline-period">2024 – 2025</span>
-       <span class="timeline-location">Creative Projects</span>
-      </div>
-      <h4>Motion &amp; 3D Visual Designer</h4>
-      <p class="timeline-role">Brand Key Art &amp; Interactive Web 3D</p>
-      <p class="timeline-text">
-       Produced branded motion visualizers, interactive Spline 3D web scenes, 
-       and high-CTR YouTube thumbnail concepts.
-      </p>
-      <div class="timeline-tags">
-       <span>Spline 3D</span>
-       <span>VFX Compositing</span>
-       <span>Brand Key Art</span>
-      </div>
-     </article>
+   <article class="art-card image-trigger" data-src="assets/batman-poster.webp" data-caption="The Batman Cinematic Poster Concept">
+    <div class="art-media">
+     <img loading="lazy" src="assets/batman-poster.webp" alt="The Batman poster" />
     </div>
+    <div class="art-info">
+     <h4>The Batman Visual Poster</h4>
+     <span>02 / POSTER</span>
+    </div>
+   </article>
+
+   <article class="art-card image-trigger" data-src="assets/gaming-laptop-ad.webp" data-caption="Next-Gen Gaming Laptop Ad Banner">
+    <div class="art-media">
+     <img loading="lazy" src="assets/gaming-laptop-ad.webp" alt="Gaming laptop ad banner" />
+    </div>
+    <div class="art-info">
+     <h4>Gaming Laptop Ad Banner</h4>
+     <span>03 / COMMERCIAL</span>
+    </div>
+   </article>
+
+   <article class="art-card image-trigger" data-src="assets/Gfx-anime-poster.webp" data-caption="Anime Gfx Poster Art">
+    <div class="art-media">
+     <img loading="lazy" src="assets/Gfx-anime-poster.webp" alt="Anime Gfx poster" />
+    </div>
+    <div class="art-info">
+     <h4>Gfx Anime Concept</h4>
+     <span>04 / ART</span>
+    </div>
+   </article>
+
+   <article class="art-card image-trigger" data-src="assets/mixed-media-style.webp" data-caption="Mixed Media Style Visual Exploration">
+    <div class="art-media">
+     <img loading="lazy" src="assets/mixed-media-style.webp" alt="Mixed media style poster" />
+    </div>
+    <div class="art-info">
+     <h4>Mixed Media Style</h4>
+     <span>05 / EXPERIMENTAL</span>
+    </div>
+   </article>
+
+   <article class="art-card image-trigger" data-src="assets/house-poster.webp" data-caption="Architecture &amp; House Poster Concept">
+    <div class="art-media">
+     <img loading="lazy" src="assets/house-poster.webp" alt="House architectural poster" />
+    </div>
+    <div class="art-info">
+     <h4>House Poster Concept</h4>
+     <span>06 / ARCHITECTURE</span>
+    </div>
+   </article>
+  </div>
+ </section>
+
+ <!-- CREATIVE WORKFLOW & EXPERIENCE -->
+ <section class="section container" id="pipeline">
+  <div class="section-header-editorial">
+   <div>
+    <span class="eyebrow">HOW IDEAS MOVE</span>
+    <h2 class="section-title">Creative <span>Pipeline.</span></h2>
+   </div>
+   <p class="section-desc">
+    An intentional 8-stage production architecture that transforms ambiguous briefs into high-impact visual stories.
+   </p>
+  </div>
+
+  <div class="pipeline-grid">
+   <div class="pipeline-step">
+    <span class="pipeline-num">01 / RESEARCH</span>
+    <h4>Audience &amp; Hook</h4>
+    <p>Dissect the narrative core, audience retention psychology, and competitor landscape before opening software.</p>
    </div>
 
-   <div class="experience-col">
-    <div class="col-header">
-     <span class="eyebrow">FOUNDATIONS &amp; IMPACT</span>
-     <h3>Education &amp; Key Stats</h3>
-    </div>
-    <div class="timeline-items">
-     <article class="timeline-card">
-      <div class="timeline-meta">
-       <span class="timeline-period">2023 – 2024</span>
-       <span class="timeline-location">New Delhi, India</span>
-      </div>
-      <h4>Digital Media &amp; Video Production Studies</h4>
-      <p class="timeline-role">Specialized Technical Training</p>
-      <p class="timeline-text">
-       Advanced coursework in nonlinear editing systems (NLE), cinematographic pacing, 
-       color theory, audio mastering, typography, and motion design.
-      </p>
-      <div class="timeline-tags">
-       <span>Cinematography</span>
-       <span>Color Science</span>
-       <span>Audio Engineering</span>
-      </div>
-     </article>
+   <div class="pipeline-step">
+    <span class="pipeline-num">02 / CONCEPT</span>
+    <h4>Creative Direction</h4>
+    <p>Establish moodboards, visual metaphors, color palette intentions, and rhythmic pacing styles.</p>
+   </div>
 
-     <div class="metrics-grid">
-      <div class="metric-item">
-       <strong>1+</strong>
-       <span>Year Professional Craft</span>
-      </div>
-      <div class="metric-item">
-       <strong>15+</strong>
-       <span>Curated Projects</span>
-      </div>
-      <div class="metric-item">
-       <strong>100%</strong>
-       <span>Delivery Precision</span>
-      </div>
-      <div class="metric-item">
-       <strong>4K</strong>
-       <span>Multi-Format Export</span>
-      </div>
-     </div>
+   <div class="pipeline-step">
+    <span class="pipeline-num">03 / SCRIPT</span>
+    <h4>Narrative Flow</h4>
+    <p>Shape spoken audio, sound cues, and visual checkpoints into a cohesive, tight script.</p>
+   </div>
+
+   <div class="pipeline-step">
+    <span class="pipeline-num">04 / STORYBOARD</span>
+    <h4>Visual Sequencing</h4>
+    <p>Draft scene transitions, kinetic camera moves, and typography layout blueprints.</p>
+   </div>
+
+   <div class="pipeline-step">
+    <span class="pipeline-num">05 / EDIT</span>
+    <h4>Timeline Assembly</h4>
+    <p>Perform the offline edit: intentional cuts, micro-pacing, multi-camera sync, and rhythm matching.</p>
+   </div>
+
+   <div class="pipeline-step">
+    <span class="pipeline-num">06 / MOTION</span>
+    <h4>Graphics &amp; VFX</h4>
+    <p>Inject kinetic typography, 3D elements, title cards, UI animations, and motion tracking overlays.</p>
+   </div>
+
+   <div class="pipeline-step">
+    <span class="pipeline-num">07 / REVISIONS</span>
+    <h4>Iterative Polish</h4>
+    <p>Incorporate stakeholder feedback, fine-tune audio mastering, and ensure cross-platform compliance.</p>
+   </div>
+
+   <div class="pipeline-step">
+    <span class="pipeline-num">08 / DELIVERY</span>
+    <h4>Final 4K Master</h4>
+    <p>Render optimized multi-format deliverables (16:9, 9:16, 1:1) with accurate color space profiles.</p>
+   </div>
+  </div>
+
+  <!-- EXPERIENCE CHAPTERS -->
+  <div class="experience-chapters">
+   <article class="chapter-card">
+    <div class="chapter-header">
+     <span class="eyebrow">FULL PRODUCTION ROLE</span>
+     <span class="period">ZIGENCY · NEW DELHI</span>
     </div>
+    <h3>Video Editor &amp; Motion Graphics Specialist</h3>
+    <p class="chapter-role">In-House Production &amp; Digital Marketing</p>
+    <p>
+     Handled end-to-end production pipelines: from research and initial scripting to rough cuts, motion graphic overlays, iterative revisions, and final delivery. Produced high-retention marketing videos for SaaS products, AI demos, and real estate marketing.
+    </p>
+    <div class="chapter-tags">
+     <span>Production Pipeline</span>
+     <span>SaaS Explainers</span>
+     <span>After Effects</span>
+     <span>Premiere Pro</span>
+    </div>
+   </article>
+
+   <article class="chapter-card">
+    <div class="chapter-header">
+     <span class="eyebrow">CONTRACT &amp; INDEPENDENT</span>
+     <span class="period">FREELANCE · 2024 – PRESENT</span>
+    </div>
+    <h3>Independent Motion &amp; Video Specialist</h3>
+    <p class="chapter-role">Creators &amp; Brands · Remote &amp; On-Site</p>
+    <p>
+     Partnered with creators and growing brands to produce high-retention short and long-form video edits, promotional posters, interactive 3D web scenes, and striking YouTube thumbnails.
+    </p>
+    <div class="chapter-tags">
+     <span>High-Retention Pacing</span>
+     <span>Spline 3D</span>
+     <span>Key Art Direction</span>
+     <span>Thumbnail Design</span>
+    </div>
+   </article>
+  </div>
+ </section>
+
+ <!-- CREATIVE TOOLKIT (CONFIRMED TOOLS ONLY — NO FAKE NUMBERS!) -->
+ <section class="section container" id="tools">
+  <div class="section-header-editorial">
+   <div>
+    <span class="eyebrow">SOFTWARE MASTERY</span>
+    <h2 class="section-title">Creative <span>Toolkit.</span></h2>
+   </div>
+   <p class="section-desc">
+    Focused on industry-standard creative tools. No fabricated percentages — pure practical application.
+   </p>
+  </div>
+
+  <div class="software-wall">
+   <div class="software-item">
+    <span class="software-icon-tag">AE · MOTION DESIGN</span>
+    <h3>Adobe After Effects</h3>
+    <p>Complex kinetic typography, visual effects compositing, logo reveals, UI animation, and tracking.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">PR · NONLINEAR EDITING</span>
+    <h3>Adobe Premiere Pro</h3>
+    <p>Story structure, high-retention multi-camera edits, audio sync, sound design, and color pipeline.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">PS · DIGITAL ART</span>
+    <h3>Adobe Photoshop</h3>
+    <p>High-CTR YouTube thumbnail composition, editorial poster design, key visual retouching, and texture work.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">AI · VECTOR DESIGN</span>
+    <h3>Adobe Illustrator</h3>
+    <p>Vector key art, custom typography marks, graphic icon sets, and storyboard visual assets.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">DN · 3D COMPOSITING</span>
+    <h3>Adobe Dimension</h3>
+    <p>Photorealistic 3D product mockups, spatial branding visualizations, and packaging key visuals.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">SP · REAL-TIME 3D</span>
+    <h3>Spline 3D</h3>
+    <p>Interactive WebGL scenes, 3D interaction design, real-time lighting, and web-ready spatial experiences.</p>
+   </div>
+
+   <div class="software-item">
+    <span class="software-icon-tag">FR · WEB INTERACTION</span>
+    <h3>Framer</h3>
+    <p>Interactive web components, modern layout design, responsive prototypes, and microinteractions.</p>
    </div>
   </div>
  </section>
 
- <!-- SKILLS BREAKDOWN -->
- <section class="skills container section" id="skills">
-  <header class="section-heading">
-   <div>
-    <p class="eyebrow">TECHNICAL MATRIX</p>
-    <h2>Skills &amp; <span>Proficiency.</span></h2>
+ <!-- ABOUT ME -->
+ <section class="section container" id="about">
+  <div class="about-composition">
+   <div class="about-portrait-frame">
+    <img src="assets/harnarayan-profile.webp" alt="Harnarayan" loading="lazy" width="1254" height="1254" />
+    <div class="portrait-meta">
+     <strong>HARNARAYAN</strong>
+     <span>NEW DELHI, INDIA</span>
+    </div>
    </div>
-   <p>High-precision tools for editing, motion, and visual identity.</p>
-  </header>
 
-  <div class="skills-grid">
-   <article class="skill-card">
-    <span class="eyebrow">01 / TIMELINE</span>
-    <h3>Video Editing</h3>
-    <p class="skill-desc">Dynamic pacing, narrative rhythm, color science, and spatial audio immersion.</p>
-    <div class="skill-bars">
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Narrative &amp; Commercial Pacing</span><span>95%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 95%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Color Grading &amp; S-Log LUT Science</span><span>90%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 90%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Sound Design &amp; Foley Sync</span><span>88%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 88%;"></div></div>
-     </div>
+   <div class="about-editorial-text">
+    <span class="eyebrow">THE CREATOR BEHIND THE PIXELS</span>
+    <h3>Curious Mind.<br /><span>Creative Precision.</span></h3>
+    <p>
+     I'm Harnarayan, a Video Editor and Motion Graphics Designer based in New Delhi. 
+     I have approximately one year of professional studio experience alongside ongoing freelance work.
+    </p>
+    <p>
+     My work revolves around transforming complex messages into vivid, memorable visual stories. 
+     Whether it is pacing an intense narrative sequence, staging real estate virtual walkthroughs, 
+     or building an interactive 3D web experience, I obsess over the rhythm of every single frame.
+    </p>
+    <div class="about-callout-box">
+     <p>
+      Academic foundation: Higher education degree currently in progress · Practical focus on nonlinear digital multimedia and visual storytelling.
+     </p>
     </div>
-    <div class="skill-chips">
-     <span>Premiere Pro</span><span>DaVinci Resolve</span><span>Multi-Camera</span><span>4K Master</span>
+    <div class="hero-cta-group">
+     <a class="btn btn-primary" href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume ↗</a>
+     <a class="btn btn-outline" href="#contact">Start a Conversation ↘</a>
     </div>
-   </article>
-
-   <article class="skill-card">
-    <span class="eyebrow">02 / MOTION</span>
-    <h3>Motion Graphics &amp; 3D</h3>
-    <p class="skill-desc">Expressive kinetic typography, VFX compositing, and interactive 3D web scenes.</p>
-    <div class="skill-bars">
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Kinetic Typography &amp; Title Art</span><span>92%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 92%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Spline 3D Real-Time Interaction</span><span>86%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 86%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Visual Effects &amp; Compositing</span><span>85%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
-     </div>
-    </div>
-    <div class="skill-chips">
-     <span>After Effects</span><span>Spline 3D</span><span>Adobe Dimension</span><span>Tracking &amp; Keying</span>
-    </div>
-   </article>
-
-   <article class="skill-card">
-    <span class="eyebrow">03 / DESIGN</span>
-    <h3>Graphic &amp; Key Art</h3>
-    <p class="skill-desc">Thumbnails engineered for click-through rate, poster art, and brand assets.</p>
-    <div class="skill-bars">
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Thumbnail Psychology &amp; CTR</span><span>94%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 94%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Poster Art &amp; Editorial Layout</span><span>88%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 88%;"></div></div>
-     </div>
-     <div class="skill-bar-row">
-      <div class="bar-header"><span>Vector &amp; Identity Assets</span><span>85%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width: 85%;"></div></div>
-     </div>
-    </div>
-    <div class="skill-chips">
-     <span>Photoshop</span><span>Illustrator</span><span>Visual Direction</span>
-    </div>
-   </article>
+   </div>
   </div>
  </section>
 
  <!-- SERVICES -->
- <section class="services container section" id="services">
-  <header class="section-heading">
+ <section class="section container" id="services">
+  <div class="section-header-editorial">
    <div>
-    <p class="eyebrow">WHAT I DELIVER</p>
-    <h2>Services &amp; <span>Offerings.</span></h2>
+    <span class="eyebrow">CORE CAPABILITIES</span>
+    <h2 class="section-title">What I <span>Deliver.</span></h2>
    </div>
-   <p>End-to-end creative post-production for brands, agencies, and creators.</p>
-  </header>
+   <p class="section-desc">
+    End-to-end creative post-production crafted specifically for brands, agencies, and digital creators.
+   </p>
+  </div>
 
-  <div class="services-grid">
-   <article class="service-card">
-    <span class="eyebrow">01 / EDITING</span>
-    <h3>Video Editing</h3>
-    <p>Engaging cuts for YouTube, commercial advertising, real estate, and social formats.</p>
-    <ul>
-     <li>Storytelling &amp; narrative pacing</li>
-     <li>Color grading &amp; audio balancing</li>
-     <li>Multi-format delivery (16:9, 9:16, 1:1)</li>
+  <div class="services-editorial">
+   <article class="service-card-editorial">
+    <div>
+     <span class="service-num">01 / EDIT</span>
+     <h3>Video Editing</h3>
+     <p>Commercial edits for YouTube, social campaigns, property walkthroughs, and brand stories.</p>
+    </div>
+    <ul class="service-bullets">
+     <li>Narrative pacing &amp; storytelling</li>
+     <li>Color balancing &amp; audio sync</li>
+     <li>Multi-format delivery (16:9, 9:16)</li>
     </ul>
    </article>
 
-   <article class="service-card">
-    <span class="eyebrow">02 / MOTION</span>
-    <h3>Motion Graphics</h3>
-    <p>Distinctive animation sequences that give your ideas motion and kinetic presence.</p>
-    <ul>
+   <article class="service-card-editorial">
+    <div>
+     <span class="service-num">02 / ANIMATE</span>
+     <h3>Motion Graphics</h3>
+     <p>Dynamic kinetic typography, brand logos, product explainers, and UI screen interactions.</p>
+    </div>
+    <ul class="service-bullets">
      <li>Explainer &amp; product videos</li>
-     <li>Logo &amp; title animation</li>
+     <li>Title design &amp; kinetic type</li>
      <li>Social media motion packages</li>
     </ul>
    </article>
 
-   <article class="service-card">
-    <span class="eyebrow">03 / 3D DESIGN</span>
-    <h3>Visual &amp; 3D Art</h3>
-    <p>Interactive web graphics and eye-catching key visuals built to stand out.</p>
-    <ul>
-     <li>Posters &amp; key art</li>
-     <li>YouTube thumbnail direction</li>
-     <li>Interactive Spline 3D web experiences</li>
+   <article class="service-card-editorial">
+    <div>
+     <span class="service-num">03 / DESIGN</span>
+     <h3>Visual Design</h3>
+     <p>High-contrast digital posters, high-CTR YouTube thumbnails, and key visual assets.</p>
+    </div>
+    <ul class="service-bullets">
+     <li>Posters &amp; key visuals</li>
+     <li>Thumbnail strategy &amp; design</li>
+     <li>Brand asset development</li>
+    </ul>
+   </article>
+
+   <article class="service-card-editorial">
+    <div>
+     <span class="service-num">04 / 3D SPACE</span>
+     <h3>Interactive 3D</h3>
+     <p>Real-time Spline 3D web spatial assets engineered for modern, interactive websites.</p>
+    </div>
+    <ul class="service-bullets">
+     <li>Spline 3D web environments</li>
+     <li>Interactive viewport controls</li>
+     <li>WebGL performance optimization</li>
     </ul>
    </article>
   </div>
  </section>
 
- <!-- ABOUT -->
- <section class="about container section" id="about">
-  <div class="about-portrait">
-   <img src="assets/harnarayan-profile.webp" alt="Harnarayan" loading="lazy" width="1254" height="1254" />
-   <span>HARNARAYAN / NEW DELHI, INDIA</span>
-  </div>
-  <div class="about-copy">
-   <p class="eyebrow">THE CREATOR BEHIND THE EDITS</p>
-   <h2>Curious mind.<br /><span class="gradient-text">Creative precision.</span></h2>
-   <p>
-    I'm Harnarayan, a video editor and motion graphics designer based in New Delhi. 
-    My work spans high-conversion real estate marketing, AI-focused product content, 
-    cinematic showreels, and visual storytelling.
-   </p>
-   <p>
-    I combine intentional pacing, color theory, and modern 3D design to create 
-    content that captivates audiences. Available for freelance, contract, and full-time opportunities.
-   </p>
-   <a class="btn btn-outline" href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">View Full Resume ↗</a>
-  </div>
- </section>
+ <!-- CONTACT: FINAL CINEMATIC SCENE -->
+ <section class="contact-scene container" id="contact">
+  <span class="eyebrow">START A PROJECT</span>
+  <h2 class="contact-headline">LET'S MAKE<br />SOMETHING <span>MOVE.</span></h2>
+  <p class="contact-sub">HAVE A BRIEF, A PRODUCT, OR AN OPPORTUNITY? LET'S TALK.</p>
 
- <!-- CONTACT -->
- <section class="contact container section" id="contact">
-  <p class="eyebrow">READY TO BUILD SOMETHING UNIQUE?</p>
-  <h2>Let's build your<br />next <span class="gradient-text">story.</span></h2>
-  <p>Got a project or opportunity in mind? Drop a message and let's bring it to life.</p>
-  <a class="email-glow-link" href="mailto:narayansingh28489@gmail.com">narayansingh28489@gmail.com ↗</a>
-  <div class="contact-links">
+  <a class="contact-email-anchor" href="mailto:narayansingh28489@gmail.com" id="emailCta">
+   narayansingh28489@gmail.com ↗
+  </a>
+
+  <div class="contact-channels">
    <a href="tel:+917503875055">+91 7503875055</a>
    <a href="https://www.instagram.com/gen5.rom/" target="_blank" rel="noopener noreferrer">Instagram (@gen5.rom) ↗</a>
    <a href="assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Download Resume ↗</a>
+   <a href="https://github.com/harnarayan-gen5rom" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
   </div>
  </section>
 </main>
 
-<footer class="footer container">
- <span>© 2026 Harnarayan · Cyber Edition</span>
- <span>Green &amp; Dark Black Aesthetic · Motion / Video / 3D</span>
- <a href="#home">Back to Top ↑</a>
+<footer class="site-footer">
+ <div class="container footer-inner">
+  <span>© 2026 Harnarayan · GEN5ROM 2.0</span>
+  <span>THE MOTION PLAYGROUND · CINEMATIC EDITORIAL EDITION</span>
+  <a href="#home">BACK TO TOP ↑</a>
+ </div>
 </footer>
 
-<!-- Modals -->
-<div class="modal" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoTitle" hidden>
- <div class="modal-content">
-  <div class="modal-bar">
-   <h2 id="videoTitle">Video Project</h2>
-   <button class="close-video" type="button" aria-label="Close video">×</button>
+<!-- CINEMATIC PROJECT MODAL THEATER -->
+<div class="modal-theater" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="modalVideoTitle" hidden>
+ <div class="modal-shell">
+  <div class="modal-header-bar">
+   <div class="modal-title-group">
+    <h3 id="modalVideoTitle">Project Theater</h3>
+    <span id="modalVideoCategory">VIDEO EDITING</span>
+   </div>
+   <button class="modal-close-btn" id="closeVideoModal" type="button" aria-label="Close project theater">×</button>
   </div>
-  <iframe id="videoFrame" title="Portfolio video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  <div class="modal-screen">
+   <iframe id="modalVideoIframe" title="Project video player" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  <div class="modal-details-pane">
+   <div class="modal-details-grid">
+    <div class="modal-detail-col">
+     <h4>My Contribution &amp; Role</h4>
+     <p id="modalVideoRole">Video Editor &amp; Motion Designer</p>
+     <h4 style="margin-top: 14px;">Tools Utilized</h4>
+     <p id="modalVideoTools">Premiere Pro, After Effects</p>
+    </div>
+    <div class="modal-detail-col">
+     <h4>Project Overview</h4>
+     <p id="modalVideoDesc">Detailed case overview.</p>
+    </div>
+   </div>
+  </div>
  </div>
 </div>
 
-<div class="modal" id="imageModal" role="dialog" aria-modal="true" aria-labelledby="imageCaption" hidden>
- <div class="image-modal-content">
-  <div class="modal-bar">
-   <h2 id="imageCaption">Artwork</h2>
-   <button class="close-image" type="button" aria-label="Close image">×</button>
+<!-- IMAGE LIGHTBOX MODAL -->
+<div class="modal-theater" id="imageModal" role="dialog" aria-modal="true" aria-labelledby="modalImageTitle" hidden>
+ <div class="image-theater-shell">
+  <div class="modal-header-bar">
+   <div class="modal-title-group">
+    <h3 id="modalImageTitle">Artwork</h3>
+    <span>KEY VISUAL</span>
+   </div>
+   <button class="modal-close-btn" id="closeImageModal" type="button" aria-label="Close image viewer">×</button>
   </div>
-  <img id="modalImage" alt="" />
+  <img id="modalLightboxImage" alt="" />
  </div>
 </div>
 
