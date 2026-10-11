@@ -1,242 +1,155 @@
 // ============================================================
-// GEN5ROM 2.0 — THE MOTION PLAYGROUND
-// Core Interaction & Animation System
+// GEN5ROM V3 — RED & BLACK MOTION PORTFOLIO
+// Core Interaction, Video Theater & Spline Performance
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-  // 1. PRELOADER & INTRO CURTAIN
-  const preloader = document.getElementById('preloader');
-  const preloaderCount = document.getElementById('preloaderCount');
-  const hasVisited = sessionStorage.getItem('gen5rom_entered');
+  // 1. MOBILE MENU TOGGLE
+  const mobileToggle = document.getElementById('mobileToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
 
-  if (preloader) {
-    if (hasVisited || isReducedMotion) {
-      preloader.classList.add('dismissed');
-    } else {
-      let count = 0;
-      const interval = setInterval(() => {
-        count += Math.floor(Math.random() * 12) + 6;
-        if (count >= 100) {
-          count = 100;
-          clearInterval(interval);
-          if (preloaderCount) preloaderCount.textContent = '100';
-          setTimeout(() => {
-            preloader.classList.add('dismissed');
-            sessionStorage.setItem('gen5rom_entered', 'true');
-          }, 350);
-        } else {
-          if (preloaderCount) preloaderCount.textContent = String(count).padStart(2, '0');
-        }
-      }, 35);
-    }
-  }
+  if (mobileToggle && mobileMenu) {
+    mobileToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.hidden;
+      mobileMenu.hidden = !isHidden;
+      mobileToggle.textContent = isHidden ? '✕' : '☰';
+      mobileToggle.setAttribute('aria-expanded', String(isHidden));
+    });
 
-  // 2. CUSTOM CONTEXTUAL CURSOR (Desktop only)
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorFollower = document.getElementById('cursorFollower');
-
-  if (!isTouchDevice && cursorDot && cursorFollower) {
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let followerX = mouseX;
-    let followerY = mouseY;
-
-    window.addEventListener('mousemove', e => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-    }, { passive: true });
-
-    function renderCursor() {
-      followerX += (mouseX - followerX) * 0.18;
-      followerY += (mouseY - followerY) * 0.18;
-      cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
-      requestAnimationFrame(renderCursor);
-    }
-    requestAnimationFrame(renderCursor);
-
-    // Interactive Hover States
-    const interactiveElements = document.querySelectorAll('a, button, .project-trigger, .image-trigger, .pipeline-step, .software-item');
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        if (el.classList.contains('project-trigger')) {
-          document.body.classList.add('cursor-play');
-        } else {
-          document.body.classList.add('cursor-hover');
-        }
-      });
-      el.addEventListener('mouseleave', () => {
-        document.body.classList.remove('cursor-hover', 'cursor-play');
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.hidden = true;
+        mobileToggle.textContent = '☰';
+        mobileToggle.setAttribute('aria-expanded', 'false');
       });
     });
   }
 
-  // 3. MAGNETIC BUTTON INTERACTION (Desktop)
-  if (!isTouchDevice && !isReducedMotion) {
-    const magneticButtons = document.querySelectorAll('.btn-primary, .contact-email-anchor');
-    magneticButtons.forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
-      });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-      });
-    });
-  }
-
-  // 4. FLOATING NAVIGATION & SCROLLSPY
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const observedSections = document.querySelectorAll('section[id]');
+  // 2. SCROLLSPY NAVIGATION
+  const navLinks = document.querySelectorAll('.nav-menu a');
+  const sections = document.querySelectorAll('section[id]');
 
   if ('IntersectionObserver' in window) {
-    const sectionObserver = new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
+          const id = entry.target.id;
           navLinks.forEach(link => {
             link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
           });
         }
       });
-    }, { rootMargin: '-20% 0px -60% 0px' });
+    }, { rootMargin: '-25% 0px -60% 0px' });
 
-    observedSections.forEach(sec => sectionObserver.observe(sec));
+    sections.forEach(s => observer.observe(s));
   }
 
-  // 5. PROJECT CATEGORY FILTERING
-  const filterPills = document.querySelectorAll('.filter-pill');
-  const projectCards = document.querySelectorAll('.project-hero-card, .project-split-card');
-
-  filterPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      filterPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-
-      const filter = pill.dataset.filter;
-      projectCards.forEach(card => {
-        const category = card.dataset.category;
-        if (filter === 'all' || category === filter) {
-          card.style.display = '';
-          setTimeout(() => { card.style.opacity = '1'; }, 10);
-        } else {
-          card.style.opacity = '0';
-          setTimeout(() => { card.style.display = 'none'; }, 200);
-        }
-      });
-    });
-  });
-
-  // 6. CINEMATIC PROJECT MODAL THEATER
+  // 3. CINEMATIC VIDEO MODAL THEATER
   const videoModal = document.getElementById('videoModal');
-  const modalIframe = document.getElementById('modalVideoIframe');
-  const modalTitle = document.getElementById('modalVideoTitle');
-  const modalCategory = document.getElementById('modalVideoCategory');
-  const modalRole = document.getElementById('modalVideoRole');
-  const modalTools = document.getElementById('modalVideoTools');
-  const modalDesc = document.getElementById('modalVideoDesc');
+  const modalIframe = document.getElementById('modalIframe');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalRole = document.getElementById('modalRole');
+  const modalTools = document.getElementById('modalTools');
+  const modalDesc = document.getElementById('modalDesc');
   const closeVideoBtn = document.getElementById('closeVideoModal');
 
-  function openVideoModal(card) {
-    const videoId = card.dataset.video;
+  function openVideo(trigger) {
+    const videoId = trigger.dataset.video;
     if (!videoId || !videoModal || !modalIframe) return;
 
-    modalTitle.textContent = card.dataset.title || 'Project Theater';
-    modalCategory.textContent = (card.dataset.category || 'VIDEO').toUpperCase();
-    modalRole.textContent = card.dataset.role || 'Video Editor & Motion Designer';
-    modalTools.textContent = card.dataset.tools || 'Premiere Pro, After Effects';
-    modalDesc.textContent = card.dataset.desc || 'High-retention commercial video editing and motion graphics.';
+    modalTitle.textContent = trigger.dataset.title || 'Project Theater';
+    modalRole.textContent = trigger.dataset.role || 'Video Editor & Motion Designer';
+    modalTools.textContent = trigger.dataset.tools ? `Tools: ${trigger.dataset.tools}` : 'Adobe Premiere Pro, After Effects';
+    modalDesc.textContent = trigger.dataset.desc || 'Commercial editing and motion graphics.';
 
     modalIframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
     videoModal.hidden = false;
-    requestAnimationFrame(() => videoModal.classList.add('active'));
+    requestAnimationFrame(() => videoModal.classList.add('open'));
     document.body.style.overflow = 'hidden';
   }
 
-  function closeVideoModal() {
+  function closeVideo() {
     if (!videoModal || !modalIframe) return;
-    videoModal.classList.remove('active');
+    videoModal.classList.remove('open');
     setTimeout(() => {
       videoModal.hidden = true;
       modalIframe.src = '';
       document.body.style.overflow = '';
-    }, 300);
+    }, 280);
   }
 
-  document.querySelectorAll('.project-trigger').forEach(card => {
-    card.addEventListener('click', () => openVideoModal(card));
-    card.addEventListener('keydown', e => {
+  document.querySelectorAll('.project-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => openVideo(trigger));
+    trigger.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openVideoModal(card);
+        openVideo(trigger);
       }
     });
   });
 
-  if (closeVideoBtn) closeVideoBtn.addEventListener('click', closeVideoModal);
+  if (closeVideoBtn) closeVideoBtn.addEventListener('click', closeVideo);
 
-  // 7. IMAGE LIGHTBOX MODAL
+  // 4. IMAGE LIGHTBOX MODAL
   const imageModal = document.getElementById('imageModal');
-  const modalImage = document.getElementById('modalLightboxImage');
-  const modalImageTitle = document.getElementById('modalImageTitle');
+  const modalImgTag = document.getElementById('modalImgTag');
+  const imageModalTitle = document.getElementById('imageModalTitle');
   const closeImageBtn = document.getElementById('closeImageModal');
 
-  function openImageModal(card) {
-    const src = card.dataset.src;
-    const caption = card.dataset.caption;
-    if (!src || !imageModal || !modalImage) return;
+  function openImage(trigger) {
+    const src = trigger.dataset.src;
+    const caption = trigger.dataset.caption;
+    if (!src || !imageModal || !modalImgTag) return;
 
-    modalImage.src = src;
-    modalImageTitle.textContent = caption || 'Key Visual';
+    modalImgTag.src = src;
+    imageModalTitle.textContent = caption || 'Artwork';
     imageModal.hidden = false;
-    requestAnimationFrame(() => imageModal.classList.add('active'));
+    requestAnimationFrame(() => imageModal.classList.add('open'));
     document.body.style.overflow = 'hidden';
   }
 
-  function closeImageModal() {
-    if (!imageModal || !modalImage) return;
-    imageModal.classList.remove('active');
+  function closeImage() {
+    if (!imageModal || !modalImgTag) return;
+    imageModal.classList.remove('open');
     setTimeout(() => {
       imageModal.hidden = true;
-      modalImage.src = '';
+      modalImgTag.src = '';
       document.body.style.overflow = '';
-    }, 300);
+    }, 280);
   }
 
-  document.querySelectorAll('.image-trigger').forEach(card => {
-    card.addEventListener('click', () => openImageModal(card));
+  document.querySelectorAll('.image-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => openImage(trigger));
   });
 
-  if (closeImageBtn) closeImageBtn.addEventListener('click', closeImageModal);
+  if (closeImageBtn) closeImageBtn.addEventListener('click', closeImage);
 
-  // Close modals on backdrop click or ESC
+  // Close modals on backdrop click or Escape key
   [videoModal, imageModal].forEach(modal => {
     if (!modal) return;
     modal.addEventListener('click', e => {
       if (e.target === modal) {
-        closeVideoModal();
-        closeImageModal();
+        closeVideo();
+        closeImage();
       }
     });
   });
 
   window.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      closeVideoModal();
-      closeImageModal();
+      closeVideo();
+      closeImage();
     }
   });
 
-  // 8. INTERACTIVE 3D SPLINE VIEWER (Optimized & Lazy-Loaded)
-  (function initSplineStage() {
+  // 5. SPLINE 3D OPTIMIZED VIEWER (Lazy-loaded with GPU pause)
+  (function initSplineViewer() {
     const stage = document.getElementById('splineStage');
     const viewer = document.getElementById('splineViewer');
-    const qualityButtons = document.querySelectorAll('.spline-controls button');
+    const qualityButtons = document.querySelectorAll('.quality-buttons button');
     if (!stage || !viewer) return;
 
     let isScriptLoaded = false;
@@ -256,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadSplineScript();
             viewer.play?.();
           } else {
-            // Pause offscreen rendering to prevent battery / frame drop
+            // Offscreen pause to save battery and maintain 60 FPS scrolling
             viewer.stop?.();
           }
         });
@@ -267,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
       loadSplineScript();
     }
 
-    // Quality Modes
     qualityButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         qualityButtons.forEach(b => b.classList.remove('active'));
@@ -286,29 +198,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // 9. MOBILE MENU TOGGLE
-  const mobileToggle = document.getElementById('mobileToggle');
-  const navCapsule = document.querySelector('.nav-capsule');
-  if (mobileToggle && navCapsule) {
-    mobileToggle.addEventListener('click', () => {
-      const isExpanded = navCapsule.classList.toggle('expanded');
-      mobileToggle.textContent = isExpanded ? '✕' : '☰';
+  // 6. MAGNETIC BUTTON INTERACTION (Desktop fine pointer only)
+  if (!isTouchDevice && !isReducedMotion) {
+    const magneticElements = document.querySelectorAll('.email-cta-btn, .btn-primary');
+    magneticElements.forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = `translate(${x * 0.22}px, ${y * 0.22}px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+      });
     });
   }
-
-  // 10. SMOOTH ANCHOR NAVIGATION
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({
-          behavior: isReducedMotion ? 'instant' : 'smooth',
-          block: 'start'
-        });
-      }
-    });
-  });
 });
