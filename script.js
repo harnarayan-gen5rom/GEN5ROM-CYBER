@@ -47,7 +47,40 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(s => observer.observe(s));
   }
 
-  // 3. GSAP BUTTER-SMOOTH ENTRANCE ANIMATIONS
+  // 3. PROJECT CATEGORY FILTERING
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      projectCards.forEach(card => {
+        const cat = card.dataset.category;
+        if (filter === 'all' || cat === filter) {
+          card.style.display = 'flex';
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0) scale(1)';
+          }, 20);
+        } else {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(10px) scale(0.97)';
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 220);
+        }
+      });
+
+      if (typeof ScrollTrigger !== 'undefined') {
+        setTimeout(() => ScrollTrigger.refresh(), 250);
+      }
+    });
+  });
+
+  // 4. GSAP BUTTER-SMOOTH ENTRANCE ANIMATIONS
   if (typeof gsap !== 'undefined' && !isReducedMotion) {
     if (typeof ScrollTrigger !== 'undefined') {
       gsap.registerPlugin(ScrollTrigger);
@@ -107,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 0,
         y: 35,
         duration: 0.8,
-        stagger: 0.14,
+        stagger: 0.1,
         ease: 'power3.out'
       });
 
@@ -133,13 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
         opacity: 0,
         y: 30,
         duration: 0.7,
-        stagger: 0.1,
+        stagger: 0.08,
         ease: 'power3.out'
       });
     }
   }
 
-  // 4. CINEMATIC VIDEO MODAL THEATER
+  // 5. CINEMATIC VIDEO MODAL THEATER
   const videoModal = document.getElementById('videoModal');
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
@@ -185,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (closeVideoBtn) closeVideoBtn.addEventListener('click', closeVideo);
 
-  // 5. IMAGE LIGHTBOX MODAL
+  // 6. IMAGE LIGHTBOX MODAL
   const imageModal = document.getElementById('imageModal');
   const modalImgTag = document.getElementById('modalImgTag');
   const imageModalTitle = document.getElementById('imageModalTitle');
@@ -237,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 6. SPLINE 3D OPTIMIZED VIEWER (Lazy-loaded with GPU pause)
+  // 7. SPLINE 3D OPTIMIZED VIEWER (Lazy-loaded with GPU pause)
   (function initSplineViewer() {
     const stage = document.getElementById('splineStage');
     const viewer = document.getElementById('splineViewer');
@@ -290,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // 7. MAGNETIC BUTTON INTERACTION (Desktop fine pointer only)
+  // 8. MAGNETIC BUTTON INTERACTION (Desktop fine pointer only)
   if (!isTouchDevice && !isReducedMotion) {
     const magneticElements = document.querySelectorAll('.email-cta-btn, .btn-primary');
     magneticElements.forEach(el => {

@@ -48,7 +48,7 @@
   --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  /* Layout Constraints */
+  /* Layout Constraints — Strict 24px Grid Gaps */
   --container-max: 1280px;
   --pad-desktop: 64px;
   --pad-tablet: 32px;
@@ -119,7 +119,7 @@ ul, ol {
 }
 
 /* ============================================================
-   STRICT 12-COLUMN GRID SYSTEM
+   STRICT 12-COLUMN GRID SYSTEM (UNIFORM 24px GAP)
    ============================================================ */
 .container {
   max-width: var(--container-max);
@@ -131,7 +131,7 @@ ul, ol {
 .grid-12 {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--gap-grid);
+  gap: 24px;
 }
 
 .section {
@@ -179,7 +179,7 @@ h1, h2, h3, h4 {
 }
 
 .section-head {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .section-head h2 {
@@ -597,12 +597,46 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   04. SELECTED PROJECTS (BALANCED 2-COLUMN GRID)
+   04. SELECTED PROJECTS (STRICT 24px GRID GAP)
    ============================================================ */
+.project-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.filter-btn {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  border-color: var(--border-hover);
+  color: #ffffff;
+}
+
+.filter-btn.active {
+  background: var(--accent-gradient);
+  border-color: var(--red-vibrant);
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 48, 79, 0.4);
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap-grid);
+  gap: 24px !important;
 }
 
 .project-card {
@@ -612,7 +646,7 @@ h1, h2, h3, h4 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
   cursor: pointer;
   text-align: left;
 }
@@ -820,7 +854,7 @@ h1, h2, h3, h4 {
 .about-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--gap-grid);
+  gap: 24px;
   align-items: center;
 }
 
@@ -898,7 +932,7 @@ h1, h2, h3, h4 {
 .process-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 48px;
 }
 
@@ -940,7 +974,7 @@ h1, h2, h3, h4 {
 .experience-two-col {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap-grid);
+  gap: 24px;
 }
 
 .exp-box {
@@ -1004,12 +1038,12 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   08. SKILLS & SOFTWARE TOOLKIT (CONFIRMED 7 TOOLS)
+   08. SKILLS & SOFTWARE TOOLKIT (STRICT 24px GRID GAP)
    ============================================================ */
 .software-grid-7 {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--gap-grid);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px !important;
 }
 
 .tool-card {
@@ -1047,12 +1081,12 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   09. SERVICES
+   09. SERVICES (STRICT 24px GRID GAP)
    ============================================================ */
 .services-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--gap-grid);
+  gap: 24px;
 }
 
 .service-item {
@@ -1341,7 +1375,7 @@ h1, h2, h3, h4 {
     display: flex;
   }
   .projects-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
   .experience-two-col {
     grid-template-columns: 1fr;
@@ -1353,7 +1387,7 @@ h1, h2, h3, h4 {
     grid-template-columns: repeat(2, 1fr);
   }
   .software-grid-7 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
   .footer-content {
     flex-direction: column;
