@@ -1,22 +1,22 @@
 // ============================================================
 // GEN5ROM V3 — RED & BLACK MOTION PORTFOLIO
-// Core Interaction, Video Theater & Spline Performance
+// GSAP Animation Engine & Refined Interactions
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
   const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-  // 1. MOBILE MENU TOGGLE
+  // 1. MOBILE MENU TOGGLE (Strictly controls hidden state)
   const mobileToggle = document.getElementById('mobileToggle');
   const mobileMenu = document.getElementById('mobileMenu');
 
   if (mobileToggle && mobileMenu) {
     mobileToggle.addEventListener('click', () => {
-      const isHidden = mobileMenu.hidden;
-      mobileMenu.hidden = !isHidden;
-      mobileToggle.textContent = isHidden ? '✕' : '☰';
-      mobileToggle.setAttribute('aria-expanded', String(isHidden));
+      const willOpen = mobileMenu.hidden;
+      mobileMenu.hidden = !willOpen;
+      mobileToggle.textContent = willOpen ? '✕' : '☰';
+      mobileToggle.setAttribute('aria-expanded', String(willOpen));
     });
 
     mobileMenu.querySelectorAll('a').forEach(link => {
@@ -47,7 +47,99 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(s => observer.observe(s));
   }
 
-  // 3. CINEMATIC VIDEO MODAL THEATER
+  // 3. GSAP BUTTER-SMOOTH ENTRANCE ANIMATIONS
+  if (typeof gsap !== 'undefined' && !isReducedMotion) {
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    // Hero Entrance
+    gsap.from('.hero-left > *', {
+      opacity: 0,
+      y: 28,
+      duration: 0.9,
+      stagger: 0.12,
+      ease: 'power3.out'
+    });
+
+    gsap.from('.hero-visual-frame', {
+      opacity: 0,
+      scale: 0.94,
+      duration: 1.1,
+      delay: 0.25,
+      ease: 'power3.out'
+    });
+
+    // Scroll-triggered reveals
+    if (typeof ScrollTrigger !== 'undefined') {
+      // Section Heads
+      gsap.utils.toArray('.section-head').forEach(head => {
+        gsap.from(head, {
+          scrollTrigger: {
+            trigger: head,
+            start: 'top 85%'
+          },
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: 'power3.out'
+        });
+      });
+
+      // Showreel Card
+      gsap.from('.showreel-card', {
+        scrollTrigger: {
+          trigger: '.showreel-card',
+          start: 'top 85%'
+        },
+        opacity: 0,
+        y: 40,
+        duration: 0.9,
+        ease: 'power3.out'
+      });
+
+      // Project Cards
+      gsap.from('.project-card', {
+        scrollTrigger: {
+          trigger: '.projects-grid',
+          start: 'top 82%'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 0.8,
+        stagger: 0.14,
+        ease: 'power3.out'
+      });
+
+      // Process Steps
+      gsap.from('.process-step', {
+        scrollTrigger: {
+          trigger: '.process-grid',
+          start: 'top 85%'
+        },
+        opacity: 0,
+        y: 25,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: 'power3.out'
+      });
+
+      // Tool Cards
+      gsap.from('.tool-card', {
+        scrollTrigger: {
+          trigger: '.software-grid-7',
+          start: 'top 85%'
+        },
+        opacity: 0,
+        y: 30,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power3.out'
+      });
+    }
+  }
+
+  // 4. CINEMATIC VIDEO MODAL THEATER
   const videoModal = document.getElementById('videoModal');
   const modalIframe = document.getElementById('modalIframe');
   const modalTitle = document.getElementById('modalTitle');
@@ -93,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (closeVideoBtn) closeVideoBtn.addEventListener('click', closeVideo);
 
-  // 4. IMAGE LIGHTBOX MODAL
+  // 5. IMAGE LIGHTBOX MODAL
   const imageModal = document.getElementById('imageModal');
   const modalImgTag = document.getElementById('modalImgTag');
   const imageModalTitle = document.getElementById('imageModalTitle');
@@ -145,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5. SPLINE 3D OPTIMIZED VIEWER (Lazy-loaded with GPU pause)
+  // 6. SPLINE 3D OPTIMIZED VIEWER (Lazy-loaded with GPU pause)
   (function initSplineViewer() {
     const stage = document.getElementById('splineStage');
     const viewer = document.getElementById('splineViewer');
@@ -198,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   })();
 
-  // 6. MAGNETIC BUTTON INTERACTION (Desktop fine pointer only)
+  // 7. MAGNETIC BUTTON INTERACTION (Desktop fine pointer only)
   if (!isTouchDevice && !isReducedMotion) {
     const magneticElements = document.querySelectorAll('.email-cta-btn, .btn-primary');
     magneticElements.forEach(el => {
