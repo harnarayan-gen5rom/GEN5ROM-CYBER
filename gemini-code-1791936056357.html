@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEN5ROM // CYBER — Video Editor & Motion Designer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            syne: ['Syne', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              bg: '#08090d',
+              card: '#0f1118',
+              cyan: '#00f0ff',
+              purple: '#a855f7',
+              neon: '#00ff88',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom cyber grid lines */
+    .cyber-grid {
+      background-size: 50px 50px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    .neon-glow-cyan {
+      box-shadow: 0 0 35px -5px rgba(0, 240, 255, 0.35);
+    }
+    .neon-border {
+      border: 1px solid rgba(0, 240, 255, 0.2);
+    }
+  </style>
+</head>
+
+<body class="bg-cyber-bg text-neutral-200 font-sans antialiased selection:bg-cyan-500 selection:text-black">
+
+  <!-- Ambient Glow Behind Hero -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-cyan-500/10 blur-[150px] pointer-events-none -z-10 rounded-full"></div>
+  <div class="fixed top-1/3 right-10 w-[450px] h-[300px] bg-purple-600/10 blur-[160px] pointer-events-none -z-10 rounded-full"></div>
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-cyber-bg/80 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
+      <a href="#" class="font-syne text-xl font-extrabold tracking-wider text-white flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-cyan-400 rounded-sm rotate-45"></span>
+        GEN5ROM <span class="text-cyan-400 text-xs font-mono px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30">CYBER</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
+        <a href="#work" class="hover:text-cyan-400 transition-colors">Selected Work</a>
+        <a href="#workflow" class="hover:text-cyan-400 transition-colors">Workflow</a>
+        <a href="#stats" class="hover:text-cyan-400 transition-colors">Metrics</a>
+        <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+      </nav>
+
+      <a href="#contact" class="px-5 py-2 rounded-lg bg-cyan-500 text-black font-semibold text-xs tracking-wider uppercase hover:bg-cyan-400 transition-all shadow-md shadow-cyan-500/20">
+        Book Project
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-24 pb-20 px-6 cyber-grid overflow-hidden">
+    <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
+      
+      <!-- Status Badge -->
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 text-xs font-mono mb-8">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span>OPEN FOR COMMISSIONS // 2026</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="font-syne text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-white">
+        High-Retention Visuals & <br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-400">
+          Cinematic Storytelling.
+        </span>
+      </h1>
+
+      <p class="mt-6 text-base sm:text-lg text-neutral-400 max-w-2xl font-normal leading-relaxed">
+        Transforming raw footage into punchy, high-engagement videos with dynamic sound design, precision pacing, and cyber motion graphics.
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-9 flex flex-wrap items-center justify-center gap-4">
+        <a href="#work" class="px-7 py-3.5 rounded-xl bg-cyan-400 text-black font-bold text-sm tracking-wide hover:bg-cyan-300 transition-all neon-glow-cyan flex items-center gap-2">
+          <span>Explore Showreel</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+        <a href="#contact" class="px-7 py-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 text-neutral-300 hover:text-white font-medium text-sm transition-all">
+          Discuss a Project
+        </a>
+      </div>
+
+      <!-- Software Stack Ticker -->
+      <div class="mt-16 pt-8 border-t border-white/10 w-full flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-neutral-400 font-mono text-xs uppercase tracking-widest">
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> Premiere Pro</span>
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> After Effects</span>
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> DaVinci Resolve</span>
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-pink-400"></span> Sound Design</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metric / Credibility Bar -->
+  <section id="stats" class="border-y border-white/5 bg-cyber-card/50 py-12 px-6">
+    <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <div class="font-syne text-3xl sm:text-4xl font-extrabold text-cyan-400">10M+</div>
+        <div class="text-xs font-mono uppercase tracking-wider text-neutral-400 mt-1">Organic Views Generated</div>
+      </div>
+      <div>
+        <div class="font-syne text-3xl sm:text-4xl font-extrabold text-white">85%+</div>
+        <div class="text-xs font-mono uppercase tracking-wider text-neutral-400 mt-1">Avg. Retention Focus</div>
+      </div>
+      <div>
+        <div class="font-syne text-3xl sm:text-4xl font-extrabold text-purple-400">4K 60</div>
+        <div class="text-xs font-mono uppercase tracking-wider text-neutral-400 mt-1">High-Bitrate Delivery</div>
+      </div>
+      <div>
+        <div class="font-syne text-3xl sm:text-4xl font-extrabold text-emerald-400">24-48h</div>
+        <div class="text-xs font-mono uppercase tracking-wider text-neutral-400 mt-1">Fast First Cut Turnaround</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Showcase Section -->
+  <section id="work" class="py-24 px-6 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest">// PORTFOLIO</span>
+        <h2 class="font-syne text-3xl sm:text-5xl font-extrabold text-white mt-2">Selected Edits & Reels</h2>
+      </div>
+      <p class="text-neutral-400 text-sm max-w-md mt-4 md:mt-0">
+        Pacing, 3D tracking, dynamic typography, and sound design tailored for modern retention.
+      </p>
+    </div>
+
+    <!-- Project Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Card 1 (Cinematic Long-form) -->
+      <div class="group bg-cyber-card border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/40 transition-all duration-300">
+        <div class="aspect-video bg-neutral-900 relative overflow-hidden flex items-center justify-center">
+          <div class="text-neutral-600 font-mono text-xs uppercase tracking-wider">[ Video Preview 01 ]</div>
+          <div class="absolute inset-0 bg-gradient-to-t from-cyber-card via-transparent to-transparent"></div>
+          <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono text-cyan-400 border border-cyan-500/20">
+            CINEMATIC / STORY
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-syne text-lg font-bold text-white group-hover:text-cyan-400 transition-colors">High-Paced Documentary Cut</h3>
+          <p class="text-neutral-400 text-sm mt-2">Sound-designed storytelling with custom After Effects kinetic typography.</p>
+          <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-neutral-500">
+            <span>AE + Resolve</span>
+            <span class="text-cyan-400 font-semibold">1.4M Views</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 (Short-Form / Reels) -->
+      <div class="group bg-cyber-card border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 transition-all duration-300">
+        <div class="aspect-video bg-neutral-900 relative overflow-hidden flex items-center justify-center">
+          <div class="text-neutral-600 font-mono text-xs uppercase tracking-wider">[ 9:16 Viral Reel Preview ]</div>
+          <div class="absolute inset-0 bg-gradient-to-t from-cyber-card via-transparent to-transparent"></div>
+          <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono text-purple-400 border border-purple-500/20">
+            SHORT-FORM / 9:16
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-syne text-lg font-bold text-white group-hover:text-purple-400 transition-colors">Viral Creator Reel Series</h3>
+          <p class="text-neutral-400 text-sm mt-2">Aggressive hook pacing, sound risers, and seamless motion graphics transitions.</p>
+          <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-neutral-500">
+            <span>Premiere + Boris FX</span>
+            <span class="text-purple-400 font-semibold">3.8M Views</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 (Color Grading & VFX) -->
+      <div class="group bg-cyber-card border border-white/10 rounded-2xl overflow-hidden hover:border-emerald-500/40 transition-all duration-300">
+        <div class="aspect-video bg-neutral-900 relative overflow-hidden flex items-center justify-center">
+          <div class="text-neutral-600 font-mono text-xs uppercase tracking-wider">[ Color Grade / VFX ]</div>
+          <div class="absolute inset-0 bg-gradient-to-t from-cyber-card via-transparent to-transparent"></div>
+          <div class="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
+            COLOR & VFX
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-syne text-lg font-bold text-white group-hover:text-emerald-400 transition-colors">RAW Log to Cyber Grade</h3>
+          <p class="text-neutral-400 text-sm mt-2">Custom PowerGrade matching with film halation, grain, and screen tracking.</p>
+          <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-mono text-neutral-500">
+            <span>DaVinci Studio</span>
+            <span class="text-emerald-400 font-semibold">Film Emulation</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Contact & Booking Section -->
+  <section id="contact" class="py-24 px-6 border-t border-white/10 bg-cyber-card/30">
+    <div class="max-w-4xl mx-auto text-center">
+      <span class="text-cyan-400 font-mono text-xs uppercase tracking-widest">// START A COLLABORATION</span>
+      <h2 class="font-syne text-3xl sm:text-5xl font-extrabold text-white mt-3">Let's Create Something Sick.</h2>
+      <p class="mt-4 text-neutral-400 text-sm sm:text-base max-w-xl mx-auto">
+        Have a YouTube video, commercial ad, or reel series that needs elite editing? Send over your raw footage details.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="mailto:contact@gen5rom.com" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-cyan-400 text-black font-bold text-sm tracking-wide hover:bg-cyan-300 transition-all neon-glow-cyan">
+          Send Email Inquiry
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 text-white font-medium text-sm transition-all">
+          DM on Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-8 px-6 text-center text-xs font-mono text-neutral-500">
+    <p>© 2026 GEN5ROM // All Rights Reserved. Built with Cyber Engine.</p>
+  </footer>
+
+</body>
+</html>
