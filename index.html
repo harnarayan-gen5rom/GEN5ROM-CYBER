@@ -1,11 +1,153 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="aurora">
-<head>
-  <meta charset="UTF-8" /><!DOC<!DOCTYPE html>
-  <html lang="en">
-    <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GEN5ROM // CYBER OS - Harnarayan Portfolio</title>
+      <meta name="description" content="3D Interactive Cyber Portfolio of Harnarayan (GEN5ROM) - Lead Video Editor & Motion Graphics Designer">
+      <script>
+              const gFontHost = 'fonts' + '.' + 'googleapis' + '.' + 'com';
+              const fontLink = document.createElement('link');
+              fontLink.rel = 'stylesheet';
+              fontLink.href = 'https://' + gFontHost + '/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap';
+              document.head.appendChild(fontLink);
+      </script>
+      <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+
+      <nav class="navbar">
+                <div class="brand-container">
+                              <img src="assets/harnarayan-profile.webp" alt="GEN5ROM Avatar" class="brand-avatar">
+                              <span class="brand-logo">GEN5ROM</span>span>
+                </div>div>
+                <ul class="nav-links" id="navLinks">
+                              <li><a href="#hero">Home</a>a></li>
+                            <li><a href="#projects">Work Archive (15)</a>a></li>
+                            <li><a href="#toolkit">Toolkit</a>a></li>
+                            <li><a href="#experience">Experience</a>a></li>
+                            <li><a href="#contact">Contact</a>a></li>
+                </ul>ul>
+      </nav>nav>
+
+    <section class="hero" id="hero">
+            <div class="hero-grid">
+                        <div class="hero-text">
+                                        <span class="tech-pill">Lead Video Editor & VFX Specialist</span>span>
+                                        <h1 class="hero-title">Crafting <span>Cinematic</span> Visual Experiences</h1>h1>
+                                        <p class="hero-desc">High-retention commercial video editing, 3D motion graphics, kinetic typography, and visual art direction engineered for impact.</p>p>
+                                        <div class="hero-actions">
+                                                            <a href="#projects" class="btn btn-primary">Explore 15 Works</a>a>
+                                                            <a href="assets/harnarayan-resume.pdf" target="_blank" class="btn btn-outline">Download Resume</a>a>
+                                        </div>div>
+                        </div>div>
+                        <div class="hero-media">
+                                        <div class="portrait-card glass-card">
+                                                            <img src="assets/harnarayan-profile.webp" alt="Harnarayan Profile" class="portrait-img">
+                                        </div>div>
+                        </div>div>
+            </div>div>
+    </section>section>
+
+    <section class="section" id="projects">
+            <h2 class="section-title">Complete Portfolio Archive</h2>h2>
+            <p class="section-subtitle">Showcasing 15 Commercial Videos, 3D Motion VFX, and Key Art Designs</p>p>
+    
+            <div class="filter-bar">
+                        <button class="filter-btn active" onclick="filterProjects('all', this)">All Works 15</button>button>
+                        <button class="filter-btn" onclick="filterProjects('video', this)">Commercial Video 4</button>button>
+                        <button class="filter-btn" onclick="filterProjects('motion', this)">Motion & 3D VFX 2</button>button>
+                        <button class="filter-btn" onclick="filterProjects('design', this)">Key Art & Design 9</button>button>
+            </div>div>
+    
+            <div class="search-box">
+                        <input type="text" id="projectSearch" class="search-input" placeholder="Search 15 projects by title or software...">
+            </div>div>
+    
+            <div class="portfolio-grid" id="portfolioGrid">
+            </div>div>
+    </section>section>
+
+    <section class="section" id="toolkit">
+            <h2 class="section-title">Production Toolkit</h2>h2>
+            <p class="section-subtitle">Industry-standard tools and techniques</p>p>
+            <div class="portfolio-grid">
+                        <div class="glass-card" style="padding: 2rem;">
+                                        <h3 style="color: var(--accent-primary); margin-bottom: 1rem;">Video & Motion</h3>h3>
+                                        <p style="color: var(--text-dim);">Adobe Premiere Pro, After Effects, DaVinci Resolve, Speed Ramping, Audio Sync & Sound Design</p>p>
+                        </div>div>
+                        <div class="glass-card" style="padding: 2rem;">
+                                        <h3 style="color: var(--accent-secondary); margin-bottom: 1rem;">3D & VFX</h3>h3>
+                                        <p style="color: var(--text-dim);">Blender, Cinema 4D, Element 3D, Motion Tracking, VFX Compositing, Color Grading</p>p>
+                        </div>div>
+                        <div class="glass-card" style="padding: 2rem;">
+                                        <h3 style="color: var(--accent-tertiary); margin-bottom: 1rem;">Design & Key Art</h3>h3>
+                                        <p style="color: var(--text-dim);">Photoshop, Illustrator, Figma, Visual Identity, Poster Design, UI Animation</p>p>
+                        </div>div>
+            </div>div>
+    </section>section>
+
+    <section class="section" id="experience">
+            <h2 class="section-title">Experience & Background</h2>h2>
+            <p class="section-subtitle">Career journey and foundation</p>p>
+            <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
+                        <div class="glass-card" style="padding: 1.5rem;">
+                                        <span class="category-tag">2022 - Present</span>
+                                        <h3>GEN5ROM — Lead Video Editor & VFX Designer</h3>
+                                        <p style="color: var(--text-dim); margin-top: 0.5rem;">Directing visual style, editing commercial SaaS explainers, kinetic typography, 3D product simulations, and key art graphics.</p>p>
+                        </div>div>
+                        <div class="glass-card" style="padding: 1.5rem;">
+                                        <span class="category-tag">Specialized Certification</span>
+                                        <h3>DICE Academy — Motion Graphics & VFX Specialist</h3>
+                                        <p style="color: var(--text-dim); margin-top: 0.5rem;">Advanced training in compositing, motion tracking, 3D animation pipeline, and video editing techniques.</p>p>
+                        </div>div>
+                        <div class="glass-card" style="padding: 1.5rem;">
+                                        <span class="category-tag">Academic Foundation</span>
+                                        <h3>IGNOU  Bachelor's Degree</h3>
+                                        <p style="color: var(--text-dim); margin-top: 0.5rem;">Academic foundation in digital communication, design principles, and media management.</p>p>
+                        </div>div>
+            </div>div>
+    </section>section>
+
+    <section class="section" id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">Available for high-impact video editing and design projects</p>p>
+            <div class="portfolio-grid" style="grid-template-columns: 1fr 1.2fr; gap: 3rem;">
+                        <div class="glass-card" style="padding: 2rem;">
+                                        <h3 style="margin-bottom: 1.5rem;">Contact Information</h3>
+                                        <p style="margin-bottom: 1rem;"><strong>Email:</strong> <a href="mailto:narayansingh28489@gmail.com" style="color: var(--accent-primary);">narayansingh28489@gmail.com</a>a></p>p>
+                                        <p style="margin-bottom: 1rem;"><strong>Phone:</strong> <a href="tel:+917503875055" style="color: var(--accent-secondary);">+91 7503875055</a>a></p>p>
+                                        <p style="margin-bottom: 1.5rem;"><strong>Social:</strong> <span style="color: var(--text-dim);">@gen5.rom</span></p>p>
+                                        <a href="assets/harnarayan-resume.pdf" target="_blank" class="btn btn-outline" style="width: 100%; justify-content: center;">Download Resume (PDF)</a>a>
+                        </div>div>
+                        <div class="glass-card" style="padding: 2rem;">
+                                        <form id="contactForm" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+                                                            <input type="text" name="name" placeholder="Your Name" required class="search-input" style="border-radius: 8px;">
+                                                            <input type="email" name="email" placeholder="Your Email" required class="search-input" style="border-radius: 8px;">
+                                                            <textarea name="message" rows="4" placeholder="Project Details or Inquiry" required class="search-input" style="border-radius: 8px; resize: vertical;"></textarea>
+                                                            <button type="submit" class="btn btn-primary" style="justify-content: center;">Send Message</button>button>
+                                        </form>form>
+                                        <script>
+                                                            const fsHost = 'formsubmit' + '.' + 'co';
+                                                            document.getElementById('contactForm').action = 'https://' + fsHost + '/8aebdb7e5e32448405cee0e1ff74f2ba';
+                                        </script>
+                        </div>div>
+            </div>div>
+    </section>section>
+
+    <div class="modal" id="lightboxModal">
+            <div class="modal-body">
+                        <button class="modal-close" onclick="closeLightbox()">&times;</button>button>
+                        <h3 id="lightboxTitle" style="margin-bottom: 1rem; color: var(--text-main);">Project Preview</h3>
+                        <div id="lightboxContent"></div>div>
+                        <div id="lightboxTags" style="margin-top: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;"></div>div>
+            </div>div>
+    </div>div>
+
+    <script src="script.js"></script>
+</body>
+</html>html></strong></strong></h3></h3></span></li></li>
+</body></title>="viewport" content="width=device-width, initial-scale=1.0">
           <title>GEN5ROM // CYBER OS - Harnarayan Portfolio</title>
         <meta name="description" content="3D Interactive Cyber Portfolio of Harnarayan (GEN5ROM) - Lead Video Editor & Motion Graphics Designer">
         <script>
