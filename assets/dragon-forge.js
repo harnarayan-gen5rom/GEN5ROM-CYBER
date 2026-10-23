@@ -38,14 +38,14 @@
   });
   function boot(T) {
     const scene = new T.Scene();
-    scene.fog = new T.FogExp2(0x08060b, 0.029);
+    scene.fog = new T.FogExp2(0x09070e, 0.025);
     const camera = new T.PerspectiveCamera(39, 1, 0.1, 120);
     let renderer;
     try { renderer = new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'}); }
     catch(error) { throw new Error('This browser could not create WebGL.'); }
     renderer.outputColorSpace = T.SRGBColorSpace;
     renderer.toneMapping = T.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.55;
+    renderer.toneMappingExposure = 1.45;
     stage.prepend(renderer.domElement);
     renderer.domElement.setAttribute('aria-label','Orbitable 3D robotic dragon. Drag to orbit; click head to breathe fire; hover parts to inspect.');
     renderer.domElement.setAttribute('role','img');
@@ -61,11 +61,11 @@
     const glow = new T.MeshBasicMaterial({color:0xff9b37});
     const blue = new T.MeshStandardMaterial({color:0x5bebff,emissive:0x00a9db,emissiveIntensity:2.4,metalness:.2,roughness:.22});
     const glass = new T.MeshStandardMaterial({color:0x181321,metalness:.4,roughness:.18,transparent:true,opacity:.83});
-    const membrane = new T.MeshStandardMaterial({color:0x461829,emissive:0x46101d,emissiveIntensity:.45,metalness:.33,roughness:.55,side:T.DoubleSide,transparent:true,opacity:.87});
+    const membrane = new T.MeshStandardMaterial({color:0x461829,metalness:.18,roughness:.62,side:T.DoubleSide});
     const membraneAlt = new T.MeshStandardMaterial({color:0x7b2e32,emissive:0x5e2119,emissiveIntensity:.4,metalness:.35,roughness:.44,side:T.DoubleSide,transparent:true,opacity:.89});
     const edgeMat = new T.MeshBasicMaterial({color:0xff7545,side:T.DoubleSide,transparent:true,opacity:.68});
-    const sphereGeo = new T.SphereGeometry(1,18,12);
-    const icoGeo = new T.IcosahedronGeometry(1,1);
+    const sphereGeo = new T.SphereGeometry(1,32,24);
+    const icoGeo = new T.SphereGeometry(1,20,14);
     const boxGeo = new T.BoxGeometry(1,1,1);
     const coneGeo = new T.ConeGeometry(1,1,7);
     const cylGeo = new T.CylinderGeometry(1,1,1,10);
@@ -98,96 +98,231 @@
       if(hot){mesh.userData.hotspot=hot;meshes.push(mesh);}
       return mesh;
     };
-    // Mech torso, turbine ribs and visible skeleton.
-    ball(dragon,gunmetal,[0,1.45,0],[.80,.73,1.28],'chest');
-    shell(dragon,redPlate,[0,1.58,-.2],[.87,.73,1.12],'chest');
-    ball(dragon,metal,[0,1.35,.66],[.66,.56,.67],'chest');
+    // V2 — organic sculpt: continuous smooth forms, curved horn tubes and bat wings.
+    // Swept mesh surfaces interpolate thickness along Catmull-Rom curves (not straight rods).
+    const obsidian = new T.MeshPhysicalMaterial({color:0x181b24,metalness:.57,roughness:.38,clearcoat:.45,clearcoatRoughness:.24});
+    const scaleMat = new T.MeshPhysicalMaterial({color:0x30202b,metalness:.42,roughness:.55,clearcoat:.23});
+    const crimson = new T.MeshPhysicalMaterial({color:0x77282f,metalness:.48,roughness:.41,clearcoat:.35});
+    const bellyMat = new T.MeshStandardMaterial({color:0x9b6556,metalness:.43,roughness:.54});
+    const hornMat = new T.MeshStandardMaterial({color:0xb7a9a2,metalness:.5,roughness:.41});
+    const eyeMat = new T.MeshBasicMaterial({color:0xffbd58});
+    const eyelids=[];
+    const irisMat = new T.MeshBasicMaterial({color:0x110d12});
+    const wingSkin = new T.MeshPhysicalMaterial({color:0x652a39,metalness:.16,roughness:.59,side:T.DoubleSide,transparent:false,clearcoat:.18,vertexColors:true});
+    const wingBone = new T.MeshStandardMaterial({color:0x241921,metalness:.48,roughness:.41});
+
+    // Repeating micro-relief gives the smooth geometry a believable scaled surface.
+    const skinCanvas=document.createElement('canvas');skinCanvas.width=512;skinCanvas.height=512;
+    const skinCtx=skinCanvas.getContext('2d');
+    skinCtx.fillStyle='#676767';skinCtx.fillRect(0,0,512,512);
+    for(let row=-1;row<18;row++)for(let col=-1;col<18;col++){
+      const x=col*32+(row%2?16:0),y=row*30;
+      skinCtx.fillStyle='#878787';
+      skinCtx.beginPath();skinCtx.ellipse(x+16,y+14,15,17,0,0,Math.PI*2);skinCtx.fill();
+      skinCtx.strokeStyle='#292929';skinCtx.lineWidth=3;
+      skinCtx.beginPath();skinCtx.arc(x+16,y+10,14,0,Math.PI);skinCtx.stroke();
+      skinCtx.strokeStyle='#acacac';skinCtx.lineWidth=1.6;
+      skinCtx.beginPath();skinCtx.arc(x+14,y+10,11,Math.PI*1.07,Math.PI*1.85);skinCtx.stroke();
+    }
+    const skinBump=new T.CanvasTexture(skinCanvas);
+    skinBump.wrapS=skinBump.wrapT=T.RepeatWrapping;skinBump.repeat.set(2.5,2);
+    skinBump.colorSpace=T.NoColorSpace;
+    for(const m of [obsidian,scaleMat,crimson]){m.bumpMap=skinBump;m.bumpScale=.045;m.needsUpdate=true;}
+    const mouthMat = new T.MeshStandardMaterial({color:0x260c17,metalness:.12,roughness:.83});
+    const sclera=new T.MeshBasicMaterial({color:0xff9a3a});
+    const detail=(p,m,x,y,z,sx,sy,sz,h)=>ball(p,m,[x,y,z],[sx,sy,sz],h);
+    const V=p=>new T.Vector3(...p);
+    const interpolate=(arr,t)=>{
+      const x=Math.min(arr.length-1.00001,Math.max(0,t*(arr.length-1))),k=Math.floor(x);
+      return arr[k]*(1-(x-k))+arr[k+1]*(x-k);
+    };
+    const sweep=(parent,material,coords,widths,hot,steps=32,sides=12)=>{
+      const curve=new T.CatmullRomCurve3(coords.map(V),false,'centripetal',.5);
+      const frames=curve.computeFrenetFrames(steps,false);
+      const vertices=[],uv=[],ind=[];
+      for(let i=0;i<=steps;i++){
+        const u=i/steps,at=curve.getPointAt(u),r=Math.max(.002,interpolate(widths,u));
+        for(let j=0;j<=sides;j++){
+          const v=j/sides*Math.PI*2;
+          const pt=at.clone().addScaledVector(frames.normals[i],Math.cos(v)*r)
+            .addScaledVector(frames.binormals[i],Math.sin(v)*r);
+          vertices.push(pt.x,pt.y,pt.z);uv.push(u,j/sides);
+          if(i<steps&&j<sides){const k=i*(sides+1)+j;ind.push(k,k+sides+1,k+1,k+1,k+sides+1,k+sides+2);}
+        }
+      }
+      const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));
+      geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(ind);geo.computeVertexNormals();
+      const mesh=new T.Mesh(geo,material);parent.add(mesh);
+      if(hot){mesh.userData.hotspot=hot;meshes.push(mesh);}
+      return mesh;
+    };
+    const organic=(p,m,pos,scale,rotation,hot)=>{
+      const obj=ball(p,m,pos,scale,hot);
+      if(rotation)obj.rotation.set(...rotation);
+      return obj;
+    };
+    // Single low-slung musculature transitions seamlessly into a high arched neck.
+    organic(dragon,obsidian,[0,1.52,-.2],[.78,.67,1.48],[-.11,0,0],'chest');
+    organic(dragon,crimson,[0,1.46,.65],[.67,.56,.67],[-.26,0,0],'chest');
+    organic(dragon,scaleMat,[0,1.72,-.58],[.74,.51,.9],[0,0,0],'back');
+    sweep(dragon,obsidian,[[0,1.65,.35],[0,2.05,.79],[0,2.48,1.10],[0,2.92,1.43],[0,3.10,1.75]],[.48,.45,.39,.35,.33],'head',45,18);
+    // Front throat has overlapping ventral scutes wrapping the entire S-shaped neck.
+    for(let i=0;i<10;i++){
+      const a=i/9;
+      const z=.75+a*.96,y=1.93+a*1.15;
+      organic(dragon,i%2?bellyMat:crimson,[0,y-.08,z+.28],[.355-a*.065,.09,.21],[.25+a*.10,0,0],'head');
+    }
+    // Belly scutes: physically layered curved surfaces with soft highlights.
+    for(let i=0;i<9;i++){
+      const z=1.05-i*.26;
+      organic(dragon,i%2?bellyMat:crimson,[0,1.05+.11*Math.sin(i*.38),z],[.56,.115,.215],[-.19,0,0],'chest');
+    }
+    // Reactor is embedded into armored breast rather than suspended in empty space.
+    const reactor=new T.Group();reactor.position.set(0,1.72,1.10);dragon.add(reactor);
+    const front=new T.Mesh(new T.TorusGeometry(.22,.038,12,48),ember);reactor.add(front);
+    const innerRing=new T.Mesh(new T.TorusGeometry(.14,.016,10,48),hornMat);reactor.add(innerRing);
+    detail(reactor,blue,0,0,.009,.12,.12,.065,'chest');
     for(let s of [-1,1]){
-      shell(dragon,white,[s*.57,1.67,.62],[.47,.45,.73],'chest');
-      shell(dragon,red,[s*.64,1.78,.68],[.3,.23,.55],'chest');
-      rod(dragon,ember,[s*.4,1.6,1.01],[s*.5,1.2,.98],.034,'chest');
-      for(let i=0;i<4;i++)rod(dragon,silver,[s*(.66-i*.05),1.38-i*.16,.65],[s*(.50-i*.03),1.28-i*.16,1.02],.045,'chest');
+      organic(dragon,scaleMat,[s*.59,1.67,.36],[.29,.49,.64],[0,s*.14,s*.13],'chest');
+      for(let i=0;i<7;i++){
+        const z=1.06-i*.23,y=1.78+Math.sin(i*.38)*.18;
+        organic(dragon,i%2?obsidian:scaleMat,[s*(.58+Math.sin(i*.46)*.09),y,z],[.23,.115,.23],[0,s*.2,s*.11],'back');
+      }
     }
-    // Reactor ring, rotating power assembly.
-    const reactor = new T.Group();reactor.position.set(0,1.57,1.08);dragon.add(reactor);
-    const front=new T.Mesh(new T.TorusGeometry(.29,.055,11,44),ember);reactor.add(front);
-    const innerRing=new T.Mesh(new T.TorusGeometry(.19,.025,10,42),silver);reactor.add(innerRing);
-    ball(reactor,blue,[0,0,.015],[.19,.19,.09],'chest');
-    // Neck pistons and exoskeleton, each joint has its own silhouette.
-    const neck = new T.Group();neck.position.set(0,2.0,.66);dragon.add(neck);
-    rod(neck,gunmetal,[0,0,0],[0,.46,.53],.28,'head');
-    rod(neck,metal,[0,.35,.45],[0,.73,.9],.27,'head');
+    // Crest plated ridge and the individual organic curving dorsal spines.
+    for(let i=0;i<11;i++){
+      const z=1.33-i*.255,baseY=2.28-Math.max(i-4,0)*.075;
+      sweep(dragon,hornMat,[[0,baseY-.12,z],[0,baseY+.11,z-.04],[0,baseY+.21-(i*.012),z-.23]],[.115,.087,.003],'back',9,8);
+    }
+    // Skull group: shaped upper cranial mass, long tapered snout and expressive side eyes.
+    const head=new T.Group();head.position.set(0,3.06,1.74);dragon.add(head);
+    organic(head,obsidian,[0,.05,0],[.48,.39,.61],[.08,0,0],'head');
+    organic(head,scaleMat,[0,.19,-.15],[.45,.35,.54],[-.04,0,0],'head');
+    organic(head,crimson,[0,-.12,.42],[.35,.225,.72],[-.12,0,0],'head');
+    organic(head,obsidian,[0,-.18,.75],[.29,.19,.58],[-.13,0,0],'head');
+    organic(head,crimson,[0,-.06,1.07],[.27,.16,.27],[-.08,0,0],'head');
+    // Functional jaw hinge, lower gums, teeth and glowing molten throat.
+    const jaw=new T.Group();jaw.position.set(0,-.255,.18);head.add(jaw);
+    organic(jaw,mouthMat,[0,-.105,.65],[.285,.13,.83],[-.05,0,0],'head');
+    organic(jaw,crimson,[0,-.175,.65],[.30,.15,.82],[-.05,0,0],'head');
+    organic(jaw,ember,[0,-.026,.71],[.16,.015,.42],null,'head');
     for(let s of [-1,1]){
-      rod(neck,silver,[s*.18,.04,.12],[s*.17,.5,.61],.064,'head');
-      shell(neck,red,[s*.20,.28,.38],[.25,.28,.36],'head');
+      organic(head,scaleMat,[s*.34,-.035,.20],[.23,.24,.30],[0,s*.28,0],'head');
+      organic(head,obsidian,[s*.23,.17,.22],[.225,.16,.31],[0,s*.12,-s*.16],'head');
+      organic(head,eyeMat,[s*.31,.145,.33],[.15,.091,.055],[-.18,s*.42,-s*.27],'head');
+      organic(head,irisMat,[s*.323,.141,.385],[.040,.079,.012],[-.18,s*.42,-s*.2],'head');
+      const lid=organic(head,obsidian,[s*.31,.265,.345],[.183,.057,.070],[-.18,s*.42,-s*.24],'head');
+      eyelids.push(lid);
+      sweep(head,hornMat,[[s*.28,.37,-.22],[s*.48,.72,-.43],[s*.58,1.05,-.70],[s*.62,1.10,-.98]],[.16,.136,.065,.002],'head',22,12);
+      sweep(head,scaleMat,[[s*.46,.15,-.13],[s*.59,.30,-.38],[s*.58,.44,-.60]],[.13,.075,.001],'head',14,10);
+      sweep(head,crimson,[[s*.31,-.28,.36],[s*.33,-.25,.72],[s*.28,-.24,1.12]],[.08,.055,.018],'head',16,8);
+      // Serrated teeth are paired above and below the mouth.
+      for(let j=0;j<5;j++){
+        const z=.54+j*.195;
+        spike(head,hornMat,[s*(.22-j*.013),-.26,z],[.055,.145-j*.01,.055],[Math.PI,0,0],'head');
+        spike(jaw,hornMat,[s*(.21-j*.013),-.09,z],[.049,.11,.049],[0,0,0],'head');
+      }
+      detail(head,gunmetal,s*.21,-.032,1.267,.048,.027,.053,'head');
     }
-    const head = new T.Group();head.position.set(0,2.79,1.64);dragon.add(head);
-    ball(head,gunmetal,[0,0,0],[.51,.43,.64],'head');
-    shell(head,white,[0,.13,.07],[.56,.41,.6],'head');
-    ball(head,redPlate,[0,.19,-.11],[.42,.28,.5],'head');
-    // Angular muzzle with articulated lower jaw
-    const muzzle=block(head,silver,[0,-.12,.59],[.62,.29,.91],'head');
-    muzzle.rotation.x=-.09;
-    block(head,metal,[0,-.27,.75],[.52,.12,.58],'head');
-    const jaw = new T.Group();jaw.position.set(0,-.23,.35);head.add(jaw);
-    block(jaw,red,[0,-.17,.36],[.55,.19,.78],'head');
-    block(jaw,white,[0,-.06,.43],[.43,.09,.66],'head');
-    for(let s of [-1,1]) {
-      shell(head,red,[s*.44,-.03,.33],[.17,.22,.42],'head');
-      ball(head,gunmetal,[s*.34,.18,.30],[.17,.18,.18],'head');
-      ball(head,ember,[s*.36,.18,.42],[.09,.105,.07],'head');
-      spike(head,silver,[s*.36,.46,-.20],[.15,.65,.15],[s*.37,0,-s*.2],'head');
-      spike(head,red,[s*.50,.3,-.36],[.12,.42,.12],[s*.48,0,-s*.33],'head');
-      spike(head,white,[s*.24,.03,.98],[.10,.23,.1],[Math.PI,0,0],'head');
-      spike(jaw,white,[s*.22,-.03,.63],[.085,.16,.09],[0,0,0],'head');
-      ball(head,glass,[s*.22,-.23,1.02],[.10,.05,.08],'head');
-    }
-    // Back armor fins and moving tail with joint chain.
-    for(let i=0;i<7;i++){
-      const z=.16-i*.35,y=2.19-Math.max(0,i-3)*.075;
-      spike(dragon,i%2?silver:red,[0,y,z],[.22,.46-i*.035,.31],[.21,0,Math.PI],'back');
-    }
-    const tailLinks=[];
-    const tailRoot=new T.Group();tailRoot.position.set(0,1.7,-1.16);dragon.add(tailRoot);
-    let prev=tailRoot;
-    for(let i=0;i<8;i++){
-      const part=new T.Group();part.position.set(0,i===0?0:-.025,i===0?0:-.42);prev.add(part);
-      const size=1-i/10;
-      ball(part,metal,[0,0,-.21],[.32*size,.25*size,.35],'tail');
-      shell(part,i%2?redPlate:silver,[0,.13*size,-.23],[.29*size,.18*size,.37],'tail');
-      spike(part,ember,[0,.32*size,-.20],[.10*size,.29*size,.13*size],[0,0,Math.PI],'tail');
-      tailLinks.push(part);prev=part;
-    }
-    spike(prev,white,[0,0,-.50],[.22,.95,.24],[Math.PI/2,0,0],'tail');
-    // Four industrial limbs with segmented pistons, visible hinge and claws.
+    // Scaled muscular hips, haunches, distinct weight-bearing digitigrade feet.
     const legs=[];
-    for (const z of [-.68,.69]) for (const s of [-1,1]) {
-      const leg=new T.Group();leg.position.set(s*.68,1.32,z);dragon.add(leg);
-      ball(leg,gunmetal,[0,0,0],[.3,.28,.3],'leg');
-      shell(leg,z>0?white:red,[s*.09,-.21,.07],[.38,.50,.41],'leg');
-      rod(leg,metal,[s*.07,-.39,.1],[s*.19,-.89,.35],.15,'leg');
-      rod(leg,ember,[s*.28,-.27,.07],[s*.20,-.66,.25],.045,'leg');
-      shell(leg,white,[s*.19,-1.02,.45],[.37,.2,.55],'leg');
-      for(let j=-1;j<=1;j++) spike(leg,silver,[s*.19+j*.20,-1.07,.84],[.105,.43,.12],[Math.PI/2,0,0],'leg');
+    for(const z of [-.97,.67]) for(const s of [-1,1]){
+      const leg=new T.Group();leg.position.set(s*.60,1.16,z);dragon.add(leg);
+      organic(leg,obsidian,[0,-.08,.04],[.33,.37,.36],null,'leg');
+      organic(leg,z>0?crimson:scaleMat,[s*.16,-.27,.07],[.40,.48,.37],[.12,0,-s*.25],'leg');
+      sweep(leg,obsidian,[[s*.13,-.31,.04],[s*.23,-.55,-.15],[s*.17,-.89,.18],[s*.22,-1.02,.46]],[.24,.20,.16,.17],'leg',25,12);
+      organic(leg,scaleMat,[s*.20,-1.075,.52],[.33,.145,.45],null,'leg');
+      for(let j=-1;j<=1;j++){
+        sweep(leg,hornMat,[[s*.20+j*.20,-1.09,.75],[s*.20+j*.21,-1.12,1.00],[s*.20+j*.22,-1.13,1.20]],[.09,.07,.001],'leg',12,8);
+      }
+      for(let j=0;j<4;j++)organic(leg,j%2?scaleMat:crimson,[s*.15,-.52-j*.12,.02],[.19,.092,.19],null,'leg');
       legs.push(leg);
     }
-    // Wings: true double-sided triangular meshes, metal skeleton, neon edge veins.
+    // An articulated tapering muscular tail, spline segment dynamics and smooth scales.
+    const tailLinks=[];const tailRoot=new T.Group();
+    tailRoot.position.set(0,1.51,-1.42);dragon.add(tailRoot);
+    let prev=tailRoot;
+    for(let i=0;i<11;i++){
+      const part=new T.Group();part.position.set(0,i===0?0:Math.sin(i*.35)*.035,i===0?0:-.36);
+      prev.add(part);
+      const k=1-i/11;
+      sweep(part,obsidian,[[0,0,.10],[0,.015,-.18],[0,.025,-.46]],[.28*k,.25*k,.19*k],'tail',10,10);
+      organic(part,i%2?scaleMat:crimson,[0,.12*k,-.22],[.245*k,.12*k,.24],null,'tail');
+      if(i<9)sweep(part,hornMat,[[0,.19*k,-.24],[0,.33*k,-.32],[0,.39*k,-.45]],[.08*k,.04*k,.001],'tail',9,7);
+      tailLinks.push(part);prev=part;
+    }
+    sweep(prev,hornMat,[[0,.02,-.43],[0,.03,-.7],[0,.01,-1.04]],[.14,.085,.002],'tail',20,10);
+    // Curved skeletal wing architecture with non-planar scalloped membranes.
     const wingHinges=[];
-    function createWing(sign){
-      const hinge=new T.Group();hinge.position.set(sign*.58,2.12,-.44);dragon.add(hinge);
-      const transform=p=>[p[0]*sign,p[1],p[2]];
-      const a=[0,0,0],b=[1.15,.67,-.29],c=[2.20,1.35,-.74],d=[3.25,1.60,-1.08],e=[3.10,.42,-.84],f=[2.4,-.15,-.37],g=[1.48,-.44,.04],h=[.32,-.36,.13];
-      [[a,b,h],[b,g,h],[b,c,g],[c,f,g],[c,d,f],[d,e,f]].forEach((tri,i)=>plate(hinge,i%2?membrane:membraneAlt,tri.map(transform),'wing'));
-      [[a,b],[b,c],[c,d],[b,g],[c,f],[d,e],[f,g]].forEach((pair,i)=>rod(hinge,i<3?gunmetal:ember,transform(pair[0]),transform(pair[1]),i<3?.085:.027,'wing'));
-      [b,c,d].forEach(p=>ball(hinge,silver,transform(p),[.12,.12,.13],'wing'));
-      [[c,d],[d,e],[e,f]].forEach(pair=>rod(hinge,edgeMat,transform(pair[0]),transform(pair[1]),.024,'wing'));
-      for(const p of [g,f,e])spike(hinge,white,transform([p[0],p[1]-.05,p[2]]),[.10,.23,.1],[Math.PI,0,0],'wing');
+    function makeWing(sign){
+      const hinge=new T.Group();hinge.position.set(sign*.53,2.05,-.49);dragon.add(hinge);
+      const raw=[
+        [.40,.16,0], // root
+        [1.00,1.17,-.20],
+        [1.80,2.28,-.53],
+        [2.72,2.88,-1.00],
+        [3.76,2.80,-1.40],
+        [3.37,1.18,-1.15],
+        [2.83,-.01,-.81],
+        [2.00,-.69,-.38],
+        [1.00,-.71,.06]
+      ];
+      const rootP=V([0,0,0]), ends=raw.slice(1).map(p=>new T.Vector3(p[0]*sign,p[1],p[2]));
+      const pos=[],colors=[],indices=[];
+      const radial=18,across=8;
+      // Adjacent digit bones form a scalloped membrane with surface curvature.
+      for(let bay=0;bay<ends.length-1;bay++){
+        const A=ends[bay],B=ends[bay+1],offset=pos.length/3;
+        for(let u=0;u<=radial;u++){
+          const t=u/radial;
+          for(let j=0;j<=across;j++){
+            const v=j/across;const tip=A.clone().lerp(B,v);
+            const p=rootP.clone().lerp(tip,t);
+            p.y-=Math.sin(Math.PI*v)*.37*Math.pow(t,1.55);
+            p.z-=Math.sin(Math.PI*t)*(.28+.05*bay);
+            p.z+=Math.sin(Math.PI*v)*.08*t;
+            pos.push(p.x,p.y,p.z);
+            const shade=1-.18*Math.sin(Math.PI*v)-.11*t;
+            colors.push(shade,shade*(.75+.06*bay),shade*(.81+.025*bay));
+            if(u<radial&&j<across){
+              const n=offset+u*(across+1)+j;
+              indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
+            }
+          }
+        }
+      }
+      const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pos,3));
+      g.setAttribute('color',new T.Float32BufferAttribute(colors,3));
+      g.setIndex(indices);g.computeVertexNormals();
+      const wing=new T.Mesh(g,wingSkin);hinge.add(wing);wing.userData.hotspot='wing';meshes.push(wing);
+      ends.forEach((end,i)=>{
+        if(i>6)return;
+        const mid=end.clone().multiplyScalar(.46);
+        mid.y+=.16+Math.sin(i*.32)*.06;mid.z-=.15;
+        sweep(hinge,wingBone,[[0,0,0],mid.toArray(),end.toArray()],[.105,.071,.012],'wing',27,11);
+        if(i<6){
+          const p=end.clone().multiplyScalar(.85);
+          detail(hinge,scaleMat,p.x,p.y,p.z,.11,.10,.11,'wing');
+        }
+      });
+      // Distinct thick leading edge: creates dramatic silhouetted wing arms.
+      sweep(hinge,obsidian,[[0,0,0],[.62*sign,.65,-.09],[1.49*sign,1.90,-.38],[2.72*sign,2.88,-1.0],[3.76*sign,2.8,-1.4]],[.19,.17,.14,.10,.006],'wing',54,14);
       wingHinges.push({hinge,sign});
     }
-    createWing(-1);createWing(1);
+    makeWing(-1);makeWing(1);
     // Display arena, warehouse architecture, floating embers.
     const plinth=new T.Mesh(new T.CylinderGeometry(2.75,2.92,.33,72),gunmetal);plinth.position.y=-.23;scene.add(plinth);
     const base=new T.Mesh(new T.CylinderGeometry(2.56,2.7,.12,72),metal);base.position.y=-.045;scene.add(base);
+    // Soft contact shadow keeps the heavier organic silhouette grounded.
+    const shadowCanvas=document.createElement('canvas');shadowCanvas.width=128;shadowCanvas.height=128;
+    const sh=shadowCanvas.getContext('2d');
+    const sd=sh.createRadialGradient(64,64,5,64,64,63);
+    sd.addColorStop(0,'rgba(0,0,0,.8)');sd.addColorStop(.55,'rgba(0,0,0,.34)');sd.addColorStop(1,'rgba(0,0,0,0)');
+    sh.fillStyle=sd;sh.fillRect(0,0,128,128);
+    const contact=new T.Mesh(new T.PlaneGeometry(4.1,4.7),
+      new T.MeshBasicMaterial({map:new T.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false,opacity:.82}));
+    contact.rotation.x=-Math.PI/2;contact.position.set(0,.027,-.15);scene.add(contact);
+
     for(let r of [1.85,2.4,2.66]){
       const ring=new T.Mesh(new T.TorusGeometry(r,r===2.4?.028:.016,10,94),r===2.4?ember:red);
       ring.rotation.x=Math.PI/2;ring.position.y=.026;scene.add(ring);
@@ -211,28 +346,80 @@
     const aura=new T.Sprite(new T.SpriteMaterial({map:glowTex,color:0xff6b35,depthWrite:false,blending:T.AdditiveBlending,transparent:true,opacity:.48}));
     aura.position.set(0,1.52,1.42);aura.scale.set(1.75,1.75,1);dragon.add(aura);
     const ambient=new T.HemisphereLight(0x96bbff,0x542025,2.0);scene.add(ambient);
-    const key=new T.DirectionalLight(0xffe7d5,3.7);key.position.set(4,8,6);scene.add(key);
-    const rim=new T.PointLight(0xff5229,74,15,1.6);rim.position.set(-3,4,-1);scene.add(rim);
-    const edge=new T.PointLight(0x26a8ff,52,12,1.8);edge.position.set(4,3,-5);scene.add(edge);
+    const key=new T.DirectionalLight(0xffdbc4,3.8);key.position.set(4,8,6);scene.add(key);
+    const rim=new T.PointLight(0xff542d,90,17,1.6);rim.position.set(-3,4,-1);scene.add(rim);
+    const edge=new T.PointLight(0x34a9e1,38,13,1.8);edge.position.set(4,3,-5);scene.add(edge);
     const flash=new T.PointLight(0xffa444,0,8,2);flash.position.set(0,2.5,3.1);dragon.add(flash);
     // Instanced visual particles in a genuine 3D point cloud.
-    const CAP=240, positions=new Float32Array(CAP*3),rgb=new Float32Array(CAP*3);
+    const CAP=420, positions=new Float32Array(CAP*3),rgb=new Float32Array(CAP*3);
     const motion=Array.from({length:CAP},()=>({age:0,v:new T.Vector3(),life:1}));
     for(let i=0;i<CAP;i++){positions[i*3+1]=-1000;rgb.set([1,.35,.05],i*3);}
     const particles=new T.BufferGeometry();
     particles.setAttribute('position',new T.BufferAttribute(positions,3));
     particles.setAttribute('color',new T.BufferAttribute(rgb,3));
-    const pmat=new T.PointsMaterial({size:.37,map:glowTex,vertexColors:true,transparent:true,opacity:.96,blending:T.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+    const pmat=new T.PointsMaterial({size:.21,map:glowTex,vertexColors:true,transparent:true,opacity:.96,blending:T.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
     const flame=new T.Points(particles,pmat);flame.frustumCulled=false;scene.add(flame);
     const sparkCount=95,sparkPos=new Float32Array(sparkCount*3);
     for(let i=0;i<sparkCount;i++){sparkPos.set([(Math.random()-.5)*13,Math.random()*7,(Math.random()-.5)*12],i*3);}
     const sparkg=new T.BufferGeometry();sparkg.setAttribute('position',new T.BufferAttribute(sparkPos,3));
     const sparks=new T.Points(sparkg,new T.PointsMaterial({color:0xff945a,map:glowTex,transparent:true,opacity:.6,blending:T.AdditiveBlending,size:.085,depthWrite:false}));scene.add(sparks);
+
+    // Sculpted translucent fire plume, animated as a curved tubular mesh.
+    // Particles stay as the sparks around this continuous warm flame core.
+    const flameSegments=28, flameSides=12, plumePositions=new Float32Array((flameSegments+1)*(flameSides+1)*3);
+    const plumeColors=new Float32Array(plumePositions.length), plumeIndices=[];
+    for(let i=0;i<flameSegments;i++)for(let j=0;j<flameSides;j++){
+      const n=i*(flameSides+1)+j;
+      plumeIndices.push(n,n+flameSides+1,n+1,n+1,n+flameSides+1,n+flameSides+2);
+    }
+    const plumeGeometry=new T.BufferGeometry();
+    plumeGeometry.setIndex(plumeIndices);
+    plumeGeometry.setAttribute('position',new T.BufferAttribute(plumePositions,3).setUsage(T.DynamicDrawUsage));
+    plumeGeometry.setAttribute('color',new T.BufferAttribute(plumeColors,3));
+    const plumeMaterial=new T.MeshBasicMaterial({
+      vertexColors:true,side:T.DoubleSide,transparent:true,opacity:.0,
+      depthWrite:false,blending:T.AdditiveBlending
+    });
+    const plume=new T.Mesh(plumeGeometry,plumeMaterial);
+    plume.frustumCulled=false;scene.add(plume);
+    function animateFirePlume(now){
+      const active=now<fireUntil;
+      if(!active){plume.visible=false;return;}
+      plume.visible=true;
+      const origin=mouthLocation();
+      const facing=new T.Vector3(0,0,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize();
+      const normal=new T.Vector3(0,1,0).cross(facing).normalize();
+      const binormal=facing.clone().cross(normal).normalize();
+      const tick=now*.001,age=Math.max(0,1-(fireUntil-now)/1850);
+      const strength=Math.min(1,(1-age)*5+0.02);
+      for(let i=0;i<=flameSegments;i++){
+        const u=i/flameSegments;
+        const along=4.4*u*Math.min(1,age*6+.2);
+        const radius=(.045+.46*Math.pow(u,.83))*Math.pow(Math.max(.001,1-u),.53)*strength;
+        const center=origin.clone().addScaledVector(facing,along);
+        center.y+=Math.sin(u*16-tick*12)*u*.16+u*u*.3;
+        center.addScaledVector(normal,Math.sin(tick*8+u*11)*u*.12);
+        for(let j=0;j<=flameSides;j++){
+          const v=j/flameSides*Math.PI*2,k=(i*(flameSides+1)+j)*3;
+          const turbulence=1+.24*Math.sin(v*5+tick*11+u*25)+.1*Math.sin(v*9-tick*15-u*14);
+          const p=center.clone().addScaledVector(normal,Math.cos(v)*radius*turbulence)
+            .addScaledVector(binormal,Math.sin(v)*radius*turbulence);
+          plumePositions[k]=p.x;plumePositions[k+1]=p.y;plumePositions[k+2]=p.z;
+          const heat=Math.max(0,1-u);
+          plumeColors[k]=1;
+          plumeColors[k+1]=Math.max(.08,.8*heat+.22*Math.sin(u*3.14));
+          plumeColors[k+2]=Math.max(.015,.29*heat);
+        }
+      }
+      plumeMaterial.opacity=.66*Math.min(1,(fireUntil-now)/170);
+      plumeGeometry.attributes.position.needsUpdate=true;
+      plumeGeometry.attributes.color.needsUpdate=true;
+    }
     const shock = new T.Mesh(new T.TorusGeometry(1,.06,8,90),new T.MeshBasicMaterial({color:0xff7c42,transparent:true,opacity:0,blending:T.AdditiveBlending,depthWrite:false}));
     shock.rotation.x=Math.PI/2;shock.position.y=.06;scene.add(shock);
     const ray=new T.Raycaster(),pointer=new T.Vector2(0,0);
     const target=new T.Vector3(),tempQ=new T.Quaternion();
-    let yaw=.32,pitch=.22,zoom=9.8,targetYaw=yaw,targetPitch=pitch,targetZoom=zoom;
+    let yaw=.40,pitch=.18,zoom=11.9,targetYaw=yaw,targetPitch=pitch,targetZoom=zoom;
     let overPart='',drag=false,pressed=null,lastX=0,lastY=0,still=0;
     let fireUntil=0,roarUntil=0,rage=false,shockAge=99,wingDeployUntil=0,mode='SENTINEL / IDLE';
     let ptIndex=0,spawnAccum=0,t0=performance.now(),last=t0;
@@ -241,7 +428,7 @@
     function mood(text){if(status)status.textContent=text;}
     function mouthLocation(){
       dragon.updateWorldMatrix(true,true);
-      return head.localToWorld(new T.Vector3(0,-.20,1.26));
+      return head.localToWorld(new T.Vector3(0,-.29,1.39));
     }
     function shoot(){
       const now=performance.now();
@@ -257,15 +444,16 @@
       red.emissiveIntensity=rage?.55:0;
       ember.color.set(rage?0xff3b28:0xff712d);
       blue.color.set(rage?0xff5c18:0x5bebff);
+      eyeMat.color.set(rage?0xff302b:0xffbd58);
     }
     function scatter(){
       wingDeployUntil=performance.now()+1900;
       mood('WINGS / DEPLOYED');
     }
     function reset(){
-      rage=false;fireUntil=0;roarUntil=0;shockAge=99;targetYaw=.32;targetPitch=.22;targetZoom=9.8;
+      rage=false;fireUntil=0;roarUntil=0;shockAge=99;targetYaw=.40;targetPitch=.18;targetZoom=11.9;
       red.emissive.set(0x000000);red.emissiveIntensity=0;
-      ember.color.set(0xff712d);blue.color.set(0x5bebff);
+      ember.color.set(0xff712d);blue.color.set(0x5bebff);eyeMat.color.set(0xffbd58);
       mood('SENTINEL / IDLE');
     }
     $('#dragonFire')?.addEventListener('click',shoot);
@@ -311,7 +499,7 @@
     });
     glCanvas.addEventListener('pointercancel',()=>{drag=false;});
     glCanvas.addEventListener('wheel',e=>{
-      e.preventDefault();targetZoom=clamp(targetZoom+e.deltaY*.006,6.8,15.5);
+      e.preventDefault();targetZoom=clamp(targetZoom+e.deltaY*.006,8.5,17);
     },{passive:false});
     const keydown=e=>{
       if(e.target.closest('button,input,textarea,select,[contenteditable]'))return;
@@ -347,7 +535,7 @@
       else if(overPart==='head' && !reducedMotion)spawnAccum+=dt*9;
       let spawnCount=Math.min(25,Math.floor(spawnAccum));
       spawnAccum-=spawnCount;
-      if(!firing)spawnAccum=0;
+      if(!firing && overPart!=='head')spawnAccum=0;
       const origin=spawnCount?mouthLocation():null;
       const direction=spawnCount?new T.Vector3(0,.03,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize():null;
       for(let i=0;i<spawnCount;i++){
@@ -376,8 +564,8 @@
       yaw=smooth(yaw,targetYaw,6,dt);pitch=smooth(pitch,targetPitch,6,dt);zoom=smooth(zoom,targetZoom,5,dt);
       const size=stage.getBoundingClientRect().width;
       const factor=size<600?1.15:1;
-      camera.position.set(Math.sin(yaw)*Math.cos(pitch)*zoom*factor,2.0+Math.sin(pitch)*zoom*.65,Math.cos(yaw)*Math.cos(pitch)*zoom*factor);
-      camera.lookAt(0,1.55,0);
+      camera.position.set(Math.sin(yaw)*Math.cos(pitch)*zoom*factor,2.75+Math.sin(pitch)*zoom*.65,Math.cos(yaw)*Math.cos(pitch)*zoom*factor);
+      camera.lookAt(0,2.02,.15);
       const fireActive=now<fireUntil,roaring=now<roarUntil;
       const energy=fireActive?1:overPart==='head'?.45:.06;
       const pulse=1+Math.sin(t*4)*.07;
@@ -386,7 +574,12 @@
       aura.scale.setScalar(1.9*pulse+(fireActive?.65:0));
       flash.intensity=fireActive?12+Math.sin(t*38)*10:0;
       const active=fireActive?1:roaring?.65:0;
-      jaw.rotation.x=smooth(jaw.rotation.x,active*.67,13,dt);
+      const blinkMoment=t%4.7;
+      const blinkAmplitude=Math.exp(-Math.pow((blinkMoment-4.25)*17,2))*.125;
+      eyelids.forEach(lid=>{lid.position.y=.265-blinkAmplitude;lid.scale.y=.057+blinkAmplitude*.55;});
+      const breath=Math.sin(t*1.15);
+      dragon.scale.set(1+.009*breath,1+.009*breath,1+.012*breath);
+      jaw.rotation.x=smooth(jaw.rotation.x,active*.62,10,dt);
       head.rotation.y=smooth(head.rotation.y,head.userData.targetX||0,3.7,dt);
       head.rotation.x=smooth(head.rotation.x,head.userData.targetY||0,3.7,dt);
       if(still && now-still>4300){head.userData.targetX=Math.sin(t)*.06;head.userData.targetY=.04;}
@@ -398,8 +591,9 @@
         hinge.rotation.y=sign*Math.sin(t*.9)*.035;
       }
       for(let i=0;i<tailLinks.length;i++){
-        tailLinks[i].rotation.y=Math.sin(t*1.35-i*.38)*(.08+i*.009)*(overPart==='tail'?2.4:1);
-        tailLinks[i].rotation.x=Math.sin(t*1.1-i*.4)*.025;
+        const follow=Math.sin(t*.9-i*.30)*(.025+i*.013)*(overPart==='tail'?1.8:1);
+        tailLinks[i].rotation.y=smooth(tailLinks[i].rotation.y,follow,4.7,dt);
+        tailLinks[i].rotation.x=smooth(tailLinks[i].rotation.x,Math.sin(t*.8-i*.33)*.025,4,dt);
       }
       for(let i=0;i<legs.length;i++)legs[i].rotation.x=!reducedMotion?Math.sin(t*1.4+i*Math.PI)*.013:0;
       dragon.position.y=(reducedMotion?0:Math.sin(t*1.5)*.04)+(roaring?Math.sin(t*21)*.055:0);
@@ -408,6 +602,7 @@
       else shock.material.opacity=0;
       sparks.rotation.y=t*.007;
       emit(dt);
+      animateFirePlume(now);
       renderer.render(scene,camera);
       raf=requestAnimationFrame(animate);
     }
