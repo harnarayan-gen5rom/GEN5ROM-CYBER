@@ -132,7 +132,7 @@
       if(!o.isMesh)return;
       o.castShadow=true;o.receiveShadow=false;
       if(o.material){for(const m of Array.isArray(o.material)?o.material:[o.material]){
-        m.side=T.FrontSide;
+        // Keep the asset's authored sidedness (important for wings and thin membranes).
         if('envMapIntensity'in m)m.envMapIntensity=.9;
         if('roughness'in m)m.roughness=Math.max(.26,m.roughness);
       }}
