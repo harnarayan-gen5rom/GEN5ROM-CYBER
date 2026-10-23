@@ -234,7 +234,7 @@
     const target=new T.Vector3(),tempQ=new T.Quaternion();
     let yaw=.32,pitch=.22,zoom=9.8,targetYaw=yaw,targetPitch=pitch,targetZoom=zoom;
     let overPart='',drag=false,pressed=null,lastX=0,lastY=0,still=0;
-    let fireUntil=0,roarUntil=0,rage=false,shockAge=99,mode='SENTINEL / IDLE';
+    let fireUntil=0,roarUntil=0,rage=false,shockAge=99,wingDeployUntil=0,mode='SENTINEL / IDLE';
     let ptIndex=0,spawnAccum=0,t0=performance.now(),last=t0;
     const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
     const smooth=(a,b,s,dt)=>a+(b-a)*(1-Math.exp(-s*dt));
@@ -259,7 +259,7 @@
       blue.color.set(rage?0xff5c18:0x5bebff);
     }
     function scatter(){
-      for(let i=0;i<wingHinges.length;i++)wingHinges[i].hinge.rotation.z=wingHinges[i].sign*.4;
+      wingDeployUntil=performance.now()+1900;
       mood('WINGS / DEPLOYED');
     }
     function reset(){
@@ -284,7 +284,7 @@
       const b=bounds();
       const x=(e.clientX-b.left)/b.width*2-1,y=(e.clientY-b.top)/b.height*2-1;
       if(drag){targetYaw-=(e.clientX-lastX)*.007;targetPitch=clamp(targetPitch+(e.clientY-lastY)*.0055,-.15,.78);}
-      else {overPart=intersect(e);glCanvas.style.cursor=overPart?'pointer':'grab';}
+      else {const next=intersect(e);if(next!==overPart){overPart=next;if(next==='head')mood('EYE LOCK / CLICK TO IGNITE');else if(next==='wing')mood('WING ACTUATOR / CLICK TO DEPLOY');else if(next==='tail')mood('TAIL SENSOR / CLICK TO ROAR');else if(next==='chest')mood('REACTOR / CLICK TO SHIFT MODE');else mood(rage?'BERSERK / ARMED':'SENTINEL / ARMED');}glCanvas.style.cursor=overPart?'pointer':'grab';}
       lastX=e.clientX;lastY=e.clientY;still=performance.now();
       if(!drag){head.userData.targetX=clamp(x*.25,-.25,.25);head.userData.targetY=clamp(-y*.17,-.13,.13);}
     });
@@ -344,17 +344,18 @@
     function emit(dt) {
       const firing=performance.now()<fireUntil;
       if(firing)spawnAccum+=dt*170;
+      else if(overPart==='head' && !reducedMotion)spawnAccum+=dt*9;
       let spawnCount=Math.min(25,Math.floor(spawnAccum));
       spawnAccum-=spawnCount;
       if(!firing)spawnAccum=0;
-      const origin=firing?mouthLocation():null;
-      const direction=firing?new T.Vector3(0,.03,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize():null;
+      const origin=spawnCount?mouthLocation():null;
+      const direction=spawnCount?new T.Vector3(0,.03,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize():null;
       for(let i=0;i<spawnCount;i++){
         const idx=ptIndex++%CAP,j=idx*3,m=motion[idx];
         const at=origin.clone().addScaledVector(direction,Math.random()*.4);
         positions[j]=at.x;positions[j+1]=at.y;positions[j+2]=at.z;
         m.age=.001;m.life=.55+Math.random()*.5;
-        m.v.copy(direction).multiplyScalar(6+Math.random()*6);
+        m.v.copy(direction).multiplyScalar((firing?6:1.2)+Math.random()*(firing?6:1.4));
         m.v.x+=(Math.random()-.5)*2.1;m.v.y+=(Math.random()-.5)*1.3;m.v.z+=(Math.random()-.5)*1.9;
       }
       for(let i=0;i<CAP;i++){
@@ -390,8 +391,9 @@
       head.rotation.x=smooth(head.rotation.x,head.userData.targetY||0,3.7,dt);
       if(still && now-still>4300){head.userData.targetX=Math.sin(t)*.06;head.userData.targetY=.04;}
       const hoverWing=overPart==='wing'?.24:0;
+      const spread=now<wingDeployUntil?.43:0;
       for(const {hinge,sign} of wingHinges) {
-        const targetZ=sign*(.07+hoverWing+(!reducedMotion?Math.sin(t*1.45)*.07:0)+(roaring?.19:0));
+        const targetZ=sign*(.07+hoverWing+spread+(!reducedMotion?Math.sin(t*1.45)*.07:0)+(roaring?.19:0));
         hinge.rotation.z=smooth(hinge.rotation.z,targetZ,4.1,dt);
         hinge.rotation.y=sign*Math.sin(t*.9)*.035;
       }
@@ -401,6 +403,7 @@
       }
       for(let i=0;i<legs.length;i++)legs[i].rotation.x=!reducedMotion?Math.sin(t*1.4+i*Math.PI)*.013:0;
       dragon.position.y=(reducedMotion?0:Math.sin(t*1.5)*.04)+(roaring?Math.sin(t*21)*.055:0);
+      if(!fireActive && status?.textContent==='INFERNO / ATTACKING')mood(rage?'BERSERK / ARMED':'SENTINEL / ARMED');
       if(shockAge<1.2){shockAge+=dt;shock.scale.setScalar(.2+shockAge*3.5);shock.material.opacity=Math.max(0,(1-shockAge/1.2)*.8);}
       else shock.material.opacity=0;
       sparks.rotation.y=t*.007;
