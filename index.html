@@ -156,7 +156,7 @@
       <h2 class="section-title">Interactive <span class="gradient-text">Showreel</span></h2>
       <p class="section-desc">Select a project below to load and view in high definition.</p>
       <div class="showreel-player glass-card">
-        <iframe id="main-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe title="Portfolio video showreel" loading="lazy" id="main-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
       <div class="playlist-grid">
         <button class="playlist-btn active" onclick="loadVideo('yDnmJa0fTsw', this)">01. SaaS Explainer</button>
@@ -354,7 +354,7 @@
   </main>
   <div id="lightbox-modal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" onclick="closeLightbox()">&times;</span>
+      <button class="modal-close" type="button" onclick="closeLightbox()" aria-label="Close preview" style="background:transparent;border:0;">&times;</button>
       <div id="modal-body"></div>
     </div>
   </div>
@@ -403,6 +403,20 @@
       }
       modal.classList.add('active');
     }
+
+    document.querySelectorAll('.portfolio-card').forEach(function(card) {
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          card.click();
+        }
+      });
+    });
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') closeLightbox();
+    });
 
     function closeLightbox() {
       var modal = document.getElementById('lightbox-modal');
