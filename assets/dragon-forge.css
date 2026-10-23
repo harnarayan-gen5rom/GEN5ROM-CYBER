@@ -31,7 +31,7 @@ section:not(.dragon-forge) {scroll-margin-top:90px;}
 .showreel-player {border-color:#ffffff24;background:#130e15;border-radius:27px;}
 .playlist-btn {background:#160f17;color:#d2c2c5;border-color:#ffffff1b;border-radius:14px;}
 .playlist-btn:hover,.playlist-btn.active {background:#fc70401b;color:#ffae86;border-color:#ff8357;}
-.filter-btn {background:#161118;color-color:#b6aeb8;border-color:#ffffff1f;}
+.filter-btn {background:#161118;color:#b6aeb8;border-color:#ffffff1f;}
 .filter-btn:hover,.filter-btn.active {background:#ff9a65;color:#160d0a;}
 .portfolio-grid {gap:21px;}
 .portfolio-card {background:#151018;border-color:#ffffff17;border-radius:24px;}
