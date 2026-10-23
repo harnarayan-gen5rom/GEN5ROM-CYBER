@@ -106,6 +106,7 @@
     const bellyMat = new T.MeshStandardMaterial({color:0x9b6556,metalness:.43,roughness:.54});
     const hornMat = new T.MeshStandardMaterial({color:0xb7a9a2,metalness:.5,roughness:.41});
     const eyeMat = new T.MeshBasicMaterial({color:0xffbd58});
+    const eyelids=[];
     const irisMat = new T.MeshBasicMaterial({color:0x110d12});
     const wingSkin = new T.MeshPhysicalMaterial({color:0x652a39,metalness:.16,roughness:.59,side:T.DoubleSide,transparent:false,clearcoat:.18,vertexColors:true});
     const wingBone = new T.MeshStandardMaterial({color:0x241921,metalness:.48,roughness:.41});
@@ -210,6 +211,8 @@
       organic(head,obsidian,[s*.23,.17,.22],[.225,.16,.31],[0,s*.12,-s*.16],'head');
       organic(head,eyeMat,[s*.31,.145,.33],[.15,.091,.055],[-.18,s*.42,-s*.27],'head');
       organic(head,irisMat,[s*.323,.141,.385],[.040,.079,.012],[-.18,s*.42,-s*.2],'head');
+      const lid=organic(head,obsidian,[s*.31,.265,.345],[.183,.057,.070],[-.18,s*.42,-s*.24],'head');
+      eyelids.push(lid);
       sweep(head,hornMat,[[s*.28,.37,-.22],[s*.48,.72,-.43],[s*.58,1.05,-.70],[s*.62,1.10,-.98]],[.16,.136,.065,.002],'head',22,12);
       sweep(head,scaleMat,[[s*.46,.15,-.13],[s*.59,.30,-.38],[s*.58,.44,-.60]],[.13,.075,.001],'head',14,10);
       sweep(head,crimson,[[s*.31,-.28,.36],[s*.33,-.25,.72],[s*.28,-.24,1.12]],[.08,.055,.018],'head',16,8);
@@ -431,6 +434,7 @@
       red.emissiveIntensity=rage?.55:0;
       ember.color.set(rage?0xff3b28:0xff712d);
       blue.color.set(rage?0xff5c18:0x5bebff);
+      eyeMat.color.set(rage?0xff302b:0xffbd58);
     }
     function scatter(){
       wingDeployUntil=performance.now()+1900;
@@ -439,7 +443,7 @@
     function reset(){
       rage=false;fireUntil=0;roarUntil=0;shockAge=99;targetYaw=.40;targetPitch=.18;targetZoom=11.9;
       red.emissive.set(0x000000);red.emissiveIntensity=0;
-      ember.color.set(0xff712d);blue.color.set(0x5bebff);
+      ember.color.set(0xff712d);blue.color.set(0x5bebff);eyeMat.color.set(0xffbd58);
       mood('SENTINEL / IDLE');
     }
     $('#dragonFire')?.addEventListener('click',shoot);
@@ -521,7 +525,7 @@
       else if(overPart==='head' && !reducedMotion)spawnAccum+=dt*9;
       let spawnCount=Math.min(25,Math.floor(spawnAccum));
       spawnAccum-=spawnCount;
-      if(!firing)spawnAccum=0;
+      if(!firing && overPart!=='head')spawnAccum=0;
       const origin=spawnCount?mouthLocation():null;
       const direction=spawnCount?new T.Vector3(0,.03,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize():null;
       for(let i=0;i<spawnCount;i++){
@@ -560,6 +564,11 @@
       aura.scale.setScalar(1.9*pulse+(fireActive?.65:0));
       flash.intensity=fireActive?12+Math.sin(t*38)*10:0;
       const active=fireActive?1:roaring?.65:0;
+      const blinkMoment=t%4.7;
+      const blinkAmplitude=Math.exp(-Math.pow((blinkMoment-4.25)*17,2))*.125;
+      eyelids.forEach(lid=>{lid.position.y=.265-blinkAmplitude;lid.scale.y=.057+blinkAmplitude*.55;});
+      const breath=Math.sin(t*1.15);
+      dragon.scale.set(1+.009*breath,1+.009*breath,1+.012*breath);
       jaw.rotation.x=smooth(jaw.rotation.x,active*.62,10,dt);
       head.rotation.y=smooth(head.rotation.y,head.userData.targetX||0,3.7,dt);
       head.rotation.x=smooth(head.rotation.x,head.userData.targetY||0,3.7,dt);
