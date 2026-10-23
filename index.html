@@ -83,6 +83,7 @@
     }
   </style>
   <link rel="stylesheet" href="./assets/dragon-forge.css?v=2">
+  <link rel="stylesheet" href="./assets/dragon-v3.css?v=4-cinematic">
 </head>
 <body>
   <header>
@@ -106,9 +107,9 @@
     <section id="dragon" class="dragon-forge" aria-label="Interactive 3D robotic dragon experience">
       <div class="dragon-wrap">
         <div class="dragon-copy">
-          <div class="dragon-eyebrow"><i></i> GEN5ROM EXPERIMENT / 001</div>
+          <div class="dragon-eyebrow"><i></i> GEN5ROM / CINEMATIC INTERACTIVE LAB</div>
           <h1>DRAGON<span>FORGE.</span></h1>
-          <p class="dragon-desc">Forged in obsidian and crimson, with scaled skin, sweeping horns and enormous living wings. Follow its gaze, unleash the inferno and take control of a dragon that feels alive.</p>
+          <p class="dragon-desc">Meet an unmistakable dragon, sculpted in shadow and lit by fire. Explore the creature in 360°, provoke its inferno and experience a cinematic 3D world.</p>
           <div class="dragon-actions">
             <button type="button" id="dragonStart" class="dragon-action">AWAKEN THE DRAGON <span aria-hidden="true">↗</span></button>
             <a class="dragon-action ghost" href="#portfolio">EXPLORE WORK <span aria-hidden="true">↓</span></a>
@@ -119,7 +120,7 @@
           <div id="dragonStandby" class="dragon-standby" aria-hidden="true"><div class="dragon-standby-art"><strong>⟡</strong></div></div>
           <div class="dragon-stage-tags" aria-hidden="true">
             <div class="dragon-chip">ENTITY / 001<span>PYRØ — THE FIREKEEPER</span></div>
-            <div class="dragon-chip">SIGNAL / LIVE<span>OBSIDIAN · ANCIENT · ALIVE</span></div>
+            <div class="dragon-chip">SIGNAL / LIVE<span>SHADOW · FIRE · CINEMA</span></div>
           </div>
           <div class="dragon-viewport-status" hidden aria-live="polite">LIVE INTERACTION<strong id="dragonState">SENTINEL / IDLE</strong></div>
           <div class="dragon-controls" id="dragonControls" hidden>
@@ -129,11 +130,11 @@
             <button type="button" class="dragon-control" id="dragonReset">↺ RESET</button>
           </div>
         </div>
-        <div class="dragon-index">PROJECT NO. 001 / ORGANIC 3D CREATURE STUDY</div>
+        <div class="dragon-index">NO. 001 / DRAGON SCULPT & INTERACTIVE EXPERIENCE</div>
       </div>
       <div class="dragon-stats" aria-label="Dragon experience details">
         <div class="dragon-stat"><strong>360°</strong><span>Mouse-driven orbit</span></div>
-        <div class="dragon-stat"><strong>3D</strong><span>Layered flame & ember physics</span></div>
+        <div class="dragon-stat"><strong>3D</strong><span>Cinematic fire & ember FX</span></div>
         <div class="dragon-stat"><strong id="dragonCount">00</strong><span>Fire attacks triggered</span></div>
       </div>
     </section>
@@ -425,6 +426,9 @@
       body.innerHTML = '';
     }
   </script>
-  <script type="module" src="./assets/dragon-forge.js?v=3-organic"></script>
+  <script type="importmap">
+  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+<script type="module" src="./assets/dragon-v3.js?v=4-cinematic"></script>
 </body>
 </html>
