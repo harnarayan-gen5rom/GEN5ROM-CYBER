@@ -227,7 +227,7 @@
     // Scaled muscular hips, haunches, distinct weight-bearing digitigrade feet.
     const legs=[];
     for(const z of [-.97,.67]) for(const s of [-1,1]){
-      const leg=new T.Group();leg.position.set(s*.60,1.29,z);dragon.add(leg);
+      const leg=new T.Group();leg.position.set(s*.60,1.16,z);dragon.add(leg);
       organic(leg,obsidian,[0,-.08,.04],[.33,.37,.36],null,'leg');
       organic(leg,z>0?crimson:scaleMat,[s*.16,-.27,.07],[.40,.48,.37],[.12,0,-s*.25],'leg');
       sweep(leg,obsidian,[[s*.13,-.31,.04],[s*.23,-.55,-.15],[s*.17,-.89,.18],[s*.22,-1.02,.46]],[.24,.20,.16,.17],'leg',25,12);
@@ -313,6 +313,16 @@
     // Display arena, warehouse architecture, floating embers.
     const plinth=new T.Mesh(new T.CylinderGeometry(2.75,2.92,.33,72),gunmetal);plinth.position.y=-.23;scene.add(plinth);
     const base=new T.Mesh(new T.CylinderGeometry(2.56,2.7,.12,72),metal);base.position.y=-.045;scene.add(base);
+    // Soft contact shadow keeps the heavier organic silhouette grounded.
+    const shadowCanvas=document.createElement('canvas');shadowCanvas.width=128;shadowCanvas.height=128;
+    const sh=shadowCanvas.getContext('2d');
+    const sd=sh.createRadialGradient(64,64,5,64,64,63);
+    sd.addColorStop(0,'rgba(0,0,0,.8)');sd.addColorStop(.55,'rgba(0,0,0,.34)');sd.addColorStop(1,'rgba(0,0,0,0)');
+    sh.fillStyle=sd;sh.fillRect(0,0,128,128);
+    const contact=new T.Mesh(new T.PlaneGeometry(4.1,4.7),
+      new T.MeshBasicMaterial({map:new T.CanvasTexture(shadowCanvas),transparent:true,depthWrite:false,opacity:.82}));
+    contact.rotation.x=-Math.PI/2;contact.position.set(0,.027,-.15);scene.add(contact);
+
     for(let r of [1.85,2.4,2.66]){
       const ring=new T.Mesh(new T.TorusGeometry(r,r===2.4?.028:.016,10,94),r===2.4?ember:red);
       ring.rotation.x=Math.PI/2;ring.position.y=.026;scene.add(ring);
