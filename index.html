@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GEN5ROM CYBER — Harnarayan</title>
+  <title>GEN5ROM CYBER — Harnarayan | Motion Designer & Interactive 3D</title>
+  <meta name="description" content="Explore Harnarayan's motion design and video editing portfolio, plus Dragon Forge: a real-time interactive 3D mechanical dragon.">
+  <meta name="theme-color" content="#09080e">
+  <meta property="og:title" content="GEN5ROM CYBER — Dragon Forge">
+  <meta property="og:description" content="Interactive robotic dragon meets a cinematic motion designer portfolio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: #060811; color: #e2e8f0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.6; overflow-x: hidden; }
@@ -75,12 +82,14 @@
       .portfolio-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <link rel="stylesheet" href="./assets/dragon-forge.css?v=2">
 </head>
 <body>
   <header>
     <div class="container nav-inner">
       <div class="logo gradient-text">GEN5ROM CYBER</div>
       <ul class="nav-links">
+        <li><a href="#dragon">Dragon Forge</a></li>
         <li><a href="#showreel">Showreel</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
         <li><a href="#toolkit">Toolkit</a></li>
@@ -93,18 +102,54 @@
     </div>
   </header>
   <main>
-    <section class="hero container">
+    
+    <section id="dragon" class="dragon-forge" aria-label="Interactive 3D robotic dragon experience">
+      <div class="dragon-wrap">
+        <div class="dragon-copy">
+          <div class="dragon-eyebrow"><i></i> GEN5ROM EXPERIMENT / 001</div>
+          <h1>DRAGON<span>FORGE.</span></h1>
+          <p class="dragon-desc">Meet a mechanical beast from a world where motion meets imagination. It sees your cursor, reacts to your touch, spreads its wings—and breathes real-time 3D fire.</p>
+          <div class="dragon-actions">
+            <button type="button" id="dragonStart" class="dragon-action">AWAKEN THE DRAGON <span aria-hidden="true">↗</span></button>
+            <a class="dragon-action ghost" href="#portfolio">EXPLORE WORK <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="dragon-micro" id="dragonMessage" role="status">INTERACTIVE WEBGL EXPERIMENT · LOADS ON DEMAND · OPTIMIZED FOR MOBILE</p>
+        </div>
+        <div id="dragonStage" class="dragon-stage" aria-label="3D robotic dragon interactive stage">
+          <div id="dragonStandby" class="dragon-standby" aria-hidden="true"><div class="dragon-standby-art"><strong>⟡</strong></div></div>
+          <div class="dragon-stage-tags" aria-hidden="true">
+            <div class="dragon-chip">ENTITY / 001<span>PYRØ — THE FIREKEEPER</span></div>
+            <div class="dragon-chip">SIGNAL / LIVE<span>MECHANICAL · SENTIENT · WILD</span></div>
+          </div>
+          <div class="dragon-viewport-status" hidden aria-live="polite">LIVE INTERACTION<strong id="dragonState">SENTINEL / IDLE</strong></div>
+          <div class="dragon-controls" id="dragonControls" hidden>
+            <button type="button" class="dragon-control" id="dragonFire" title="Make the dragon breathe fire (F)">🔥 BREATH FIRE · F</button>
+            <button type="button" class="dragon-control" id="dragonRoar" title="Roar (R)">◈ ROAR · R</button>
+            <button type="button" class="dragon-control" id="dragonMode" title="Toggle berserk mode (Space)">✦ BERSERK · SPACE</button>
+            <button type="button" class="dragon-control" id="dragonReset">↺ RESET</button>
+          </div>
+        </div>
+        <div class="dragon-index">PROJECT NO. 001 / REAL-TIME ROBOTIC CREATURE</div>
+      </div>
+      <div class="dragon-stats" aria-label="Dragon experience details">
+        <div class="dragon-stat"><strong>360°</strong><span>Mouse-driven orbit</span></div>
+        <div class="dragon-stat"><strong>3D</strong><span>Reactive fire simulation</span></div>
+        <div class="dragon-stat"><strong id="dragonCount">00</strong><span>Fire attacks triggered</span></div>
+      </div>
+    </section>
+
+    <section class="hero container" id="about">
       <div>
-        <span class="badge gradient-text" style="font-size: 14px; font-weight: 600; letter-spacing: 2px;">CYBER EMERALD STUDIO</span>
-        <h1 class="hero-title">Video Editor, Motion Graphics & <span class="gradient-text">3D VFX Artist</span></h1>
-        <p class="hero-subtitle">Crafting high-impact commercial videos, cyberpunk motion edits, 3D simulations, and key art designs. Transforming creative vision into cinematic reality.</p>
+        <span class="badge gradient-text" style="font-size: 14px; font-weight: 600; letter-spacing: 2px;">THE HUMAN BEHIND THE MACHINE</span>
+        <h1 class="hero-title">Visual stories, crafted with <span class="gradient-text">motion & imagination.</span></h1>
+        <p class="hero-subtitle">I’m Harnarayan, a video editor and motion graphics designer. I turn complicated ideas into clear stories through video editing, motion design, and interactive visuals.</p>
         <div class="hero-actions">
           <a href="#portfolio" class="btn-emerald">Explore Works</a>
           <a href="assets/harnarayan-resume.pdf" class="btn-outline" target="_blank">Download Resume</a>
         </div>
       </div>
       <div>
-        <img src="assets/harnarayan-profile.webp" alt="Harnarayan Singh" class="hero-portrait-card">
+        <img src="assets/harnarayan-profile.webp" alt="Harnarayan" class="hero-portrait-card">
       </div>
     </section>
     <section id="showreel" class="showreel-section container">
@@ -115,7 +160,7 @@
       </div>
       <div class="playlist-grid">
         <button class="playlist-btn active" onclick="loadVideo('yDnmJa0fTsw', this)">01. SaaS Explainer</button>
-        <button class="playlist-btn" onclick="loadVideo('I5R1qsDqhug', this)">02. 360 Virtual Tour</button>
+        <button class="playlist-btn" onclick="loadVideo('I5RlqsDqhug', this)">02. 360 Virtual Tour</button>
         <button class="playlist-btn" onclick="loadVideo('7-2duY6fdzo', this)">03. Chainsaw Man Edit</button>
         <button class="playlist-btn" onclick="loadVideo('v827BybYYxI', this)">04. Monster Energy 3D</button>
         <button class="playlist-btn" onclick="loadVideo('1AOYe9wDsU4', this)">05. AI Engine Intro</button>
@@ -139,8 +184,8 @@
             <div class="portfolio-title">What is Zigency SaaS Explainer</div>
           </div>
         </div>
-        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', 'I5R1qsDqhug')">
-          <img data-yt="I5R1qsDqhug" alt="Zigency 360 Virtual Property Tour" class="portfolio-thumb yt-thumb">
+        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', 'I5RlqsDqhug')">
+          <img data-yt="I5RlqsDqhug" alt="Zigency 360 Virtual Property Tour" class="portfolio-thumb yt-thumb">
           <div class="portfolio-info">
             <div class="portfolio-cat">Commercial Video</div>
             <div class="portfolio-title">Zigency 360 Virtual Property Tour</div>
@@ -260,8 +305,8 @@
           <p style="font-size: 14px; color: #94a3b8;">Color Grading & Mastering</p>
         </div>
         <div class="glass-card skill-card">
-          <div class="skill-title">Blender / C4D / Spline</div>
-          <p style="font-size: 14px; color: #94a3b8;">3D Modeling & VFX Simulation</p>
+          <div class="skill-title">Spline & Adobe Dimension</div>
+          <p style="font-size: 14px; color: #94a3b8;">Interactive 3D & Product Visuals</p>
         </div>
         <div class="glass-card skill-card">
           <div class="skill-title">AI & Audio Tools</div>
@@ -273,9 +318,9 @@
       <h2 class="section-title">Experience & <span class="gradient-text">Education</span></h2>
       <div class="timeline" style="margin-top: 40px;">
         <div class="timeline-item">
-          <div class="timeline-role">Lead Video Editor & VFX Artist</div>
-          <div class="timeline-company">GEN5ROM Studio</div>
-          <p style="color: #94a3b8;">Creating promotional materials, commercial ads, 3D animations, and motion graphics for various clients and brand campaigns.</p>
+          <div class="timeline-role">Video Editor & Motion Graphics Designer</div>
+          <div class="timeline-company">Zigency</div>
+          <p style="color: #94a3b8;">Edited real estate and AI-focused marketing videos, built motion graphics for social campaigns, and handled projects from brief or script through revisions and final delivery.</p>
         </div>
         <div class="timeline-item">
           <div class="timeline-role">Motion Design Student</div>
@@ -283,9 +328,9 @@
           <p style="color: #94a3b8;">Advanced diploma in visual effects, post-production techniques, typography, and motion design.</p>
         </div>
         <div class="timeline-item">
-          <div class="timeline-role">Bachelor's Degree</div>
+          <div class="timeline-role">Bachelor's Degree — Pursuing</div>
           <div class="timeline-company">IGNOU</div>
-          <p style="color: #94a3b8;">Graduation in media, communication, and digital arts.</p>
+          <p style="color: #94a3b8;">Degree currently in progress.</p>
         </div>
       </div>
     </section>
@@ -366,5 +411,6 @@
       body.innerHTML = '';
     }
   </script>
+  <script type="module" src="./assets/dragon-forge.js?v=2"></script>
 </body>
 </html>
