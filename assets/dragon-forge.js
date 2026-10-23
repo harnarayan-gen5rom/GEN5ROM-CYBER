@@ -109,6 +109,24 @@
     const irisMat = new T.MeshBasicMaterial({color:0x110d12});
     const wingSkin = new T.MeshPhysicalMaterial({color:0x652a39,metalness:.16,roughness:.59,side:T.DoubleSide,transparent:false,clearcoat:.18,vertexColors:true});
     const wingBone = new T.MeshStandardMaterial({color:0x241921,metalness:.48,roughness:.41});
+
+    // Repeating micro-relief gives the smooth geometry a believable scaled surface.
+    const skinCanvas=document.createElement('canvas');skinCanvas.width=512;skinCanvas.height=512;
+    const skinCtx=skinCanvas.getContext('2d');
+    skinCtx.fillStyle='#676767';skinCtx.fillRect(0,0,512,512);
+    for(let row=-1;row<18;row++)for(let col=-1;col<18;col++){
+      const x=col*32+(row%2?16:0),y=row*30;
+      skinCtx.fillStyle='#878787';
+      skinCtx.beginPath();skinCtx.ellipse(x+16,y+14,15,17,0,0,Math.PI*2);skinCtx.fill();
+      skinCtx.strokeStyle='#292929';skinCtx.lineWidth=3;
+      skinCtx.beginPath();skinCtx.arc(x+16,y+10,14,0,Math.PI);skinCtx.stroke();
+      skinCtx.strokeStyle='#acacac';skinCtx.lineWidth=1.6;
+      skinCtx.beginPath();skinCtx.arc(x+14,y+10,11,Math.PI*1.07,Math.PI*1.85);skinCtx.stroke();
+    }
+    const skinBump=new T.CanvasTexture(skinCanvas);
+    skinBump.wrapS=skinBump.wrapT=T.RepeatWrapping;skinBump.repeat.set(2.5,2);
+    skinBump.colorSpace=T.NoColorSpace;
+    for(const m of [obsidian,scaleMat,crimson]){m.bumpMap=skinBump;m.bumpScale=.045;m.needsUpdate=true;}
     const mouthMat = new T.MeshStandardMaterial({color:0x260c17,metalness:.12,roughness:.83});
     const sclera=new T.MeshBasicMaterial({color:0xff9a3a});
     const detail=(p,m,x,y,z,sx,sy,sz,h)=>ball(p,m,[x,y,z],[sx,sy,sz],h);
@@ -326,12 +344,64 @@
     const particles=new T.BufferGeometry();
     particles.setAttribute('position',new T.BufferAttribute(positions,3));
     particles.setAttribute('color',new T.BufferAttribute(rgb,3));
-    const pmat=new T.PointsMaterial({size:.29,map:glowTex,vertexColors:true,transparent:true,opacity:.96,blending:T.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+    const pmat=new T.PointsMaterial({size:.21,map:glowTex,vertexColors:true,transparent:true,opacity:.96,blending:T.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
     const flame=new T.Points(particles,pmat);flame.frustumCulled=false;scene.add(flame);
     const sparkCount=95,sparkPos=new Float32Array(sparkCount*3);
     for(let i=0;i<sparkCount;i++){sparkPos.set([(Math.random()-.5)*13,Math.random()*7,(Math.random()-.5)*12],i*3);}
     const sparkg=new T.BufferGeometry();sparkg.setAttribute('position',new T.BufferAttribute(sparkPos,3));
     const sparks=new T.Points(sparkg,new T.PointsMaterial({color:0xff945a,map:glowTex,transparent:true,opacity:.6,blending:T.AdditiveBlending,size:.085,depthWrite:false}));scene.add(sparks);
+
+    // Sculpted translucent fire plume, animated as a curved tubular mesh.
+    // Particles stay as the sparks around this continuous warm flame core.
+    const flameSegments=28, flameSides=12, plumePositions=new Float32Array((flameSegments+1)*(flameSides+1)*3);
+    const plumeColors=new Float32Array(plumePositions.length), plumeIndices=[];
+    for(let i=0;i<flameSegments;i++)for(let j=0;j<flameSides;j++){
+      const n=i*(flameSides+1)+j;
+      plumeIndices.push(n,n+flameSides+1,n+1,n+1,n+flameSides+1,n+flameSides+2);
+    }
+    const plumeGeometry=new T.BufferGeometry();
+    plumeGeometry.setIndex(plumeIndices);
+    plumeGeometry.setAttribute('position',new T.BufferAttribute(plumePositions,3).setUsage(T.DynamicDrawUsage));
+    plumeGeometry.setAttribute('color',new T.BufferAttribute(plumeColors,3));
+    const plumeMaterial=new T.MeshBasicMaterial({
+      vertexColors:true,side:T.DoubleSide,transparent:true,opacity:.0,
+      depthWrite:false,blending:T.AdditiveBlending
+    });
+    const plume=new T.Mesh(plumeGeometry,plumeMaterial);
+    plume.frustumCulled=false;scene.add(plume);
+    function animateFirePlume(now){
+      const active=now<fireUntil;
+      if(!active){plume.visible=false;return;}
+      plume.visible=true;
+      const origin=mouthLocation();
+      const facing=new T.Vector3(0,0,1).applyQuaternion(head.getWorldQuaternion(tempQ)).normalize();
+      const normal=new T.Vector3(0,1,0).cross(facing).normalize();
+      const binormal=facing.clone().cross(normal).normalize();
+      const tick=now*.001,age=Math.max(0,1-(fireUntil-now)/1850);
+      const strength=Math.min(1,(1-age)*5+0.02);
+      for(let i=0;i<=flameSegments;i++){
+        const u=i/flameSegments;
+        const along=4.4*u*Math.min(1,age*6+.2);
+        const radius=(.045+.46*Math.pow(u,.83))*Math.pow(Math.max(.001,1-u),.53)*strength;
+        const center=origin.clone().addScaledVector(facing,along);
+        center.y+=Math.sin(u*16-tick*12)*u*.16+u*u*.3;
+        center.addScaledVector(normal,Math.sin(tick*8+u*11)*u*.12);
+        for(let j=0;j<=flameSides;j++){
+          const v=j/flameSides*Math.PI*2,k=(i*(flameSides+1)+j)*3;
+          const turbulence=1+.24*Math.sin(v*5+tick*11+u*25)+.1*Math.sin(v*9-tick*15-u*14);
+          const p=center.clone().addScaledVector(normal,Math.cos(v)*radius*turbulence)
+            .addScaledVector(binormal,Math.sin(v)*radius*turbulence);
+          plumePositions[k]=p.x;plumePositions[k+1]=p.y;plumePositions[k+2]=p.z;
+          const heat=Math.max(0,1-u);
+          plumeColors[k]=1;
+          plumeColors[k+1]=Math.max(.08,.8*heat+.22*Math.sin(u*3.14));
+          plumeColors[k+2]=Math.max(.015,.29*heat);
+        }
+      }
+      plumeMaterial.opacity=.66*Math.min(1,(fireUntil-now)/170);
+      plumeGeometry.attributes.position.needsUpdate=true;
+      plumeGeometry.attributes.color.needsUpdate=true;
+    }
     const shock = new T.Mesh(new T.TorusGeometry(1,.06,8,90),new T.MeshBasicMaterial({color:0xff7c42,transparent:true,opacity:0,blending:T.AdditiveBlending,depthWrite:false}));
     shock.rotation.x=Math.PI/2;shock.position.y=.06;scene.add(shock);
     const ray=new T.Raycaster(),pointer=new T.Vector2(0,0);
@@ -513,6 +583,7 @@
       else shock.material.opacity=0;
       sparks.rotation.y=t*.007;
       emit(dt);
+      animateFirePlume(now);
       renderer.render(scene,camera);
       raf=requestAnimationFrame(animate);
     }
