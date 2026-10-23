@@ -19,7 +19,7 @@
 .dragon-copy{padding-top:65px;padding-bottom:88px;}
 .dragon-eyebrow{font-size:10px;letter-spacing:.22em;color:#d39b79;}
 .dragon-eyebrow i{background:#d57a50;}
-.dragon-copy h1{font-size:clamp(80px,11.1vw,170px);letter-spacing:-.107em;line-height:.79;}
+.dragon-copy h1{font-size:clamp(72px,9.5vw,150px);letter-spacing:-.107em;line-height:.79;}
 .dragon-copy h1 span{color:#d8a18b;-webkit-text-stroke:0;text-shadow:0 0 90px #d36d4324;}
 .dragon-copy .dragon-desc{
   color:#bfb2b1;max-width:385px;font-size:14px;
@@ -66,7 +66,7 @@
 .hero-portrait-card{border-radius:20px;filter:none;}
 @media (max-width:1200px) {
  .dragon-wrap{grid-template-columns:minmax(305px,.86fr) minmax(480px,1.15fr);}
- .dragon-copy h1{font-size:clamp(70px,11vw,142px);}
+ .dragon-copy h1{font-size:clamp(69px,9.1vw,125px);}
 }
 @media (max-width:800px) {
  .dragon-forge{min-height:unset;}
