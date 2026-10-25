@@ -14,9 +14,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=cyber-v6">
-  <script src="./portfolio-data.js?v=cyber-v6" defer></script>
-  <script src="./script.js?v=cyber-v6" defer></script>
+  <link rel="stylesheet" href="./style.css?v=cyber-v7">
+  <script src="./portfolio-data.js?v=cyber-v7" defer></script>
+  <script src="./script.js?v=cyber-v7" defer></script>
+  <script type="module" src="./proximity-scene.js?v=cyber-v7"></script>
 </head>
 <body>
   <div class="ambient" aria-hidden="true">
@@ -128,15 +129,36 @@
       <div class="archive-footer"><span>END OF THE COLLECTION · 34 ORIGINAL PROJECTS</span><a href="#contact">Have a project in mind? <span aria-hidden="true">↗</span></a></div>
     </section>
 
+    
     <section class="section wrap lab-section" id="lab">
       <div class="section-intro reveal">
-        <div><span class="eyebrow"><b>03</b> / INTERACTIVE PLAYGROUND</span><h2>Not just seen. <span class="accent-serif">Felt.</span></h2></div>
-        <p>Experimentation is part of the process. The hero sculpture reacts to you. Explore original 3D experiments and a color-grading breakdown on demand.</p>
+        <div><span class="eyebrow"><b>03</b> / INTERACTIVE PLAYGROUND</span><h2>A little closer. <span class="accent-serif">It reacts.</span></h2></div>
+        <p>A kinetic 3D sculpture that responds to your proximity. Move close, let the particles follow, and change its atmosphere.</p>
       </div>
-      <div class="lab-grid">
-        <article class="lab-feature reveal"><div class="lab-glow"></div><span class="eyebrow">THE LIGHTWEIGHT EXPERIMENT</span><h3>Touch the<br><i>impossible.</i></h3><p>A responsive, no-download kinetic gradient object. Move your cursor, drag on mobile, or tap to change the color atmosphere.</p><a href="#orbStage">Play with the hero sculpture <span>↑</span></a><span class="lab-corner">CSS 3D / LIVE</span></article>
-        <div class="archived-labs" id="archivedLabs"></div>
+      <div class="proximity-showcase reveal" id="proximityShowcase">
+        <div class="proximity-topbar">
+          <div class="proximity-id"><span class="proximity-live-dot"></span><span>EXPERIMENT 001 <span class="proximity-divider">/</span> PROXIMITY FIELD</span></div>
+          <div class="proximity-tech"><span class="tech-cross">✳</span> REAL-TIME 3D <span class="tech-separator">/</span> INTERACTIVE</div>
+        </div>
+        <div class="proximity-stage" id="proximityStage" role="button" tabindex="0" aria-label="Interactive 3D proximity sculpture. Move the pointer toward its center, drag horizontally on touch, or press Enter to change the color palette">
+          <div class="proximity-gridlines" aria-hidden="true"></div>
+          <div class="proximity-ambient" aria-hidden="true"></div>
+          <div class="proximity-fallback" id="proximityFallback" aria-hidden="true"><div class="fallback-knot"><i></i><i></i><i></i><i></i></div><span class="fallback-orbit"></span><span class="fallback-orbit two"></span></div>
+          <canvas id="proximityCanvas" aria-hidden="true"></canvas>
+          <div class="proximity-corner proximity-tl" aria-hidden="true">+</div><div class="proximity-corner proximity-tr" aria-hidden="true">+</div>
+          <div class="proximity-corner proximity-bl" aria-hidden="true">+</div><div class="proximity-corner proximity-br" aria-hidden="true">+</div>
+          <div class="proximity-reticle" id="proximityReticle" aria-hidden="true"></div>
+          <div class="proximity-stage-label"><span class="proximity-mini">01 — KINETIC STUDY</span><strong>THE AETHER<br>FIELD<span>.</span></strong></div>
+          <div class="proximity-stage-meta"><span id="proximityMessage">MOVE CLOSER TO INTERACT</span><div class="proximity-readout"><div class="proximity-meter" aria-hidden="true"><span id="proximityMeter"></span></div><span id="proximityValue">0%</span></div></div>
+          <div class="proximity-center-label" aria-hidden="true">FORM IN MOTION / NEVER STATIC</div>
+        </div>
+        <div class="proximity-bottom">
+          <div class="proximity-instruction"><span class="proximity-icon">⌁</span><div><strong>Try getting closer.</strong><p>Cursor proximity reshapes the energy field. On mobile, drag the sculpture or tap to pulse.</p></div></div>
+          <button type="button" class="proximity-theme-btn" id="proximityTheme" aria-label="Change sculpture color palette"><span class="palette-dot"></span><span id="proximityThemeName">ROSE / 01</span><span class="theme-arrow" aria-hidden="true">↗</span></button>
+        </div>
       </div>
+      <div class="playground-archive-intro reveal"><span class="eyebrow">MORE FROM THE LAB</span><p>Additional 3D experiments and a color-grading breakdown. Open only what interests you.</p></div>
+      <div class="archived-labs playground-archive" id="archivedLabs"></div>
     </section>
 
     <section class="section wrap about-section" id="about">
