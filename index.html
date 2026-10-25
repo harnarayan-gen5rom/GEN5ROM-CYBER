@@ -1,434 +1,183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GEN5ROM CYBER — Harnarayan | Motion Designer & Interactive 3D</title>
-  <meta name="description" content="Explore Harnarayan's motion design and video editing portfolio, plus Dragon Forge: a real-time interactive 3D mechanical dragon.">
-  <meta name="theme-color" content="#09080e">
-  <meta property="og:title" content="GEN5ROM CYBER — Dragon Forge">
-  <meta property="og:description" content="An interactive sculpted dragon with living wings, responsive eyes and cinematic fire, alongside a motion design portfolio.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08080e">
+  <meta name="description" content="Harnarayan — video editor, motion designer and visual storyteller. Explore 34 motion, video, AI and graphic design projects.">
+  <meta property="og:title" content="GEN5ROM / Harnarayan — Made to Move">
+  <meta property="og:description" content="Motion. Design. Stories that stay. A selected portfolio and 34 real projects.">
+  <meta property="og:type" content="website">
+  <meta name="color-scheme" content="dark">
+  <title>GEN5ROM / Harnarayan — Motion & Visual Stories</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='17' fill='%230e0d15'/%3E%3Cpath d='M13 17h38v7H22v16h29v7H13z' fill='%23ff617b'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: #060811; color: #e2e8f0; font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; line-height: 1.6; overflow-x: hidden; }
-    h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', system-ui, -apple-system, sans-serif; font-weight: 800; letter-spacing: -0.025em; }
-    .badge, .label, code { font-family: 'JetBrains Mono', monospace; }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .glass-card { background: rgba(16, 22, 40, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; transition: all 0.3s ease; }
-    .glass-card:hover { border-color: rgba(0, 245, 160, 0.4); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0, 245, 160, 0.1); }
-    .gradient-text { background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .btn-emerald { background: linear-gradient(135deg, #00f5a0 0%, #00d9f5 100%); color: #060811; font-weight: 700; padding: 12px 28px; border-radius: 12px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s ease; }
-    .btn-emerald:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 245, 160, 0.3); }
-    .btn-outline { background: transparent; border: 1px solid rgba(0, 245, 160, 0.4); color: #00f5a0; font-weight: 600; padding: 12px 28px; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
-    .btn-outline:hover { background: rgba(0, 245, 160, 0.1); }
-    header { position: sticky; top: 0; z-index: 100; background: rgba(6, 8, 17, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; }
-    .logo { font-size: 24px; font-weight: 800; }
-    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
-    .nav-links a { font-weight: 600; color: #94a3b8; transition: color 0.2s; }
-    .nav-links a:hover { color: #00f5a0; }
-    .nav-user { display: flex; align-items: center; gap: 12px; }
-    .avatar-40 { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #00f5a0; }
-    .hero { padding: 80px 0 100px; display: grid; grid-template-columns: 1fr 380px; gap: 60px; align-items: center; }
-    .hero-title { font-size: 56px; line-height: 1.1; margin-bottom: 24px; }
-    .hero-subtitle { font-size: 18px; color: #94a3b8; margin-bottom: 36px; max-width: 600px; }
-    .hero-actions { display: flex; gap: 16px; align-items: center; }
-    .hero-portrait-card { width: 100%; max-width: 380px; aspect-ratio: 4/4.3; object-fit: cover; border-radius: 18px; border: 1px solid rgba(0, 245, 160, 0.3); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); }
-    .showreel-section { padding: 80px 0; }
-    .section-title { font-size: 36px; margin-bottom: 16px; text-align: center; }
-    .section-desc { text-align: center; color: #94a3b8; margin-bottom: 40px; }
-    .showreel-player { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; margin-bottom: 24px; border: 1px solid rgba(255, 255, 255, 0.1); }
-    .showreel-player iframe { width: 100%; height: 100%; border: none; }
-    .playlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
-    .playlist-btn { background: rgba(16, 22, 40, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px; border-radius: 12px; color: #cbd5e1; cursor: pointer; text-align: left; font-size: 14px; font-weight: 600; transition: all 0.2s; }
-    .playlist-btn:hover, .playlist-btn.active { background: rgba(0, 245, 160, 0.15); border-color: #00f5a0; color: #00f5a0; }
-    .portfolio-section { padding: 80px 0; }
-    .filter-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-    .filter-btn { background: rgba(16, 22, 40, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; padding: 10px 20px; border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
-    .filter-btn:hover, .filter-btn.active { background: #00f5a0; color: #060811; }
-    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .portfolio-card { position: relative; border-radius: 16px; overflow: hidden; background: rgba(16, 22, 40, 0.78); border: 1px solid rgba(255, 255, 255, 0.08); cursor: pointer; transition: all 0.3s; }
-    .portfolio-card:hover { transform: translateY(-6px); border-color: #00f5a0; box-shadow: 0 12px 30px rgba(0, 245, 160, 0.15); }
-    .portfolio-thumb { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-    .portfolio-info { padding: 16px; }
-    .portfolio-cat { font-size: 12px; color: #00f5a0; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
-    .portfolio-title { font-size: 16px; font-weight: 700; color: #f8fafc; }
-    .modal { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(6, 8, 17, 0.95); backdrop-filter: blur(10px); justify-content: center; align-items: center; padding: 24px; }
-    .modal.active { display: flex; }
-    .modal-content { max-width: 900px; width: 100%; max-height: 90vh; position: relative; }
-    .modal-close { position: absolute; top: -40px; right: 0; color: #fff; font-size: 32px; cursor: pointer; }
-    .toolkit-section { padding: 80px 0; }
-    .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-    .skill-card { padding: 24px; text-align: center; }
-    .skill-title { font-size: 18px; color: #00f5a0; margin-bottom: 8px; }
-    .timeline-section { padding: 80px 0; }
-    .timeline { max-width: 800px; margin: 0 auto; position: relative; border-left: 2px solid rgba(0, 245, 160, 0.3); padding-left: 30px; }
-    .timeline-item { margin-bottom: 40px; position: relative; }
-    .timeline-item::before { content: ''; position: absolute; left: -36px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: #00f5a0; box-shadow: 0 0 10px #00f5a0; }
-    .timeline-role { font-size: 20px; font-weight: 700; color: #f8fafc; }
-    .timeline-company { color: #00d9f5; font-weight: 600; font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
-    .contact-section { padding: 80px 0; text-align: center; }
-    .contact-card { max-width: 600px; margin: 0 auto; padding: 40px; }
-    .contact-info { display: flex; flex-direction: column; gap: 16px; margin: 24px 0; font-size: 18px; }
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .portfolio-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-  <link rel="stylesheet" href="./assets/dragon-forge.css?v=2">
-  <link rel="stylesheet" href="./assets/dragon-v3.css?v=4-cinematic">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css?v=cyber-v5">
+  <script src="./portfolio-data.js?v=cyber-v5" defer></script>
+  <script src="./script.js?v=cyber-v5" defer></script>
 </head>
 <body>
-  <header>
-    <div class="container nav-inner">
-      <div class="logo gradient-text">GEN5ROM CYBER</div>
-      <ul class="nav-links">
-        <li><a href="#dragon">Dragon Forge</a></li>
-        <li><a href="#showreel">Showreel</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#toolkit">Toolkit</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <div class="nav-user">
-        <img src="assets/harnarayan-profile.webp" alt="Harnarayan" class="avatar-40">
+  <div class="ambient" aria-hidden="true">
+    <span class="aura a1"></span><span class="aura a2"></span><span class="aura a3"></span>
+    <div class="noise"></div>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="top">
+    <div class="header-inner wrap">
+      <a href="#top" class="brand" aria-label="GEN5ROM home">
+        <span class="brand-symbol"><span></span><span></span><span></span></span>
+        <span class="brand-type">gen<span>5</span>rom<span class="brand-dot">.</span></span>
+        <small>CREATIVE / LAB</small>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="#work">Work</a><a href="#all-work">All projects</a><a href="#lab">Interactive lab</a><a href="#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <a class="availability" href="#contact"><i></i> Open to work</a>
+        <a class="header-contact" href="#contact">Let's talk <span aria-hidden="true">↗</span></a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-controls="mobileMenu" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
       </div>
     </div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation" hidden>
+      <a href="#work">Selected work <span>↗</span></a>
+      <a href="#all-work">Every project <span>↗</span></a>
+      <a href="#lab">Interactive lab <span>↗</span></a>
+      <a href="#about">About me <span>↗</span></a>
+      <a href="#contact">Let's talk <span>↗</span></a>
+    </nav>
   </header>
-  <main>
-    
-    <section id="dragon" class="dragon-forge" aria-label="Interactive 3D robotic dragon experience">
-      <div class="dragon-wrap">
-        <div class="dragon-copy">
-          <div class="dragon-eyebrow"><i></i> GEN5ROM / CINEMATIC INTERACTIVE LAB</div>
-          <h1>DRAGON<span>FORGE.</span></h1>
-          <p class="dragon-desc">Meet an unmistakable dragon, sculpted in shadow and lit by fire. Explore the creature in 360°, provoke its inferno and experience a cinematic 3D world.</p>
-          <div class="dragon-actions">
-            <button type="button" id="dragonStart" class="dragon-action">AWAKEN THE DRAGON <span aria-hidden="true">↗</span></button>
-            <a class="dragon-action ghost" href="#portfolio">EXPLORE WORK <span aria-hidden="true">↓</span></a>
-          </div>
-          <p class="dragon-micro" id="dragonMessage" role="status">INTERACTIVE WEBGL EXPERIMENT · LOADS ON DEMAND · OPTIMIZED FOR MOBILE</p>
+  <main id="main">
+    <section class="hero wrap" id="hero">
+      <div class="hero-copy">
+        <div class="micro-label"><span class="spark-dot"></span> THE CREATIVE PORTFOLIO OF HARNARAYAN <span class="subtle-line"></span> 2026</div>
+        <h1>Ideas look<br>better <span class="glow-type">in motion<span class="period">.</span></span></h1>
+        <p class="hero-description">I turn complicated ideas into clear, captivating visuals — through video editing, motion design, and a little creative obsession.</p>
+        <div class="hero-ctas">
+          <a class="primary-cta" href="#work"><span>Explore my work</span><span class="cta-arrow" aria-hidden="true">↗</span></a>
+          <a class="text-cta" href="#about">Get to know me <span aria-hidden="true">↗</span></a>
         </div>
-        <div id="dragonStage" class="dragon-stage" aria-label="3D robotic dragon interactive stage">
-          <div id="dragonStandby" class="dragon-standby" aria-hidden="true"><div class="dragon-standby-art"><strong>⟡</strong></div></div>
-          <div class="dragon-stage-tags" aria-hidden="true">
-            <div class="dragon-chip">ENTITY / 001<span>PYRØ — THE FIREKEEPER</span></div>
-            <div class="dragon-chip">SIGNAL / LIVE<span>SHADOW · FIRE · CINEMA</span></div>
-          </div>
-          <div class="dragon-viewport-status" hidden aria-live="polite">LIVE INTERACTION<strong id="dragonState">SENTINEL / IDLE</strong></div>
-          <div class="dragon-controls" id="dragonControls" hidden>
-            <button type="button" class="dragon-control" id="dragonFire" title="Make the dragon breathe fire (F)">🔥 BREATH FIRE · F</button>
-            <button type="button" class="dragon-control" id="dragonRoar" title="Roar (R)">◈ ROAR · R</button>
-            <button type="button" class="dragon-control" id="dragonMode" title="Toggle berserk mode (Space)">✦ BERSERK · SPACE</button>
-            <button type="button" class="dragon-control" id="dragonReset">↺ RESET</button>
-          </div>
-        </div>
-        <div class="dragon-index">NO. 001 / DRAGON SCULPT & INTERACTIVE EXPERIENCE</div>
+        <div class="hero-meta"><span><b>01 /</b> Motion & video</span><span><b>02 /</b> Visual design</span><span><b>03 /</b> Creative tech</span></div>
       </div>
-      <div class="dragon-stats" aria-label="Dragon experience details">
-        <div class="dragon-stat"><strong>360°</strong><span>Mouse-driven orbit</span></div>
-        <div class="dragon-stat"><strong>3D</strong><span>Cinematic fire & ember FX</span></div>
-        <div class="dragon-stat"><strong id="dragonCount">00</strong><span>Fire attacks triggered</span></div>
+      <div class="hero-art" id="orbStage" aria-label="Interactive luminous gradient sculpture; move or drag to rotate">
+        <div class="hero-art-inner">
+          <div class="orb-halo"></div>
+          <div class="orb-perspective" id="orbPerspective">
+            <div class="orb-body">
+              <div class="orb-core"></div><div class="orb-sheen"></div>
+              <div class="orb-texture"></div>
+              <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
+              <div class="orbit-lines orbit-lines-a"></div>
+            </div>
+          </div>
+          <span class="art-cross art-cross-one">+</span><span class="art-cross art-cross-two">+</span>
+          <div class="orbit-caption">
+            <div class="orbit-caption-top"><span class="live-indicator"></span> INTERACTIVE / 001 <span>LIVE</span></div>
+            <strong>THE MOTION ENGINE</strong>
+            <span class="orbit-caption-footer">MOVE • DRAG • TAP TO SHIFT COLORS</span>
+          </div>
+        </div>
+        <span class="art-axis art-axis-left">FORM / FEELING / FUNCTION</span>
+        <span class="art-axis art-axis-right">35° 41′ / INFINITE IDEAS</span>
+      </div>
+      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-glyph">↓</span><span>DESIGN IS THE DETAIL.</span></div>
+    </section>
+
+    <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>VIDEO EDITING</span><i>✳</i><span>MOTION GRAPHICS</span><i>✳</i><span>VISUAL STORYTELLING</span><i>✳</i><span>GRAPHIC DESIGN</span><i>✳</i><span>INTERACTIVE EXPERIENCES</span><i>✳</i><span>VIDEO EDITING</span><i>✳</i><span>MOTION GRAPHICS</span><i>✳</i><span>VISUAL STORYTELLING</span><i>✳</i><span>GRAPHIC DESIGN</span><i>✳</i><span>INTERACTIVE EXPERIENCES</span><i>✳</i></div></div>
+
+    <section class="section wrap" id="work">
+      <div class="section-intro reveal">
+        <div><span class="eyebrow"><b>01</b> / SIGNATURE WORK</span><h2>Work that <span class="accent-serif">speaks.</span></h2></div>
+        <p>Each frame has a job. Here are three projects where visuals do the storytelling.</p>
+      </div>
+      <div class="featured-layout" id="featuredProjects" aria-label="Three featured portfolio projects">
+        <!-- Filled from the original GEN5ROM project catalogue -->
+      </div>
+      <div class="showreel-strip reveal">
+        <div class="strip-visual" aria-hidden="true"><div class="strip-play">▶</div><span>PLAY / THE STORY</span></div>
+        <div class="strip-copy"><span class="eyebrow">HANDPICKED REEL</span><h3>One minute of motion is worth a thousand words.</h3><p>Product explainers, storytelling and visual experimentation.</p></div>
+        <button type="button" class="round-arrow" id="reelBtn" aria-label="Play featured motion reel">↗</button>
       </div>
     </section>
 
-    <section class="hero container" id="about">
-      <div>
-        <span class="badge gradient-text" style="font-size: 14px; font-weight: 600; letter-spacing: 2px;">THE HUMAN BEHIND THE MACHINE</span>
-        <h1 class="hero-title">Visual stories, crafted with <span class="gradient-text">motion & imagination.</span></h1>
-        <p class="hero-subtitle">I’m Harnarayan, a video editor and motion graphics designer. I turn complicated ideas into clear stories through video editing, motion design, and interactive visuals.</p>
-        <div class="hero-actions">
-          <a href="#portfolio" class="btn-emerald">Explore Works</a>
-          <a href="assets/harnarayan-resume.pdf" class="btn-outline" target="_blank">Download Resume</a>
-        </div>
+    <section class="section wrap archive-section" id="all-work">
+      <div class="section-intro reveal">
+        <div><span class="eyebrow"><b>02</b> / THE ARCHIVE</span><h2>Every frame <span class="accent-serif">counts.</span></h2></div>
+        <p>The full collection from my original GEN5ROM portfolio. Nothing missing, just easier to explore.</p>
       </div>
-      <div>
-        <img src="assets/harnarayan-profile.webp" alt="Harnarayan" class="hero-portrait-card">
+      <div class="archive-toolbar">
+        <div class="filter-list" role="group" aria-label="Filter portfolio projects" id="filters">
+          <button class="filter active" data-filter="all" aria-pressed="true">All work</button>
+          <button class="filter" data-filter="motion" aria-pressed="false">Motion graphics</button>
+          <button class="filter" data-filter="video" aria-pressed="false">Video editing</button>
+          <button class="filter" data-filter="design" aria-pressed="false">Graphic design</button>
+          <button class="filter" data-filter="kids" aria-pressed="false">AI kids stories</button>
+        </div>
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="projectSearch" type="search" placeholder="Search 34 projects" autocomplete="off" aria-label="Search projects"></label>
+      </div>
+      <div class="archive-status"><span id="resultsCount">34 projects</span><span>ORIGINAL WORK / NO FILLER</span></div>
+      <div id="projectGrid" class="project-grid" aria-live="polite"></div>
+      <p id="emptyResults" class="empty-results" hidden>No matches here. Try another search or category.</p>
+      <div class="archive-footer"><span>END OF THE COLLECTION · 34 ORIGINAL PROJECTS</span><a href="#contact">Have a project in mind? <span aria-hidden="true">↗</span></a></div>
+    </section>
+
+    <section class="section wrap lab-section" id="lab">
+      <div class="section-intro reveal">
+        <div><span class="eyebrow"><b>03</b> / INTERACTIVE PLAYGROUND</span><h2>Not just seen. <span class="accent-serif">Felt.</span></h2></div>
+        <p>Experimentation is part of the process. The hero sculpture reacts to you; archived 3D explorations open on demand.</p>
+      </div>
+      <div class="lab-grid">
+        <article class="lab-feature reveal"><div class="lab-glow"></div><span class="eyebrow">THE LIGHTWEIGHT EXPERIMENT</span><h3>Touch the<br><i>impossible.</i></h3><p>A responsive, no-download kinetic gradient object. Move your cursor, drag on mobile, or tap to change the color atmosphere.</p><a href="#orbStage">Play with the hero sculpture <span>↑</span></a><span class="lab-corner">CSS 3D / LIVE</span></article>
+        <div class="archived-labs" id="archivedLabs"></div>
       </div>
     </section>
-    <section id="showreel" class="showreel-section container">
-      <h2 class="section-title">Interactive <span class="gradient-text">Showreel</span></h2>
-      <p class="section-desc">Select a project below to load and view in high definition.</p>
-      <div class="showreel-player glass-card">
-        <iframe title="Portfolio video showreel" loading="lazy" id="main-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <section class="section wrap about-section" id="about">
+      <div class="section-intro reveal">
+        <div><span class="eyebrow"><b>04</b> / ABOUT ME</span><h2>Craft first. <span class="accent-serif">Always.</span></h2></div>
+        <p>Hi, I'm Harnarayan. An editor and motion designer who cares about the story as much as the visuals.</p>
       </div>
-      <div class="playlist-grid">
-        <button class="playlist-btn active" onclick="loadVideo('yDnmJa0fTsw', this)">01. SaaS Explainer</button>
-        <button class="playlist-btn" onclick="loadVideo('I5RlqsDqhug', this)">02. 360 Virtual Tour</button>
-        <button class="playlist-btn" onclick="loadVideo('7-2duY6fdzo', this)">03. Chainsaw Man Edit</button>
-        <button class="playlist-btn" onclick="loadVideo('v827BybYYxI', this)">04. Monster Energy 3D</button>
-        <button class="playlist-btn" onclick="loadVideo('1AOYe9wDsU4', this)">05. AI Engine Intro</button>
-        <button class="playlist-btn" onclick="loadVideo('7uWk-hbkJkY', this)">06. Architectural Review</button>
+      <div class="about-grid">
+        <article class="about-photo reveal"><img src="./assets/harnarayan-profile.webp" alt="Harnarayan, video editor and motion graphic designer" loading="lazy"><div class="portrait-gradient"></div><span class="about-photo-caption">HARNARAYAN / CREATIVE IN MOTION</span></article>
+        <div class="about-story reveal"><span class="micro-label">A LITTLE ABOUT THE PERSON BEHIND THE PIXELS</span><h3>I make the complex <span>feel simple.</span></h3><p>I work across editing, animated explainers, social media visuals and interactive experiments. My focus is turning a brief into something people actually want to watch.</p><p>My experience includes creative marketing and motion-led content at Zigency, alongside freelance and personal projects. I'm always looking to build, learn and make the next piece sharper than the last.</p><div class="about-links"><a href="./assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Read my resume ↗</a><a href="#contact">Work with me ↗</a></div></div>
       </div>
+      <div class="capability-grid">
+        <div class="capability"><span>01 /</span><h4>Motion & animation</h4><p>After Effects · 2D motion · explainer visuals</p></div>
+        <div class="capability"><span>02 /</span><h4>Editing & finishing</h4><p>Premiere Pro · cinematic edits · sound & pacing</p></div>
+        <div class="capability"><span>03 /</span><h4>Design systems</h4><p>Photoshop · Illustrator · Adobe Dimension</p></div>
+        <div class="capability"><span>04 /</span><h4>Creative experiments</h4><p>Spline · Framer · interactive 3D concepts</p></div>
+      </div>
+      <div class="process reveal"><span class="eyebrow">HOW I BUILD</span><div><strong>Discover</strong><span>→</span><strong>Storyboard</strong><span>→</span><strong>Animate</strong><span>→</span><strong>Refine</strong></div></div>
     </section>
-    <section id="portfolio" class="portfolio-section container">
-      <h2 class="section-title">Selected <span class="gradient-text">Portfolio</span></h2>
-      <p class="section-desc">Complete showcase of 15 commercial, VFX, motion, and design projects.</p>
-      <div class="filter-bar">
-        <button class="filter-btn active" onclick="filterCategory('all', this)">All Works (15)</button>
-        <button class="filter-btn" onclick="filterCategory('commercial', this)">Commercial Video (4)</button>
-        <button class="filter-btn" onclick="filterCategory('vfx', this)">Motion & 3D VFX (2)</button>
-        <button class="filter-btn" onclick="filterCategory('design', this)">Key Art & Design (9)</button>
-      </div>
-      <div class="portfolio-grid" id="portfolio-grid">
-        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', 'yDnmJa0fTsw')">
-          <img data-yt="yDnmJa0fTsw" alt="What is Zigency SaaS Explainer" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Commercial Video</div>
-            <div class="portfolio-title">What is Zigency SaaS Explainer</div>
-          </div>
+
+    <section class="contact-section" id="contact">
+      <div class="wrap contact-inner">
+        <div class="contact-glow" aria-hidden="true"></div>
+        <span class="eyebrow"><b>05</b> / SAY HELLO</span>
+        <h2>Let's make<br><span>something move.</span></h2>
+        <p>Have a brand, video or idea that deserves better visuals? Tell me about it.</p>
+        <a class="contact-link" href="mailto:narayansingh965466@gmail.com?subject=Let's%20work%20together">narayansingh965466@gmail.com <span>↗</span></a>
+        <div class="socials">
+          <a href="https://www.youtube.com/@gen5rom" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+          <a href="https://www.instagram.com/gen5rom" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          <a href="https://github.com/harnarayan-gen5rom" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+          <a href="./assets/harnarayan-resume.pdf" target="_blank" rel="noopener noreferrer">Resume ↗</a>
         </div>
-        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', 'I5RlqsDqhug')">
-          <img data-yt="I5RlqsDqhug" alt="Zigency 360 Virtual Property Tour" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Commercial Video</div>
-            <div class="portfolio-title">Zigency 360 Virtual Property Tour</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="vfx" onclick="openLightbox('video', '7-2duY6fdzo')">
-          <img data-yt="7-2duY6fdzo" alt="Chainsaw Man Motion Graphics Edit" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Motion & 3D VFX</div>
-            <div class="portfolio-title">Chainsaw Man Motion Graphics Edit</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="vfx" onclick="openLightbox('video', 'v827BybYYxI')">
-          <img data-yt="v827BybYYxI" alt="Monster Energy 3D VFX Simulation" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Motion & 3D VFX</div>
-            <div class="portfolio-title">Monster Energy 3D VFX Simulation</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', '1AOYe9wDsU4')">
-          <img data-yt="1AOYe9wDsU4" alt="Meet Zigency One Team AI Engine" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Commercial Video</div>
-            <div class="portfolio-title">Meet Zigency One Team AI Engine</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="commercial" onclick="openLightbox('video', '7uWk-hbkJkY')">
-          <img data-yt="7uWk-hbkJkY" alt="Noida Mall Architectural Review" class="portfolio-thumb yt-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Commercial Video</div>
-            <div class="portfolio-title">Noida Mall Architectural Review</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/Spiderman-poster.webp')">
-          <img src="assets/Spiderman-poster.webp" alt="Spiderman Poster Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Spiderman Concept Key Art</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/batman-poster.webp')">
-          <img src="assets/batman-poster.webp" alt="Batman Poster Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">The Dark Knight Artwork</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/gaming-laptop-ad.webp')">
-          <img src="assets/gaming-laptop-ad.webp" alt="Gaming Laptop Ad Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Cyberpunk Gaming Laptop Commercial</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/Gfx-anime-poster.webp')">
-          <img src="assets/Gfx-anime-poster.webp" alt="Anime GFX Poster Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Anime Cyberpunk Key Art</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/mixed-media-style.webp')">
-          <img src="assets/mixed-media-style.webp" alt="Mixed Media Poster" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Mixed Media Style Artwork</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/house-poster.webp')">
-          <img src="assets/house-poster.webp" alt="Architectural House Poster" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Modern Villa Key Art</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/social-media.webp')">
-          <img src="assets/social-media.webp" alt="Social Media Branding Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Social Media Brand Campaign</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/Gfx-poster.webp')">
-          <img src="assets/Gfx-poster.webp" alt="GFX Poster" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">Abstract GFX Visual Art</div>
-          </div>
-        </div>
-        <div class="portfolio-card" data-cat="design" onclick="openLightbox('image', 'assets/Banner.webp')">
-          <img src="assets/Banner.webp" alt="Cyberpunk Banner Design" class="portfolio-thumb">
-          <div class="portfolio-info">
-            <div class="portfolio-cat">Key Art & Design</div>
-            <div class="portfolio-title">GEN5ROM Cyber Banner</div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="toolkit" class="toolkit-section container">
-      <h2 class="section-title">Software <span class="gradient-text">Toolkit</span></h2>
-      <p class="section-desc">Industry standard tools used to create high quality video and graphics.</p>
-      <div class="toolkit-grid">
-        <div class="glass-card skill-card">
-          <div class="skill-title">After Effects</div>
-          <p style="font-size: 14px; color: #94a3b8;">Motion Graphics & Composition</p>
-        </div>
-        <div class="glass-card skill-card">
-          <div class="skill-title">Premiere Pro</div>
-          <p style="font-size: 14px; color: #94a3b8;">Video Editing & Sound Design</p>
-        </div>
-        <div class="glass-card skill-card">
-          <div class="skill-title">Photoshop & Illustrator</div>
-          <p style="font-size: 14px; color: #94a3b8;">Key Art & Graphic Design</p>
-        </div>
-        <div class="glass-card skill-card">
-          <div class="skill-title">DaVinci Resolve</div>
-          <p style="font-size: 14px; color: #94a3b8;">Color Grading & Mastering</p>
-        </div>
-        <div class="glass-card skill-card">
-          <div class="skill-title">Spline & Adobe Dimension</div>
-          <p style="font-size: 14px; color: #94a3b8;">Interactive 3D & Product Visuals</p>
-        </div>
-        <div class="glass-card skill-card">
-          <div class="skill-title">AI & Audio Tools</div>
-          <p style="font-size: 14px; color: #94a3b8;">Generative Visuals & Restoration</p>
-        </div>
-      </div>
-    </section>
-    <section id="experience" class="timeline-section container">
-      <h2 class="section-title">Experience & <span class="gradient-text">Education</span></h2>
-      <div class="timeline" style="margin-top: 40px;">
-        <div class="timeline-item">
-          <div class="timeline-role">Video Editor & Motion Graphics Designer</div>
-          <div class="timeline-company">Zigency</div>
-          <p style="color: #94a3b8;">Edited real estate and AI-focused marketing videos, built motion graphics for social campaigns, and handled projects from brief or script through revisions and final delivery.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-role">Motion Design Student</div>
-          <div class="timeline-company">DICE Academy</div>
-          <p style="color: #94a3b8;">Advanced diploma in visual effects, post-production techniques, typography, and motion design.</p>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-role">Bachelor's Degree — Pursuing</div>
-          <div class="timeline-company">IGNOU</div>
-          <p style="color: #94a3b8;">Degree currently in progress.</p>
-        </div>
-      </div>
-    </section>
-    <section id="contact" class="contact-section container">
-      <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
-      <div class="glass-card contact-card">
-        <p>Interested in collaborating on a project or hiring for video editing/VFX?</p>
-        <div class="contact-info">
-          <div>Email: <a href="mailto:narayansingh28489@gmail.com" class="gradient-text">narayansingh28489@gmail.com</a></div>
-          <div>Phone: <span style="color: #00d9f5;">+91 7503875055</span></div>
-          <div>Instagram: <span style="color: #00f5a0;">@gen5.rom</span></div>
-        </div>
-        <form id="contact-form" method="POST" style="display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 0 auto;">
-          <input type="text" name="name" placeholder="Your Name" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(6,8,17,0.6); color: #fff;">
-          <input type="email" name="email" placeholder="Your Email" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(6,8,17,0.6); color: #fff;">
-          <textarea name="message" placeholder="Project Details" rows="4" required style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(6,8,17,0.6); color: #fff;"></textarea>
-          <button type="submit" class="btn-emerald" style="justify-content: center;">Send Message</button>
-        </form>
       </div>
     </section>
   </main>
-  <div id="lightbox-modal" class="modal">
-    <div class="modal-content">
-      <button class="modal-close" type="button" onclick="closeLightbox()" aria-label="Close preview" style="background:transparent;border:0;">&times;</button>
-      <div id="modal-body"></div>
+  <footer class="site-footer"><div class="wrap"><a class="brand-footer" href="#top">gen5rom<span>.</span></a><span>DESIGNED WITH INTENTION. BUILT TO MOVE.</span><a href="#top">BACK TO TOP ↑</a></div></footer>
+
+  <div class="modal" id="mediaModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="document">
+      <div class="modal-bar"><h3 id="modalTitle">Selected work</h3><button id="modalClose" type="button" aria-label="Close project preview">✕</button></div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalBottom" class="modal-bottom"></div>
     </div>
   </div>
-  <script>
-    var p1 = 'https://';
-    var p2 = 'you' + 'tu' + 'be' + '.' + 'com';
-    var p3 = 'img.' + p2;
-    var fs = 'form' + 'sub' + 'mit' + '.' + 'co';
-
-    document.getElementById('contact-form').action = p1 + fs + '/8aebdb7e5e32448405cee0e1ff74f2ba';
-    document.getElementById('main-player').src = p1 + 'www.' + p2 + '/embed/yDnmJa0fTsw';
-
-    document.querySelectorAll('.yt-thumb').forEach(function(img) {
-      var id = img.getAttribute('data-yt');
-      img.src = p1 + p3 + '/vi/' + id + '/hqdefault.jpg';
-    });
-
-    function loadVideo(id, btn) {
-      document.getElementById('main-player').src = p1 + 'www.' + p2 + '/embed/' + id;
-      var btns = document.querySelectorAll('.playlist-btn');
-      btns.forEach(function(b) { b.classList.remove('active'); });
-      if(btn) btn.classList.add('active');
-    }
-
-    function filterCategory(cat, btn) {
-      var cards = document.querySelectorAll('.portfolio-card');
-      cards.forEach(function(card) {
-        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-      var filterBtns = document.querySelectorAll('.filter-btn');
-      filterBtns.forEach(function(b) { b.classList.remove('active'); });
-      if(btn) btn.classList.add('active');
-    }
-
-    function openLightbox(type, src) {
-      var modal = document.getElementById('lightbox-modal');
-      var body = document.getElementById('modal-body');
-      if (type === 'video') {
-        body.innerHTML = '<div style="position:relative;aspect-ratio:16/9;width:100%;"><iframe src="' + p1 + 'www.' + p2 + '/embed/' + src + '?autoplay=1" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe></div>';
-      } else {
-        body.innerHTML = '<img src="' + src + '" style="max-width:100%;max-height:80vh;display:block;margin:0 auto;border-radius:12px;">';
-      }
-      modal.classList.add('active');
-    }
-
-    document.querySelectorAll('.portfolio-card').forEach(function(card) {
-      card.setAttribute('role', 'button');
-      card.setAttribute('tabindex', '0');
-      card.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          card.click();
-        }
-      });
-    });
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') closeLightbox();
-    });
-
-    function closeLightbox() {
-      var modal = document.getElementById('lightbox-modal');
-      var body = document.getElementById('modal-body');
-      modal.classList.remove('active');
-      body.innerHTML = '';
-    }
-  </script>
-  <script type="importmap">
-  {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
-</script>
-<script type="module" src="./assets/dragon-v3.js?v=4-cinematic"></script>
+  <noscript><div class="noscript">JavaScript is required to display the interactive portfolio gallery. The original project archive is available on <a href="https://harnarayan-gen5rom.github.io/GEN5ROM/" target="_blank" rel="noopener noreferrer">GEN5ROM</a>.</div></noscript>
 </body>
 </html>
