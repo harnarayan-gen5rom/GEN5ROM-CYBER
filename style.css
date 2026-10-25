@@ -131,7 +131,7 @@ button,input{font:inherit}a{color:inherit;text-decoration:none}button{cursor:poi
 .lab-feature p{font-size:.83rem;line-height:1.87;color:#b8abc4;max-width:420px}
 .lab-feature a{position:relative;display:inline-flex;gap:35px;padding:13px 0;margin-top:8px;border-bottom:1px solid rgba(255,255,255,.35);font-size:.82rem;font-weight:700}.lab-feature a span{margin-left:auto}
 .lab-corner{position:absolute;bottom:24px;right:24px;font:500 9px DM Mono,monospace;color:#ada5c4;letter-spacing:.1em}
-.archived-labs{display:grid;grid-template-rows:1fr 1fr;gap:20px}
+.archived-labs{display:grid;grid-template-rows:repeat(3,minmax(0,1fr));gap:14px}
 .lab-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;justify-content:space-between;gap:12px;padding:27px;border:1px solid var(--line);border-radius:23px;background:linear-gradient(145deg,#1a1729,#0f111d);color:white;transition:transform .25s,border-color .25s}
 .lab-card::after{content:"◈";position:absolute;right:24px;top:21px;font-size:42px;color:rgba(213,160,252,.45)}
 .lab-card:hover{border-color:rgba(224,166,243,.43);transform:translateY(-3px)}
