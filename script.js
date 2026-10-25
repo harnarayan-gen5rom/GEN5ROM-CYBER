@@ -191,11 +191,17 @@
       '<span class="eyebrow">ARCHIVED 3D EXPERIMENT / 0'+(i+1)+'</span>'+
       '<strong>'+escapeHTML(x.title)+'</strong>'+
       '<small>'+escapeHTML(x.description)+'</small>'+
-      '<span>Open interactive scene ↗</span></button>').join("");
+      '<span>Open interactive scene ↗</span></button>').join("")+
+      '<button type="button" class="lab-card reveal" id="colorGradeBtn">'+
+      '<span class="eyebrow">POST-PRODUCTION / COLOR SCIENCE</span>'+
+      '<strong>Before & After Color Grade</strong>'+
+      '<small>Watch the original log-to-master color grading wipe animation from GEN5ROM.</small>'+
+      '<span>Watch grading breakdown ↗</span></button>';
     $$("[data-spline]",labs).forEach(btn=>btn.addEventListener("click",()=>{
       const p=experiments[Number(btn.dataset.spline)];if(p)openMedia({kind:"spline",title:p.title,scene:p.scene});
     }));
-    $$(".reveal",labs).forEach(el=>el.classList.add("visible"));
+    $("#colorGradeBtn")?.addEventListener("click",()=>openMedia({kind:"video",video:"PsYl-PKBSjw",title:"Before & After Color Grade Wipe Animation",isShort:true}));
+    $(".reveal",labs).forEach(el=>el.classList.add("visible"));
   }
   // Gentle desktop card parallax is optional and disabled on touch/reduced motion.
   if(!reduced && window.matchMedia("(hover:hover) and (pointer:fine)").matches){
