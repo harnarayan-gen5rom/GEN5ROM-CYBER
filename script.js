@@ -1,4 +1,4 @@
-/* GEN5ROM CYBER V5 — accessible portfolio interactions.
+/* GEN5ROM CYBER V6 — accessible portfolio interactions.
    Project data is loaded from portfolio-data.js (sourced from original GEN5ROM read-only). */
 (()=>{"use strict";
   const $=(sel,ctx=document)=>ctx.querySelector(sel);
@@ -209,4 +209,71 @@
       card.addEventListener("pointermove",e=>{const b=card.getBoundingClientRect();card.style.setProperty("--x",((e.clientX-b.left)/b.width*100).toFixed(1)+"%");});
     });
   }
+  // V6: GPU-friendly 3D tilt, one delegated listener per gallery.
+  // Pointer effects only run on devices with a precise hovering cursor.
+  const tiltEnabled=!reduced && window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if(tiltEnabled){
+    const selectors=".feature-card,.project,.lab-card";
+    [featureGrid,grid,labs].filter(Boolean).forEach(container=>{
+      let active=null,rect=null,target=null,frame=null;
+      function reset(){
+        if(frame!==null)cancelAnimationFrame(frame);
+        frame=null;target=null;rect=null;
+        if(active){
+          active.classList.remove("tilt-active");
+          active.style.setProperty("--tilt-x","0deg");
+          active.style.setProperty("--tilt-y","0deg");
+          active.style.setProperty("--spot-x","50%");
+          active.style.setProperty("--spot-y","35%");
+          active=null;
+        }
+      }
+      function draw(){
+        frame=null;
+        if(!active||!target||!rect)return;
+        const x=Math.max(0,Math.min(1,(target.x-rect.left)/rect.width));
+        const y=Math.max(0,Math.min(1,(target.y-rect.top)/rect.height));
+        const angle=active.classList.contains("feature-card")?5:active.classList.contains("lab-card")?4:5.5;
+        active.style.setProperty("--tilt-x",((.5-y)*angle*2).toFixed(2)+"deg");
+        active.style.setProperty("--tilt-y",((x-.5)*angle*2).toFixed(2)+"deg");
+        active.style.setProperty("--spot-x",(x*100).toFixed(1)+"%");
+        active.style.setProperty("--spot-y",(y*100).toFixed(1)+"%");
+      }
+      container.addEventListener("pointermove",event=>{
+        if(event.pointerType==="touch")return;
+        const card=event.target.closest(selectors);
+        if(!card||!container.contains(card)){reset();return;}
+        if(card!==active){
+          reset();active=card;rect=card.getBoundingClientRect();
+          card.classList.add("tilt-active");
+        }
+        target={x:event.clientX,y:event.clientY};
+        if(frame===null)frame=requestAnimationFrame(draw);
+      },{passive:true});
+      container.addEventListener("pointerleave",reset,{passive:true});
+      container.addEventListener("focusout",reset,{passive:true});
+    });
+  }
+  // V6: stagger gallery cards when the collection mounts or filters change.
+  if(grid && !reduced){
+    const enterCards=()=>{
+      Array.from(grid.querySelectorAll(".project:not(.entrance)")).forEach((card,i)=>{
+        card.classList.add("entrance");
+        card.style.setProperty("--stagger",Math.min(i,9)*48+"ms");
+      });
+    };
+    enterCards();
+    const mutation=new MutationObserver(enterCards);
+    mutation.observe(grid,{childList:true});
+  }
+  // The gradient orb is keyboard-operable too.
+  if(orb){
+    orb.addEventListener("keydown",event=>{
+      if(event.key==="Enter"||event.key===" "){
+        event.preventDefault();
+        orb.click();
+      }
+    });
+  }
+
 })();
