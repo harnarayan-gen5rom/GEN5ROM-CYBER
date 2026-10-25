@@ -261,7 +261,7 @@ body{background:radial-gradient(ellipse 65% 38% at 56% -5%,rgba(81,42,105,.25),t
 .project .project-type{background:rgba(17,13,32,.77);box-shadow:0 5px 17px rgba(0,0,0,.22)}
 .project .project-play{background:rgba(12,10,26,.69);transition:transform .3s var(--ease-3d),background .3s}
 .project:hover .project-play{transform:scale(1.14) rotate(-7deg);background:rgba(203,89,161,.75)}
-.project.entrance{animation:projectIn .73s var(--ease-3d) both;animation-delay:var(--stagger,0ms)}
+.project.entrance{animation:projectIn .73s var(--ease-3d) backwards;animation-delay:var(--stagger,0ms)}
 .showreel-strip{position:relative;isolation:isolate;overflow:hidden;border-top-color:rgba(255,204,237,.27);box-shadow:0 28px 65px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.07);transform:translateZ(0);transition:transform .45s var(--ease-3d),border-color .35s,box-shadow .4s}
 .showreel-strip::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,rgba(255,155,202,.10),transparent 30%,rgba(158,121,255,.11) 85%);opacity:.75}
 .showreel-strip:hover{transform:translateY(-4px);border-color:rgba(243,171,229,.36);box-shadow:0 35px 76px rgba(0,0,0,.29),0 0 45px rgba(207,86,161,.06)}
@@ -278,6 +278,9 @@ body{background:radial-gradient(ellipse 65% 38% at 56% -5%,rgba(81,42,105,.25),t
 .lab-card{overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.065)}
 .lab-card::before{content:"";position:absolute;width:180px;height:180px;border-radius:50%;top:-72px;right:-74px;pointer-events:none;border:1px solid rgba(237,169,249,.17);box-shadow:0 0 0 24px rgba(202,102,232,.028),0 0 0 50px rgba(202,102,232,.025),0 0 0 86px rgba(202,102,232,.018)}
 .lab-card:hover{--lift:-6px;box-shadow:0 27px 66px rgba(0,0,0,.3),0 0 27px rgba(181,73,196,.065)}
+.lab-card.reveal.visible{transform:perspective(1250px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0,var(--lift),0)}
+.lab-card.reveal.visible:hover{--lift:-6px}
+
 .about-photo{transform:perspective(950px) rotateY(-3deg);transform-origin:center;box-shadow:23px 28px 69px rgba(0,0,0,.36),0 0 55px rgba(209,87,153,.08);transition:transform .6s var(--ease-3d),box-shadow .6s}
 .about-photo:hover{transform:perspective(950px) rotateY(0deg) translateY(-6px);box-shadow:15px 35px 80px rgba(0,0,0,.4)}
 .about-photo::after{content:"";position:absolute;inset:0;pointer-events:none;border:1px solid rgba(255,255,255,.075);border-radius:inherit}
@@ -362,7 +365,7 @@ body{background:radial-gradient(ellipse 65% 38% at 56% -5%,rgba(81,42,105,.25),t
 /* Coarse pointer: no expensive tilt or pointer spotlights, but preserve smooth entrances. */
 @media(hover:none),(pointer:coarse){
   .project,.feature-card,.lab-card{--tilt-x:0deg!important;--tilt-y:0deg!important;--lift:0px!important}
-  .project:hover,.feature-card:hover,.lab-card:hover{transform:none}
+  .project:hover,.feature-card:hover,.lab-card:hover,.lab-card.reveal.visible,.lab-card.reveal.visible:hover{transform:none}
   .project .project-media,.project .project-copy,.feature-card .feature-copy{transform:none}
   .project::before,.feature-card::before{opacity:0!important}
   .aura{filter:blur(54px)}
