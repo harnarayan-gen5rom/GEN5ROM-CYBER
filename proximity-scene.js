@@ -1,356 +1,299 @@
-/* PROXIMITY / 001 — AETHER FIELD
-   A small, lazy-loaded real 3D sculpture powered by Three.js.
-   Only GEN5ROM-CYBER is modified. Nothing loads from the original GEN5ROM repo.
-   Pauses outside the viewport and while the document is hidden. */
-(() => {
+/* GEN5ROM-CYBER / CURSOR FIELD 002
+ * Spline-inspired kinetic cube installation (original procedural design).
+ * 3D graphite cloner cubes, amber luminous fissures, distance-driven extrusion.
+ * Lazy WebGL2, canvas fallback, touch support and offscreen render suspension.
+ */
+(()=>{
   "use strict";
-  const stage=document.getElementById("proximityStage");
-  const canvas=document.getElementById("proximityCanvas");
-  const themeButton=document.getElementById("proximityTheme");
-  const themeName=document.getElementById("proximityThemeName");
-  const message=document.getElementById("proximityMessage");
-  const meter=document.getElementById("proximityMeter");
-  const value=document.getElementById("proximityValue");
+  const stage=document.getElementById("proximityStage"),canvas=document.getElementById("proximityCanvas");
+  const fallback=document.getElementById("fallbackCubes"),theme=document.getElementById("proximityTheme");
+  const label=document.getElementById("proximityThemeName"),meter=document.getElementById("proximityMeter");
+  const value=document.getElementById("proximityValue"),message=document.getElementById("proximityMessage");
   const reticle=document.getElementById("proximityReticle");
-  if(!stage||!canvas||!themeButton)return;
-
-  const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const coarse=window.matchMedia("(pointer:coarse)").matches;
-  const palettes=[
-    {name:"ROSE / 01",base:0xf9a9d2,edge:0xff66af,secondary:0xbb8cff,dust:0xffcce9,css:"#ff84bd"},
-    {name:"VIOLET / 02",base:0xd4adff,edge:0xb77cff,secondary:0x84b6ff,dust:0xe0ccff,css:"#bc8fff"},
-    {name:"AURORA / 03",base:0xb5dfff,edge:0x6bbdff,secondary:0xe2a5ff,dust:0xbdefff,css:"#83d1ff"}
+  if(!stage||!canvas||!fallback||!theme)return;
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile=matchMedia("(max-width:680px)").matches;
+  const coarse=matchMedia("(pointer:coarse)").matches;
+  const colors=[
+    {name:"GOLD / 01",seam:0xffa928,light:0xffba55,sparks:0xffd183,css:"#ffc069"},
+    {name:"VIOLET / 02",seam:0xaa6eff,light:0xc095ff,sparks:0xe4c7ff,css:"#c295ff"},
+    {name:"ICE / 03",seam:0x5ecaff,light:0x9ae6ff,sparks:0xcaf1ff,css:"#86d7ff"}
   ];
-  let paletteIndex=0;
-  let active=false,dragging=false,visible=false,loadStarted=false,loaded=false,initPromise=null,renderer=null,scene=null,camera=null;
-  let frame=0,lastTime=0,time=0,energy=.08,impulse=0,resizeObserver=null,THREE=null;
-  let sculpture=null,knot=null,knotMaterial=null,core=null,lightA=null,lightB=null;
-  let rings=[],satellites=[],particles=null,dustMaterial=null,dustBase=null,dustPhases=null,dustGeometry=null;
-  const pointer={x:0,y:0},smoothPointer={x:0,y:0};
-  let statusAt=0;
+  let palette=0,started=false,loaded=false,sceneVisible=false,dragging=false,active=false;
+  let frame=0,last=0,elapsed=0,force=0,energy=0.06,nextReadout=0;
+  let T,renderer,scene,camera,cubes,plates,geometry,group,mat,glowMat,lightKey,lightFill;
+  let particles,particlePositions,particleSeeds,particleMaterial,particleGeo;
+  let resizeObs,initPromise;
+  const pointer={x:.5,y:.5},smooth={x:.5,y:.5};
+  const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
   const lerp=(a,b,t)=>a+(b-a)*t;
-  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+  const cols=mobile?8:12,rows=mobile?8:8;
+  const count=cols*rows,spacing=mobile?.93:.96;
+  const cubesize=mobile?.77:.81;
+  // CSS fallback loads immediately, before a remote WebGL library resolves.
+  for(let i=0;i<count;i++){
+    const tile=document.createElement("i");
+    tile.style.setProperty("--tile-index",String(i));
+    fallback.appendChild(tile);
+  }
+  fallback.style.setProperty("--cols",cols);
+  function updateText(){
+    const percent=clamp(Math.round(energy*100),0,100);
+    meter.style.width=Math.max(2,percent)+"%";value.textContent=percent+"%";
+    message.textContent=force>.5?"ENERGY PULSE":energy>.68?"HIGH ENERGY / FULL INTERACTION":energy>.23?"CUBES FOLLOWING YOUR CURSOR":"MOVE OVER THE CUBES";
+  }
   const toHex=n=>"#"+n.toString(16).padStart(6,"0");
-
-  function updateReadout(force=false){
-    const intensity=clamp(Math.round(energy*100),0,100);
-    meter.style.width=Math.max(2,intensity)+"%";
-    value.textContent=intensity+"%";
-    const next=impulse>.5?"PULSE DETECTED":energy>.69?"FIELD FULLY ENGAGED":energy>.29?"PROXIMITY RESPONSE ACTIVE":active?"MOVE TOWARD THE CENTER":"MOVE CLOSER TO INTERACT";
-    if(force||next!==message.textContent)message.textContent=next;
+  function changePalette(i){
+    palette=(i+colors.length)%colors.length;
+    const c=colors[palette];
+    label.textContent=c.name;
+    stage.style.setProperty("--cube-light",c.css);
+    theme.style.setProperty("--field-rose",c.css);
+    theme.setAttribute("aria-label","Change cube lighting palette, current "+c.name);
+    if(glowMat)glowMat.color.setHex(c.seam);
+    if(lightKey)lightKey.color.setHex(c.light);
+    if(lightFill)lightFill.color.setHex(c.seam);
+    if(particleMaterial)particleMaterial.color.setHex(c.sparks);
+    if(reduced&&renderer)renderer.render(scene,camera);
   }
-  function setPalette(next){
-    paletteIndex=(next+palettes.length)%palettes.length;
-    const p=palettes[paletteIndex];
-    themeName.textContent=p.name;
-    stage.style.setProperty("--field-rose",p.css);
-    stage.style.setProperty("--field-violet",toHex(p.secondary));
-    themeButton.setAttribute("aria-label","Change 3D sculpture palette. Current: "+p.name);
-    if(knotMaterial)knotMaterial.color.setHex(p.base);
-    if(lightA)lightA.color.setHex(p.edge);
-    if(lightB)lightB.color.setHex(p.secondary);
-    if(core)core.material.color.setHex(p.secondary);
-    if(dustMaterial)dustMaterial.color.setHex(p.dust);
-    rings.forEach((ring,i)=>ring.material.color.setHex(i===1?p.secondary:p.edge));
-    satellites.forEach((orb,i)=>orb.material.color.setHex(i%2?p.secondary:p.edge));
-    if(reduced)renderStill();
-  }
-  themeButton.addEventListener("click",()=>setPalette(paletteIndex+1));
-
-  function readPointer(e){
+  theme.addEventListener("click",()=>changePalette(palette+1));
+  function updatePointer(clientX,clientY){
     const r=stage.getBoundingClientRect();
-    if(!r.width||!r.height)return;
-    pointer.x=clamp(((e.clientX-r.left)/r.width-.5)*2,-1,1);
-    pointer.y=clamp((.5-(e.clientY-r.top)/r.height)*2,-1,1);
-    if(!coarse){
-      reticle.style.left=(e.clientX-r.left).toFixed(2)+"px";
-      reticle.style.top=(e.clientY-r.top).toFixed(2)+"px";
-      stage.classList.add("pointer-active");
-    }
+    if(r.width<1||r.height<1)return;
+    pointer.x=clamp((clientX-r.left)/r.width,0,1);
+    pointer.y=clamp((clientY-r.top)/r.height,0,1);
+    reticle.style.left=(clientX-r.left)+"px";
+    reticle.style.top=(clientY-r.top)+"px";
+    if(!coarse)stage.classList.add("pointer-active");
     active=true;
-    requestAnimation();
+    // Keep fallback reactive as well when GPU/web connection is unavailable.
+    if(!loaded){
+      fallback.style.setProperty("--cursor-x",(pointer.x*100)+"%");
+      fallback.style.setProperty("--cursor-y",(pointer.y*100)+"%");
+      const cells=fallback.children,focusX=pointer.x*cols,focusY=pointer.y*rows;
+      for(let i=0;i<cells.length;i++){
+        const dx=i%cols+.5-focusX,dy=Math.floor(i/cols)+.5-focusY;
+        const near=Math.exp(-(dx*dx+dy*dy)*.36);
+        cells[i].style.setProperty("--push",(near*30)+"px");
+      }
+    }
+    run();
   }
-  stage.addEventListener("pointerenter",e=>{if(e.pointerType!=="touch")readPointer(e);},{passive:true});
+  stage.addEventListener("pointerenter",e=>{if(e.pointerType!=="touch")updatePointer(e.clientX,e.clientY);},{passive:true});
   stage.addEventListener("pointermove",e=>{
     if(e.pointerType==="touch"&&!dragging)return;
-    readPointer(e);
+    updatePointer(e.clientX,e.clientY);
   },{passive:true});
   stage.addEventListener("pointerdown",e=>{
     if(e.pointerType==="touch"){
       dragging=true;
       try{stage.setPointerCapture(e.pointerId)}catch(_){}
     }
-    readPointer(e);
-    impulse=Math.max(impulse,.85);
-    requestAnimation();
+    updatePointer(e.clientX,e.clientY);
+    force=1;
+    run();
   },{passive:true});
-  function clearPointer(){
-    dragging=false;active=false;
-    stage.classList.remove("pointer-active");
-    requestAnimation();
+  function leave(){
+    active=false;dragging=false;
+    stage.classList.remove("pointer-active");run();
   }
-  stage.addEventListener("pointerleave",e=>{if(e.pointerType!=="touch")clearPointer();},{passive:true});
+  stage.addEventListener("pointerleave",e=>{if(e.pointerType!=="touch")leave();},{passive:true});
   stage.addEventListener("pointerup",e=>{
-    if(e.pointerType==="touch"){
-      dragging=false;
-      if(stage.hasPointerCapture(e.pointerId)){try{stage.releasePointerCapture(e.pointerId)}catch(_){}}
-      // Keep the sculpture gently energized after a touch.
-      impulse=Math.max(impulse,.62);
-      active=false;
-    }
+    if(e.pointerType==="touch"){dragging=false;active=false;force=Math.max(.6,force);}
   },{passive:true});
-  stage.addEventListener("pointercancel",clearPointer,{passive:true});
+  stage.addEventListener("pointercancel",leave,{passive:true});
   stage.addEventListener("keydown",e=>{
     if(e.key==="Enter"||e.key===" "){
-      e.preventDefault();impulse=1;setPalette(paletteIndex+1);requestAnimation();
-    }else if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key)){
+      e.preventDefault();force=1;active=true;pointer.x=.5;pointer.y=.5;changePalette(palette+1);run();
+    }else if(["ArrowRight","ArrowLeft","ArrowUp","ArrowDown"].includes(e.key)){
       e.preventDefault();active=true;
-      pointer.x=clamp(pointer.x+(e.key==="ArrowRight"?.17:e.key==="ArrowLeft"?-.17:0),-1,1);
-      pointer.y=clamp(pointer.y+(e.key==="ArrowUp"?.17:e.key==="ArrowDown"?-.17:0),-1,1);
-      requestAnimation();
-    }else if(e.key==="Escape"){clearPointer();}
+      if(e.key==="ArrowLeft")pointer.x=clamp(pointer.x-.10,0,1);
+      if(e.key==="ArrowRight")pointer.x=clamp(pointer.x+.10,0,1);
+      if(e.key==="ArrowUp")pointer.y=clamp(pointer.y-.10,0,1);
+      if(e.key==="ArrowDown")pointer.y=clamp(pointer.y+.10,0,1);
+      run();
+    }else if(e.key==="Escape")leave();
   });
-  // Fallback still responds to palette changes if WebGL is unavailable.
-  function renderStill(){
-    if(!renderer||!scene||!camera)return;
-    renderer.render(scene,camera);
-  }
-
-  async function begin(){
-    if(loadStarted)return initPromise;
-    loadStarted=true;
+  const makeRoundedTile=(T,size)=>{
+    const r=.048,s=size/2;
+    const shape=new T.Shape();
+    shape.moveTo(-s+r,-s);
+    shape.lineTo(s-r,-s);shape.quadraticCurveTo(s,-s,s,-s+r);
+    shape.lineTo(s,s-r);shape.quadraticCurveTo(s,s,s-r,s);
+    shape.lineTo(-s+r,s);shape.quadraticCurveTo(-s,s,-s,s-r);
+    shape.lineTo(-s,-s+r);shape.quadraticCurveTo(-s,-s,-s+r,-s);
+    const g=new T.ExtrudeGeometry(shape,{depth:.68,steps:1,bevelEnabled:true,bevelThickness:.052,bevelSize:.036,bevelSegments:2,curveSegments:3});
+    g.translate(0,0,-.34);
+    g.computeVertexNormals();
+    return g;
+  };
+  async function initialize(){
+    if(started)return initPromise;
+    started=true;
     initPromise=(async()=>{
       try{
-        // Check first: unsupported GPUs and power-saving browsers get the CSS artwork.
-        const context=canvas.getContext("webgl2",{antialias:!coarse,alpha:true,powerPreference:"high-performance"});
-        if(!context)throw new Error("WebGL2 unavailable");
-        const module=await import("https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js");
-        THREE=module;
-        initScene(context);
-        loaded=true;
-        stage.classList.add("webgl-ready");
-        if(reduced)renderStill();
-        else if(visible)requestAnimation();
+        const context=canvas.getContext("webgl2",{antialias:!coarse,alpha:true,powerPreference:coarse?"low-power":"high-performance"});
+        if(!context)throw Error("WebGL2 not supported");
+        T=await import("https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js");
+        scene=new T.Scene();
+        camera=new T.PerspectiveCamera(35,1,.1,100);
+        camera.position.set(0,0,mobile?13.3:15.5);
+        camera.lookAt(0,0,0);
+        renderer=new T.WebGLRenderer({canvas,context,alpha:true,antialias:!coarse,powerPreference:coarse?"low-power":"high-performance"});
+        renderer.setClearColor(0x000000,0);
+        renderer.setPixelRatio(Math.min(devicePixelRatio||1,coarse?1.3:1.85));
+        renderer.outputColorSpace=T.SRGBColorSpace;
+        renderer.toneMapping=T.ACESFilmicToneMapping;
+        renderer.toneMappingExposure=1.05;
+        scene.add(new T.AmbientLight(0x4f4659,.74));
+        scene.add(new T.HemisphereLight(0xe9defe,0x0b0610,.64));
+        const key=new T.DirectionalLight(0xeae5ee,2.1);key.position.set(-4,6,9);scene.add(key);
+        const edge=new T.DirectionalLight(0x9785b5,1.05);edge.position.set(4,-3,4);scene.add(edge);
+        lightKey=new T.PointLight(colors[palette].light,25,14,1.4);lightKey.position.set(2,2,4);scene.add(lightKey);
+        lightFill=new T.PointLight(colors[palette].seam,16,13,1.2);lightFill.position.set(-3,-1,2);scene.add(lightFill);
+
+        group=new T.Group();
+        group.rotation.set(-.08,-.15,-.025);
+        group.position.set(mobile?0:2.15,mobile?-.56:-.14,0);
+        scene.add(group);
+        geometry=makeRoundedTile(T,cubesize);
+        mat=new T.MeshPhysicalMaterial({color:0x1d1b24,metalness:.61,roughness:.34,clearcoat:.7,clearcoatRoughness:.19,flatShading:false,emissive:0x050308,emissiveIntensity:.35});
+        cubes=new T.InstancedMesh(geometry,mat,count);
+        cubes.instanceMatrix.setUsage(T.DynamicDrawUsage);
+        cubes.frustumCulled=false;
+        group.add(cubes);
+        glowMat=new T.MeshBasicMaterial({color:colors[palette].seam,side:T.DoubleSide,toneMapped:false,transparent:true,opacity:.84,depthWrite:false});
+        const planeGeo=new T.PlaneGeometry(spacing*.96,spacing*.96);
+        plates=new T.InstancedMesh(planeGeo,glowMat,count);
+        plates.instanceMatrix.setUsage(T.DynamicDrawUsage);
+        plates.frustumCulled=false;
+        group.add(plates);
+        const dummy=new T.Object3D(),panel=new T.Object3D();
+        for(let i=0;i<count;i++){
+          const x=((i%cols)-(cols-1)/2)*spacing;
+          const y=(((rows-1)/2)-Math.floor(i/cols))*spacing;
+          dummy.position.set(x,y,0);dummy.rotation.set(0,0,0);dummy.updateMatrix();cubes.setMatrixAt(i,dummy.matrix);
+          panel.position.set(x,y,-.45);panel.updateMatrix();plates.setMatrixAt(i,panel.matrix);
+          const shade=1-(((i*17)%9)/85);
+          cubes.setColorAt(i,new T.Color().setRGB(shade,shade*.98,shade));
+        }
+        cubes.instanceMatrix.needsUpdate=true;plates.instanceMatrix.needsUpdate=true;
+        if(cubes.instanceColor)cubes.instanceColor.needsUpdate=true;
+        // A handful of warm sparks float between the interlocked segments.
+        const seedCount=coarse?24:52;
+        particleSeeds=new Float32Array(seedCount*3);
+        particlePositions=new Float32Array(seedCount*3);
+        for(let i=0;i<seedCount;i++){
+          particleSeeds[i*3]=(Math.random()-.5)*cols*spacing*1.25+(mobile?0:2.15);
+          particleSeeds[i*3+1]=(Math.random()-.5)*rows*spacing*1.12+(mobile?-.56:-.14);
+          particleSeeds[i*3+2]=(Math.random()-.5)*2+1;
+        }
+        particlePositions.set(particleSeeds);
+        particleGeo=new T.BufferGeometry();
+        particleGeo.setAttribute("position",new T.BufferAttribute(particlePositions,3).setUsage(T.DynamicDrawUsage));
+        particleMaterial=new T.PointsMaterial({color:colors[palette].sparks,size:coarse?.028:.035,opacity:.58,transparent:true,depthWrite:false,blending:T.AdditiveBlending,sizeAttenuation:true});
+        particles=new T.Points(particleGeo,particleMaterial);
+        scene.add(particles);
+        renderer.setAnimationLoop(null);
+        resize();
+        if("ResizeObserver" in window){resizeObs=new ResizeObserver(resize);resizeObs.observe(stage);}
+        else window.addEventListener("resize",resize,{passive:true});
+        loaded=true;stage.classList.add("webgl-ready");
+        changePalette(palette);
+        if(reduced){renderStill();}
+        else if(sceneVisible)run();
       }catch(error){
         stage.classList.add("webgl-fallback");
-        // Keep beautiful CSS sculpture visible when WebGL or network is blocked.
-        if(message)message.textContent="STATIC PREVIEW / WEBGL UNAVAILABLE";
-        console.warn("Proximity Aether fallback:",error.message);
+        message.textContent="INTERACTIVE PREVIEW / LOW-POWER MODE";
+        console.warn("Cube field fallback: ",error.message);
       }
     })();
     return initPromise;
   }
-
-  function initScene(context){
-    const T=THREE;
-    renderer=new T.WebGLRenderer({canvas,context,alpha:true,antialias:!coarse,powerPreference:"high-performance",premultipliedAlpha:false});
-    renderer.setClearColor(0x000000,0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,coarse?1.25:1.7));
-    renderer.outputColorSpace=T.SRGBColorSpace;
-    renderer.toneMapping=T.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.36;
-    scene=new T.Scene();
-    camera=new T.PerspectiveCamera(coarse?35:33,1,.1,80);
-    camera.position.set(0,0,8.75);
-    camera.lookAt(0,0,0);
-    scene.add(new T.AmbientLight(0xe9caff,.85));
-    scene.add(new T.HemisphereLight(0xeac4ff,0x17102a,1.55));
-
-    const key=new T.DirectionalLight(0xffe8f6,3.25);key.position.set(-3.6,4.3,6);scene.add(key);
-    const rim=new T.DirectionalLight(0xaac7ff,3.7);rim.position.set(3.8,-2.2,3.5);scene.add(rim);
-    const top=new T.DirectionalLight(0xffb2db,2.0);top.position.set(1.5,5,-3.5);scene.add(top);
-    lightA=new T.PointLight(0xff68b7,34,16,2);lightA.position.set(-2,1,3.7);scene.add(lightA);
-    lightB=new T.PointLight(0xb48aff,27,16,2);lightB.position.set(2.8,-1.8,2.3);scene.add(lightB);
-
-    sculpture=new T.Group();
-    sculpture.position.set(coarse?0.12:0.36,-.04,0);
-    scene.add(sculpture);
-    knotMaterial=new T.MeshPhysicalMaterial({
-      color:0xf9a9d2,metalness:.58,roughness:.22,clearcoat:1,clearcoatRoughness:.06,
-      iridescence:.88,iridescenceIOR:1.33,iridescenceThicknessRange:[145,710],
-      emissive:0x230b31,emissiveIntensity:.25
-    });
-    knot=new T.Mesh(new T.TorusKnotGeometry(1.03,.295,coarse?170:270,coarse?18:30,2,3),knotMaterial);
-    knot.rotation.set(.18,.34,.21);
-    sculpture.add(knot);
-
-    const ghostMaterial=new T.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:coarse?.018:.028,depthWrite:false,blending:T.AdditiveBlending});
-    const contour=new T.Mesh(knot.geometry,ghostMaterial);
-    contour.scale.setScalar(1.013);
-    knot.add(contour);
-
-    const coreMaterial=new T.MeshBasicMaterial({color:0xb48aff,transparent:true,opacity:.09,depthWrite:false,blending:T.AdditiveBlending});
-    core=new T.Mesh(new T.SphereGeometry(.92,32,22),coreMaterial);
-    core.scale.set(.85,.85,.85);sculpture.add(core);
-
-    // Three offset orbital paths add actual stereoscopic 3D depth.
-    const orbitConfig=[
-      {r:1.87,color:0xff6bbd,rx:.92,ry:.22,rz:-.29,size:.009,opacity:.53},
-      {r:1.67,color:0xb48aff,rx:.10,ry:1.18,rz:.25,size:.007,opacity:.48},
-      {r:2.08,color:0xff9ed4,rx:.37,ry:.20,rz:1.18,size:.006,opacity:.32}
-    ];
-    orbitConfig.forEach((cfg,i)=>{
-      const material=new T.MeshBasicMaterial({color:cfg.color,transparent:true,opacity:cfg.opacity,depthWrite:false,blending:T.AdditiveBlending});
-      const ring=new T.Mesh(new T.TorusGeometry(cfg.r,cfg.size,8,180),material);
-      ring.rotation.set(cfg.rx,cfg.ry,cfg.rz);
-      ring.userData={rx:cfg.rx,ry:cfg.ry,rz:cfg.rz,i};
-      rings.push(ring);sculpture.add(ring);
-    });
-
-    // Small luminous nodes travel along different 3D orbital planes.
-    const beadGeo=new T.SphereGeometry(.052,12,9);
-    for(let i=0;i<(coarse?5:8);i++){
-      const material=new T.MeshBasicMaterial({color:i%2?0xb48aff:0xff68b7,transparent:true,opacity:.94});
-      const bead=new T.Mesh(beadGeo,material);
-      bead.userData={offset:(i/(coarse?5:8))*Math.PI*2,speed:.18+(i%3)*.055,radius:1.74+(i%3)*.16,index:i};
-      sculpture.add(bead);satellites.push(bead);
-    }
-
-    // Sparse, reactive, depth-varied dust field; CPU work under 250 points.
-    const count=coarse?95:235;
-    dustBase=new Float32Array(count*3);
-    dustPhases=new Float32Array(count);
-    const seed=new Float32Array(count*3);
-    for(let i=0;i<count;i++){
-      const angle=Math.random()*Math.PI*2;
-      const radius=2.15+Math.pow(Math.random(),.72)*2.9;
-      const z=(Math.random()-.5)*3.7;
-      seed[i*3]=Math.cos(angle)*radius;
-      seed[i*3+1]=Math.sin(angle)*radius*.68;
-      seed[i*3+2]=z;
-      dustPhases[i]=Math.random()*Math.PI*2;
-    }
-    dustBase.set(seed);
-    dustGeometry=new T.BufferGeometry();
-    dustGeometry.setAttribute("position",new T.BufferAttribute(seed.slice(),3).setUsage(T.DynamicDrawUsage));
-    dustMaterial=new T.PointsMaterial({
-      color:0xffcce9,size:coarse?.025:.032,sizeAttenuation:true,transparent:true,
-      opacity:.8,depthWrite:false,blending:T.AdditiveBlending
-    });
-    particles=new T.Points(dustGeometry,dustMaterial);
-    scene.add(particles);
-    resize();
-    if("ResizeObserver" in window){
-      resizeObserver=new ResizeObserver(resize);
-      resizeObserver.observe(stage);
-    }else window.addEventListener("resize",resize,{passive:true});
-    setPalette(paletteIndex);
-  }
-
   function resize(){
     if(!renderer||!camera)return;
-    const w=Math.max(1,Math.round(stage.clientWidth));
-    const h=Math.max(1,Math.round(stage.clientHeight));
-    renderer.setSize(w,h,false);
-    camera.aspect=w/h;
-    camera.fov=w<500?37:33;
+    const width=Math.max(1,stage.clientWidth),height=Math.max(1,stage.clientHeight);
+    renderer.setSize(width,height,false);
+    camera.aspect=width/height;
+    camera.fov=mobile?37:35;
     camera.updateProjectionMatrix();
     if(reduced)renderStill();
   }
-
-  function requestAnimation(){
-    if(reduced){
-      if(loaded)renderStill();
-      return;
-    }
-    if(loaded && visible && !document.hidden && frame===0){
-      lastTime=0;frame=requestAnimationFrame(animate);
-    }
+  function renderStill(){if(renderer&&scene&&camera)renderer.render(scene,camera);}
+  function run(){
+    if(reduced){renderStill();return;}
+    if(sceneVisible&&loaded&&!document.hidden&&!frame){last=0;frame=requestAnimationFrame(animate);}
   }
+  const tempMatrix={}; // cached nodes allocated after load
   function animate(now){
     frame=0;
-    if(!visible||document.hidden||!renderer)return;
-    const dt=lastTime?clamp((now-lastTime)/1000,.001,.05):.016;
-    lastTime=now;
-    time+=dt;
-    // Physics: the closer the cursor, the more energy the sculpture accumulates.
-    smoothPointer.x=lerp(smoothPointer.x,active?pointer.x:0,clamp(dt*6,0,1));
-    smoothPointer.y=lerp(smoothPointer.y,active?pointer.y:0,clamp(dt*6,0,1));
-    const radial=Math.hypot(pointer.x*.98,pointer.y*1.16);
-    const proximity=active?Math.pow(clamp(1-radial/1.15,0,1),1.25):.06;
-    energy=lerp(energy,clamp(.07+proximity*.88+impulse*.55,0,1),clamp(dt*4.6,0,1));
-    impulse=Math.max(0,impulse-dt*.95);
-    if(sculpture){
-      sculpture.rotation.y=lerp(sculpture.rotation.y,smoothPointer.x*.32+Math.sin(time*.18)*.055,clamp(dt*3.6,0,1));
-      sculpture.rotation.x=lerp(sculpture.rotation.x,-smoothPointer.y*.25+Math.cos(time*.19)*.04,clamp(dt*3.6,0,1));
-      sculpture.position.x=lerp(sculpture.position.x,(coarse?.12:.36)+smoothPointer.x*.22,clamp(dt*2.7,0,1));
-      sculpture.position.y=lerp(sculpture.position.y,-.04+smoothPointer.y*.15,clamp(dt*2.7,0,1));
-      const scale=1+Math.sin(time*.69)*.015+energy*.07;
-      sculpture.scale.setScalar(scale);
+    if(!loaded||!sceneVisible||document.hidden)return;
+    const dt=last?clamp((now-last)/1000,.001,.055):.016;
+    last=now;elapsed+=dt;
+    smooth.x=lerp(smooth.x,active?pointer.x:.5,clamp(dt*4.5,0,1));
+    smooth.y=lerp(smooth.y,active?pointer.y:.5,clamp(dt*4.5,0,1));
+    const cx=mobile?.5:.615,cy=mobile?.54:.52;
+    const px=(smooth.x-cx)*(mobile?cols*spacing:cols*spacing*1.9);
+    const py=(cy-smooth.y)*(mobile?rows*spacing:rows*spacing*1.5);
+    const radial=Math.hypot((smooth.x-cx)*1.4,(smooth.y-cy)*1.55);
+    const prox=active?Math.pow(clamp(1-radial/.62,0,1),.85):0;
+    energy=lerp(energy,clamp(.05+prox*.9+force*.36,0,1),clamp(dt*4.2,0,1));
+    force=Math.max(0,force-dt*.9);
+    if(!tempMatrix.tile){tempMatrix.tile=new T.Object3D();tempMatrix.panel=new T.Object3D();}
+    let maxLift=0;
+    for(let i=0;i<count;i++){
+      const x=((i%cols)-(cols-1)/2)*spacing;
+      const y=(((rows-1)/2)-Math.floor(i/cols))*spacing;
+      const dx=x-px,dy=y-py;
+      const d2=dx*dx+dy*dy;
+      const field=active?Math.exp(-d2/(mobile?3.9:5.1)):0;
+      const pulse=Math.exp(-d2/7.2)*force;
+      const lift=field*(1.55+energy*.55)+pulse*.95;
+      maxLift=Math.max(lift,maxLift);
+      const wobble=Math.sin(elapsed*.72+i*.22)*.009;
+      const tile=tempMatrix.tile;
+      tile.position.set(x+dx*.014*field,y+dy*.015*field,lift+wobble);
+      tile.rotation.set(-dy*.095*field+Math.sin(elapsed*.52+i*.17)*.008,dx*.095*field,-dx*.023*field);
+      tile.scale.setScalar(1-field*.055+pulse*.025);
+      tile.updateMatrix();cubes.setMatrixAt(i,tile.matrix);
     }
-    if(knot){
-      knot.rotation.y+=dt*(.13+energy*.3);
-      knot.rotation.z+=dt*(.07+energy*.20);
-      knot.rotation.x=Math.sin(time*.31)*.15+energy*.06;
-      knotMaterial.emissiveIntensity=.16+energy*.32;
-    }
-    if(core)core.material.opacity=.05+energy*.11;
-    rings.forEach((ring,i)=>{
-      const r=ring.userData;
-      ring.rotation.z=r.rz+Math.sin(time*(.21+i*.06))* (.1+energy*.14)+(i%2?-1:1)*time*(.06+energy*.13);
-      ring.rotation.y=r.ry+Math.cos(time*.18+i)*(.08+energy*.15);
-      const sc=1+energy*(.04+i*.018)+Math.sin(time*.74+i)*.007;
-      ring.scale.setScalar(sc);
-      ring.material.opacity=clamp([.51,.48,.29][i]+energy*.24,0,1);
-    });
-    satellites.forEach(bead=>{
-      const u=bead.userData;
-      const a=u.offset+time*(u.speed+energy*.22);
-      bead.position.set(Math.cos(a)*u.radius,Math.sin(a*1.05)*u.radius*.73,Math.sin(a*.7+u.index)*.72);
-      bead.scale.setScalar(.78+energy*.7+Math.sin(time*1.3+u.index)*.08);
-    });
-    if(particles&&dustGeometry){
-      const attr=dustGeometry.getAttribute("position"),positions=attr.array;
-      const cursorX=smoothPointer.x*3.25+(coarse?.12:.36);
-      const cursorY=smoothPointer.y*2.6;
-      for(let i=0;i<dustPhases.length;i++){
-        const k=i*3,phase=dustPhases[i];
-        const ox=dustBase[k],oy=dustBase[k+1],oz=dustBase[k+2];
-        const bx=ox+Math.sin(time*.23+phase)*.045;
-        const by=oy+Math.cos(time*.27+phase)*.055;
-        const dx=bx-cursorX,dy=by-cursorY;
-        const d=Math.max(.12,Math.hypot(dx,dy));
-        const push=active?Math.pow(clamp(1-d/1.9,0,1),2)*(.53+energy*.5):0;
-        positions[k]=lerp(positions[k],bx+(dx/d)*push,clamp(dt*5.5,0,1));
-        positions[k+1]=lerp(positions[k+1],by+(dy/d)*push,clamp(dt*5.5,0,1));
-        positions[k+2]=oz+Math.sin(time*.33+phase)*.035;
+    cubes.instanceMatrix.needsUpdate=true;
+    group.rotation.y=lerp(group.rotation.y,-.15+(smooth.x-.5)*.14,clamp(dt*1.9,0,1));
+    group.rotation.x=lerp(group.rotation.x,-.08-(smooth.y-.5)*.13,clamp(dt*1.9,0,1));
+    lightKey.position.set(group.position.x+px*.35,group.position.y+py*.35,3.5);
+    lightKey.intensity=19+energy*20;
+    lightFill.intensity=12+energy*9;
+    glowMat.opacity=.76+energy*.21;
+    if(particles){
+      const pos=particleGeo.getAttribute("position");
+      for(let i=0;i<particleSeeds.length/3;i++){
+        const k=i*3;
+        particlePositions[k]=particleSeeds[k]+Math.sin(elapsed*.33+i*.94)*.025;
+        particlePositions[k+1]=particleSeeds[k+1]+Math.cos(elapsed*.4+i*.83)*.028;
+        particlePositions[k+2]=particleSeeds[k+2]+Math.sin(elapsed*.47+i*.36)*.08;
       }
-      attr.needsUpdate=true;
-      particles.rotation.y=Math.sin(time*.09)*.12;
-      dustMaterial.opacity=.57+energy*.24;
+      pos.needsUpdate=true;
+      particleMaterial.opacity=.35+energy*.32;
     }
-    if(lightA)lightA.intensity=30+energy*24;
-    if(lightB)lightB.intensity=22+energy*16;
-    if(renderer)renderer.render(scene,camera);
-    if(now-statusAt>100){
-      updateReadout();
-      stage.style.setProperty("--field-strength",energy.toFixed(3));
-      statusAt=now;
+    renderer.render(scene,camera);
+    if(now-nextReadout>85){
+      updateText();
+      stage.style.setProperty("--field-strength",energy.toFixed(2));
+      nextReadout=now;
     }
     frame=requestAnimationFrame(animate);
   }
-
-  function setVisible(next){
-    visible=next;
-    if(next){
-      if(!loadStarted)begin();
-      else requestAnimation();
-    }else if(frame){
-      cancelAnimationFrame(frame);frame=0;
-      lastTime=0;
-    }
+  function visible(v){
+    sceneVisible=v;
+    if(v){if(!started)initialize();else run();}
+    else if(frame){cancelAnimationFrame(frame);frame=0;last=0;}
   }
-  document.addEventListener("visibilitychange",()=>{
-    if(document.hidden){
-      if(frame)cancelAnimationFrame(frame);
-      frame=0;lastTime=0;
-    }else requestAnimation();
-  });
   if("IntersectionObserver" in window){
-    const io=new IntersectionObserver(entries=>{
-      entries.forEach(entry=>setVisible(entry.isIntersecting));
-    },{rootMargin:"180px 0px 180px 0px",threshold:0});
-    io.observe(stage);
-  }else setVisible(true);
-  updateReadout(true);
+    new IntersectionObserver(entries=>entries.forEach(e=>visible(e.isIntersecting)),{rootMargin:"140px 0px",threshold:0}).observe(stage);
+  }else visible(true);
+  document.addEventListener("visibilitychange",()=>{
+    if(document.hidden){if(frame)cancelAnimationFrame(frame);frame=0;last=0;}
+    else run();
+  });
+  changePalette(0);updateText();
 })();
