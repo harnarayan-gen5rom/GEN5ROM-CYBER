@@ -236,6 +236,7 @@
     if(!renderer||!camera)return;
     const width=Math.max(1,stage.clientWidth),height=Math.max(1,stage.clientHeight);
     renderer.setSize(width,height,false);
+    camera.aspect=width/height;
     const worldHeight=(rows-1.8)*spacing;
     const worldWidth=worldHeight*(width/height);
     camera.left=-worldWidth/2;camera.right=worldWidth/2;
