@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#08080e">
+  <meta name="theme-color" content="#080a0b">
   <meta name="description" content="Harnarayan — video editor, motion designer and visual storyteller. Explore 34 motion, video, AI and graphic design projects.">
   <meta property="og:title" content="GEN5ROM / Harnarayan — Made to Move">
   <meta property="og:description" content="Motion. Design. Stories that stay. A selected portfolio and 34 real projects.">
@@ -14,10 +14,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=cyber-v8">
-  <script src="./portfolio-data.js?v=cyber-v8" defer></script>
-  <script src="./script.js?v=cyber-v8" defer></script>
-  <script type="module" src="./proximity-scene.js?v=cyber-v8"></script>
+  <link rel="stylesheet" href="./style.css?v=cyber-v9">
+  <script src="./portfolio-data.js?v=cyber-v9" defer></script>
+  <script src="./script.js?v=cyber-v9" defer></script>
+  <script type="module" src="./proximity-scene.js?v=cyber-v9"></script>
 </head>
 <body>
   <div class="ambient" aria-hidden="true">
@@ -51,44 +51,37 @@
     </nav>
   </header>
   <main id="main">
-    <section class="hero wrap" id="hero">
-      <div class="hero-copy">
-        <div class="micro-label"><span class="spark-dot"></span> THE CREATIVE PORTFOLIO OF HARNARAYAN <span class="subtle-line"></span> 2026</div>
-        <h1>Ideas look<br>better <span class="glow-type">in motion<span class="period">.</span></span></h1>
-        <p class="hero-description">I turn complicated ideas into clear, captivating visuals — through video editing, motion design, and a little creative obsession.</p>
-        <div class="hero-ctas">
-          <a class="primary-cta" href="#work"><span>Explore my work</span><span class="cta-arrow" aria-hidden="true">↗</span></a>
-          <a class="text-cta" href="#about">Get to know me <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="hero-meta"><span><b>01 /</b> Motion & video</span><span><b>02 /</b> Visual design</span><span><b>03 /</b> Creative tech</span></div>
-        <div class="hero-submark" aria-hidden="true"><span></span> SCROLL, EXPLORE & INTERACT <span></span></div>
+    <section class="hero hero-wall" id="hero" aria-label="GEN5ROM cinematic interactive homepage">
+      <div class="proximity-stage hero-wall-stage" id="proximityStage" role="button" tabindex="0"
+        aria-label="Interactive black cube wall. Move your cursor to lift nearby cubes, drag on touch, or press Enter to pulse the wall.">
+        <div class="proximity-gridlines" aria-hidden="true"></div>
+        <div class="proximity-ambient" aria-hidden="true"></div>
+        <div class="proximity-fallback cube-fallback" id="proximityFallback" aria-hidden="true"><div class="fallback-cubes" id="fallbackCubes"></div></div>
+        <canvas id="proximityCanvas" aria-hidden="true"></canvas>
+        <div class="proximity-reticle" id="proximityReticle" aria-hidden="true"></div>
       </div>
-      <div class="hero-art" id="orbStage" role="button" tabindex="0" aria-label="Interactive luminous gradient sculpture. Move or drag to rotate, tap or press Enter to change its colors">
-        <div class="hero-art-inner">
-          <div class="depth-grid" aria-hidden="true"><span class="depth-grid-ring ring-one"></span><span class="depth-grid-ring ring-two"></span><span class="depth-grid-ring ring-three"></span></div>
-          <div class="depth-aura" aria-hidden="true"></div>
-          <div class="orb-halo"></div>
-          <div class="orb-perspective" id="orbPerspective">
-            <div class="orb-body">
-              <div class="orb-core"></div><div class="orb-sheen"></div>
-              <div class="orb-texture"></div>
-              <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
-              <div class="orbit-lines orbit-lines-a"></div>
-            </div>
-          </div>
-          <span class="art-cross art-cross-one">+</span><span class="art-cross art-cross-two">+</span>
-          <div class="floating-ui floating-ui-top" aria-hidden="true"><span class="ui-symbol">✦</span><span>VISUAL SYSTEM <strong>ONLINE</strong></span></div>
-          <div class="floating-ui floating-ui-side" aria-hidden="true"><span class="ui-track"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>CREATIVE FLOW <strong>100%</strong></span></div>
-          <div class="orbit-caption">
-            <div class="orbit-caption-top"><span class="live-indicator"></span> INTERACTIVE / 001 <span>LIVE</span></div>
-            <strong>THE MOTION ENGINE</strong>
-            <span class="orbit-caption-footer">MOVE • DRAG • TAP TO SHIFT COLORS</span>
+      <div class="hero-wall-vignette" aria-hidden="true"></div>
+      <div class="hero-wall-content wrap">
+        <div class="hero-copy">
+          <p class="hero-eyebrow"><span class="hero-eyebrow-dot"></span> HARNARAYAN / MOTION DESIGNER & VIDEO EDITOR</p>
+          <h1>Ideas look<br><span>better in</span><br><em>motion.</em></h1>
+          <p class="hero-description">I turn ambitious ideas into sharp motion graphics, thoughtful edits, and visuals people remember.</p>
+          <div class="hero-ctas">
+            <a class="primary-cta" href="#work"><span>Explore my work</span><span class="cta-arrow" aria-hidden="true">↗</span></a>
+            <a class="text-cta" href="#contact">Let's collaborate <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <span class="art-axis art-axis-left">FORM / FEELING / FUNCTION</span>
-        <span class="art-axis art-axis-right">35° 41′ / INFINITE IDEAS</span>
       </div>
-      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><span class="scroll-glyph">↓</span><span>DESIGN IS THE DETAIL.</span></div>
+      <div class="hero-wall-ui">
+        <div class="hero-wall-hint"><span class="hint-dot"></span><span id="proximityMessage">MOVE YOUR CURSOR TO INTERACT</span></div>
+        <div class="hero-wall-actions">
+          <div class="proximity-readout"><span class="proximity-meter" aria-hidden="true"><span id="proximityMeter"></span></span><span id="proximityValue">0%</span></div>
+          <button type="button" class="proximity-theme-btn" id="proximityTheme" aria-label="Change 3D wall light color">
+            <span class="palette-dot"></span><span id="proximityThemeName">GOLD / 01</span><span class="theme-arrow" aria-hidden="true">↻</span>
+          </button>
+        </div>
+      </div>
+      <div class="hero-scroll-hint" aria-hidden="true">SCROLL TO EXPLORE <span>↓</span></div>
     </section>
 
     <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>VIDEO EDITING</span><i>✳</i><span>MOTION GRAPHICS</span><i>✳</i><span>VISUAL STORYTELLING</span><i>✳</i><span>GRAPHIC DESIGN</span><i>✳</i><span>INTERACTIVE EXPERIENCES</span><i>✳</i><span>VIDEO EDITING</span><i>✳</i><span>MOTION GRAPHICS</span><i>✳</i><span>VISUAL STORYTELLING</span><i>✳</i><span>GRAPHIC DESIGN</span><i>✳</i><span>INTERACTIVE EXPERIENCES</span><i>✳</i></div></div>
@@ -132,32 +125,16 @@
     
     <section class="section wrap lab-section" id="lab">
       <div class="section-intro reveal">
-        <div><span class="eyebrow"><b>03</b> / INTERACTIVE PLAYGROUND</span><h2>Motion that <span class="accent-serif">follows you.</span></h2></div>
-        <p>Inspired by Spline’s cursor-follow cubes: dark sculpted geometry, electric light between the cracks, and motion controlled by you.</p>
+        <div><span class="eyebrow"><b>03</b> / INTERACTIVE PLAYGROUND</span><h2>Designed to <span class="accent-serif">respond.</span></h2></div>
+        <p>The interactive graphite cube wall now takes over the entire first screen. Explore more creative experiments here.</p>
       </div>
-      <div class="proximity-showcase reveal" id="proximityShowcase">
-        <div class="proximity-topbar">
-          <div class="proximity-id"><span class="proximity-live-dot"></span><span>EXPERIMENT 001 <span class="proximity-divider">/</span> CURSOR FIELD</span></div>
-          <div class="proximity-tech"><span class="tech-cross">✳</span> REAL-TIME 3D <span class="tech-separator">/</span> INTERACTIVE</div>
-        </div>
-        <div class="proximity-stage" id="proximityStage" role="button" tabindex="0" aria-label="Interactive 3D cube field. Move the cursor across the cubes to lift them and reveal their glowing seams. Drag on touch screens; press Enter to pulse the field.">
-          <div class="proximity-gridlines" aria-hidden="true"></div>
-          <div class="proximity-ambient" aria-hidden="true"></div>
-          <div class="proximity-fallback cube-fallback" id="proximityFallback" aria-hidden="true"><div class="fallback-cubes" id="fallbackCubes"></div></div>
-          <canvas id="proximityCanvas" aria-hidden="true"></canvas>
-          <div class="proximity-corner proximity-tl" aria-hidden="true">+</div><div class="proximity-corner proximity-tr" aria-hidden="true">+</div>
-          <div class="proximity-corner proximity-bl" aria-hidden="true">+</div><div class="proximity-corner proximity-br" aria-hidden="true">+</div>
-          <div class="proximity-reticle" id="proximityReticle" aria-hidden="true"></div>
-          <div class="proximity-stage-label"><span class="proximity-mini">001 — CURSOR / PROXIMITY</span><strong>THE CUBE<br>FIELD<span>.</span></strong></div>
-          <div class="proximity-stage-meta"><span id="proximityMessage">MOVE YOUR CURSOR OVER THE CUBES</span><div class="proximity-readout"><div class="proximity-meter" aria-hidden="true"><span id="proximityMeter"></span></div><span id="proximityValue">0%</span></div></div>
-          <div class="proximity-center-label" aria-hidden="true">FORM IN MOTION / NEVER STATIC</div>
-        </div>
-        <div class="proximity-bottom">
-          <div class="proximity-instruction"><span class="proximity-icon">⌁</span><div><strong>Move and see it respond.</strong><p>Hover to lift the dark cubes and expose golden light. Drag or tap on mobile.</p></div></div>
-          <button type="button" class="proximity-theme-btn" id="proximityTheme" aria-label="Change sculpture color palette"><span class="palette-dot"></span><span id="proximityThemeName">GOLD / 01</span><span class="theme-arrow" aria-hidden="true">↗</span></button>
-        </div>
+      <div class="lab-hero-link reveal">
+        <span class="eyebrow">FULLSCREEN EXPERIMENT / 001</span>
+        <h3>The cube wall is the experience.</h3>
+        <p>Scroll back to the top to move, drag and reshape the full-screen 3D wall.</p>
+        <a href="#hero">Try the full-screen interaction <span aria-hidden="true">↗</span></a>
       </div>
-      <div class="playground-archive-intro reveal"><span class="eyebrow">MORE FROM THE LAB</span><p>Additional 3D experiments and a color-grading breakdown. Open only what interests you.</p></div>
+      <div class="playground-archive-intro reveal"><span class="eyebrow">MORE FROM THE LAB</span><p>Additional 3D experiments and color-grading work from my creative archive.</p></div>
       <div class="archived-labs playground-archive" id="archivedLabs"></div>
     </section>
 
